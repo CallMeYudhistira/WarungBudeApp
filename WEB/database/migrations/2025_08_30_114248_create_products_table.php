@@ -16,9 +16,6 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('pict');
             $table->integer('category_id');
-            $table->integer('selling_price');
-            $table->integer('stock');
-            $table->integer('unit_id');
             $table->timestamps();
         });
     }

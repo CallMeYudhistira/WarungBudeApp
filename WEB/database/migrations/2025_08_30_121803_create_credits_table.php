@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('credit_id');
             $table->integer('transaction_id');
             $table->string('status');
-            $table->string('customer_name');
+            $table->integer('customer_id');
             $table->integer('amount_of_debt');
             $table->timestamps();
         });

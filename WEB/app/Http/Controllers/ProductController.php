@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductDetail;
+use App\Models\RefillStock;
 use App\Models\Unit;
 use DateTime;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'products.unit_id')->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->get();
 
         return view('barang.index', compact('products'));
     }
@@ -25,7 +26,7 @@ class ProductController extends Controller
             return redirect('/barang');
         }
 
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'products.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->where('product_name', 'like', '%' . $keyword . '%')->get();
 
         return view('barang.index', compact('products', 'keyword'));
     }
@@ -33,9 +34,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $units = Unit::all();
 
-        return view('barang.create', compact('categories', 'units'));
+        return view('barang.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -44,7 +44,6 @@ class ProductController extends Controller
             'product_name' => 'required',
             'pict' => 'image|mimes:jpg,png,jpeg',
             'category_id' => 'required|numeric',
-            'unit_id' => 'required|numeric',
         ]);
 
         $namagambar = 'photo.png';
@@ -60,9 +59,6 @@ class ProductController extends Controller
             'product_name' => $request->product_name,
             'pict' => $namagambar,
             'category_id' => $request->category_id,
-            'selling_price' => 0,
-            'stock' => 0,
-            'unit_id' => $request->unit_id,
         ]);
 
         return redirect('/barang')->with('success', 'Barang Berhasil Ditambahkan!');
@@ -72,9 +68,8 @@ class ProductController extends Controller
     {
         $product = Product::where('product_id', $id)->first();
         $categories = Category::all();
-        $units = Unit::all();
 
-        return view('barang.update', compact('product', 'categories', 'units'));
+        return view('barang.update', compact('product', 'categories'));
     }
 
     public function update(Request $request)
@@ -84,7 +79,6 @@ class ProductController extends Controller
             'product_name' => 'required',
             'pict' => 'image|mimes:jpg,png,jpeg',
             'category_id' => 'required|numeric',
-            'unit_id' => 'required|numeric',
         ]);
 
         $data = Product::where('product_id', $request->id)->first();
@@ -105,7 +99,6 @@ class ProductController extends Controller
             'product_name' => $request->product_name,
             'pict' => $namagambar,
             'category_id' => $request->category_id,
-            'unit_id' => $request->unit_id,
         ]);
 
         return redirect('/barang')->with('success', 'Barang Berhasil Diedit!');
@@ -120,7 +113,7 @@ class ProductController extends Controller
         }
 
         Product::where('product_id', $id)->delete();
-        ProductDetail::where('product_id', $id)->delete();
+        RefillStock::where('product_id', $id)->delete();
 
         return redirect('/barang')->with('success', 'Barang Berhasil Dihapus!');
     }

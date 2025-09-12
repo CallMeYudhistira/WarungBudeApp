@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('title', 'Barang || Detail')
+@section('title', 'Barang || Riwayat Isi Stok')
 @section('content')
-    <h1 style="padding: 12px;">Detail Barang</h1>
+    <h1 style="padding: 12px;">Riwayat Isi Stok</h1>
     <h2 style="padding-top: 12px; border-top: 1px solid #ccc;">{{ $product->product_name }} || History Isi Stok</h2>
     <ul class="m-4 d-flex" style="list-style-type: none;">
         <li><a href="/barang/detail/create/{{ $product->product_id }}" class="btn btn-primary m-2">Tambah</a></li>

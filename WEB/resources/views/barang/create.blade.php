@@ -35,15 +35,6 @@
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="unit_id" class="form-label">Satuan</label>
-                <select class="form-select" name="unit_id">
-                    <option selected disabled>Satuan...</option>
-                    @foreach ($units as $unit)
-                        <option value="{{ $unit->unit_id }}">{{ $unit->unit_name }}</option>
-                    @endforeach
-                </select>
-            </div>
             <button type="submit" class="btn btn-primary mt-3">Tambah</button>
             <a href="/barang" class="btn btn-dark mt-3" style="margin-left: 8px;">Kembali</a>
         </form>

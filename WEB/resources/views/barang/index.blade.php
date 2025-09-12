@@ -25,16 +25,6 @@
                                 <td>:</td>
                                 <td>{{ $product->category_name }}</td>
                             </tr>
-                            <tr>
-                                <th>Harga Jual (Rp.)</th>
-                                <td>:</td>
-                                <td>{{ $product->selling_price }}/{{ $product->unit_name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Stok</th>
-                                <td>:</td>
-                                <td>{{ $product->stock }}</td>
-                            </tr>
                         </table>
                         <div class="card-body">
                             <div class="d-flex pb-2 mb-2" style="justify-content: space-between;">
@@ -45,6 +35,7 @@
                             </form>
                             </div>
                             <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-success w-100">Detail Barang</a>
+                            <a href="/barang/refillStock/{{ $product->product_id }}" class="btn btn-secondary w-100 mt-3">isi Stok</a>
                         </div>
                     </div>
                 </div>
