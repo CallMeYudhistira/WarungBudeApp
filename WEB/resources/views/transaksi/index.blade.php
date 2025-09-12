@@ -126,8 +126,8 @@
                     </select>
                     <div style="display: none;">
                         <label for="pay" class="mb-2">Nama Penghutang</label>
-                        <input type="text" name="pay" class="form-control mb-3"
-                            id="pay" oninput="kembalian(this.value)" readonly>
+                        <input type="text" name="a" class="form-control mb-3"
+                            id="a">
                     </div>
                     <label for="pay" class="mb-2">Bayar : (Rp.)</label>
                     <input type="number" min="0" name="pay" value="0" class="form-control mb-3"

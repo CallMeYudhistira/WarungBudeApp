@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('status');
             $table->string('customer_name');
             $table->integer('amount_of_debt');
-            $table->integer('amount_of_paid')->nullable();
-            $table->date('payment_date')->nullable();
             $table->timestamps();
         });
     }
