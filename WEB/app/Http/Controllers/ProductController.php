@@ -122,7 +122,7 @@ class ProductController extends Controller
     public function index_detail($id)
     {
         $product = Product::where('product_id', $id)->first();
-        $product_details = ProductDetail::join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->get();
+        $product_details = ProductDetail::join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('products.product_id', $id)->get();
 
         return view('barang.detail.index', compact('product', 'product_details'));
     }
@@ -142,7 +142,7 @@ class ProductController extends Controller
             'unit_id' => 'required',
         ]);
 
-        $cekDetail = ProductDetail::where('unit_id', $request->unit_id)->first();
+        $cekDetail = ProductDetail::where('product_id', $request->id)->where('unit_id', $request->unit_id)->first();
 
         if (!$cekDetail && $cekDetail == null) {
             ProductDetail::create([
@@ -181,7 +181,7 @@ class ProductController extends Controller
                 'unit_id' => $request->unit_id,
             ]);
         } else {
-            $cekDetail = ProductDetail::where('unit_id', $request->unit_id)->first();
+            $cekDetail = ProductDetail::where('product_id', $request->id)->where('unit_id', $request->unit_id)->first();
             if ($cekDetail && $cekDetail != null) {
                 return redirect()->back()->with('error', 'Satuan Ini Sudah Tersedia!');
             } else {

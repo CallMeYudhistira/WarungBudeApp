@@ -9,5 +9,6 @@ class Unit extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'unit_id';
     protected $fillable = ['unit_name'];
 }

@@ -9,5 +9,6 @@ class Credit extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'credit_id';
     protected $fillable = ['transaction_id', 'status', 'customer_name', 'payment_date'];
 }

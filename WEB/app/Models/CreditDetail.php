@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CreditDetail extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'credit_detail_id';
+    protected $fillable = ['credit_id', 'amount_of_paid', 'payment_date', 'remaining_debt'];
 }

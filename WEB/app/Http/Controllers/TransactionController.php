@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\ProductDetail;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
@@ -15,8 +16,8 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'products.unit_id')->where('stock', '>', '0')->simplePaginate(4);
-        $carts = Cart::join('products', 'products.product_id', '=', 'carts.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->simplePaginate(4);
+        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->get();
 
         return view('transaksi.index', compact('products', 'carts'));
     }
@@ -28,30 +29,30 @@ class TransactionController extends Controller
             return redirect('/transaksi');
         }
 
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'products.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->simplePaginate(4);
-        $carts = Cart::join('products', 'products.product_id', '=', 'carts.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->simplePaginate(4);
+        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->get();
 
         return view('transaksi.index', compact('products', 'keyword', 'carts'));
     }
 
     public function cartStore(Request $request)
     {
-        $product = Product::find($request->product_id);
+        $product = ProductDetail::find($request->id);
 
         $request->validate([
-            'product_id' => 'required',
+            'id' => 'required',
             'quantity' => 'numeric|required|max:' . $product->stock,
             'selling_price' => 'required',
         ]);
 
-        $cekCart = Cart::where('product_id', $request->product_id)->first();
+        $cekCart = Cart::where('product_detail_id', $request->id)->first();
 
         if (!$cekCart || $cekCart != null) {
-            Cart::where('product_id', $request->product_id)->delete();
+            Cart::where('product_detail_id', $request->id)->delete();
         }
 
         Cart::create([
-            'product_id' => $request->product_id,
+            'product_detail_id' => $request->id,
             'selling_price' => $request->selling_price,
             'quantity' => $request->quantity,
             'subtotal' => ($request->quantity * $request->selling_price),
