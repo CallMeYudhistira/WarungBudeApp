@@ -4,9 +4,9 @@
     <h1 style="padding: 12px;">Riwayat Isi Stok</h1>
     <h2 style="padding-top: 12px; border-top: 1px solid #ccc;">{{ $product->product_name }} || History Isi Stok</h2>
     <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/barang/detail/create/{{ $product->product_id }}" class="btn btn-primary m-2">Tambah</a></li>
+        <li><a href="/barang/refillStock/create/{{ $product->product_id }}" class="btn btn-primary m-2">Tambah</a></li>
         <li><a href="/barang" class="btn btn-dark m-2">Kembali</a></li>
-        <form class="d-flex m-2 ms-auto" action="/barang/detail/{{ $product->product_id }}/filter" method="get">
+        <form class="d-flex m-2 ms-auto" action="/barang/refillStock/{{ $product->product_id }}/filter" method="get">
             <input class="form-control me-2" type="date" placeholder="Dari tanggal..." name="first"
                 @isset($first) value="{{ $first }}" @endisset />
             <label for="second" class="form-label m-2">=></label>
@@ -32,15 +32,15 @@
                 @php
                     $no = 1;
                 @endphp
-                @foreach ($details as $detail)
+                @foreach ($refillStocks as $refillStock)
                     <tr>
                         <th scope="row">{{ $no++ }}</th>
-                        <td scope="row">{{ $detail->purchase_price }}</td>
-                        <td scope="row">{{ $detail->unit_name }}</td>
-                        <td scope="row">{{ $detail->quantity_of_unit }}</td>
-                        <td scope="row">{{ $detail->amount_per_unit }}</td>
-                        <td scope="row">{{ $detail->entry_date }}</td>
-                        <td scope="row">{{ $detail->expired_date }}</td>
+                        <td scope="row">{{ $refillStock->purchase_price }}</td>
+                        <td scope="row">{{ $refillStock->unit_name }}</td>
+                        <td scope="row">{{ $refillStock->quantity_of_unit }}</td>
+                        <td scope="row">{{ $refillStock->amount_per_unit }}</td>
+                        <td scope="row">{{ $refillStock->entry_date }}</td>
+                        <td scope="row">{{ $refillStock->expired_date }}</td>
                     </tr>
                 @endforeach
             </tbody>

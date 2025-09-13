@@ -35,7 +35,6 @@
                             </form>
                             </div>
                             <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-success w-100">Detail Barang</a>
-                            <a href="/barang/refillStock/{{ $product->product_id }}" class="btn btn-secondary w-100 mt-3">isi Stok</a>
                         </div>
                     </div>
                 </div>

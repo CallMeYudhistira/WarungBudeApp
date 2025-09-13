@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('refill_stocks', function (Blueprint $table) {
             $table->increments("refill_stock_id");
-            $table->integer('product_id');
+            $table->integer('product_detail_id');
             $table->integer('purchase_price');
-            $table->integer('unit_id');
-            $table->string('quantity_of_unit');
-            $table->integer('amount_per_unit');
+            $table->integer('quantity');
+            $table->integer('total');
             $table->date('entry_date');
-            $table->date('expired_date');
+            $table->date('expired_date')->nullable();
             $table->timestamps();
         });
     }

@@ -60,19 +60,23 @@ Route::middleware('auth')->group(function () {
         Route::prefix('/barang')->group(callback: function () {
             Route::get('/', [ProductController::class, 'index']);
             Route::get('/search', [ProductController::class, 'search']);
-
             Route::get('/create', [ProductController::class, 'create']);
             Route::post('/store', [ProductController::class, 'store']);
-
             Route::get('/edit/{id}', [ProductController::class, 'edit']);
             Route::put('/update', [ProductController::class, 'update']);
-
             Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
 
-            Route::get('/detail/{id}', [ProductController::class, 'detail']);
-            Route::get('/detail/{id}/filter', [ProductController::class, 'filter']);
-            Route::get('/detail/create/{id}', [ProductController::class, 'add_stock']);
-            Route::post('/detail/store', [ProductController::class, 'store_stock']);
+            Route::get('detail/{id}', [ProductController::class, 'index_detail']);
+            Route::get('detail/create/{id}', [ProductController::class, 'create_detail']);
+            Route::post('detail/store', [ProductController::class, 'store_detail']);
+            Route::get('detail/edit/{id}', [ProductController::class, 'edit_detail']);
+            Route::put('detail/update', [ProductController::class, 'update_detail']);
+            Route::delete('detail/delete/{id}', [ProductController::class, 'delete_detail']);
+
+            Route::get('/refillStock/{id}', [ProductController::class, 'index_stock']);
+            Route::get('/refillStock/{id}/filter', [ProductController::class, 'filter']);
+            Route::get('/refillStock/create/{id}', [ProductController::class, 'add_stock']);
+            Route::post('/refillStock/store', [ProductController::class, 'store_stock']);
         });
 
         Route::prefix('/satuan')->group(callback: function () {

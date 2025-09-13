@@ -12,7 +12,7 @@
         </div>
     @endif
     <div class="mt-3 p-4" style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
-        <form action="/barang/detail/store" method="post" enctype="multipart/form-data">
+        <form action="/barang/refillStock/store" method="post" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->product_id }}">
             <div class="mb-3">

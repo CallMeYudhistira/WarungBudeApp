@@ -113,35 +113,123 @@ class ProductController extends Controller
         }
 
         Product::where('product_id', $id)->delete();
+        ProductDetail::where('product_id', $id)->delete();
         RefillStock::where('product_id', $id)->delete();
 
         return redirect('/barang')->with('success', 'Barang Berhasil Dihapus!');
     }
 
-    public function detail($id){
+    public function index_detail($id)
+    {
         $product = Product::where('product_id', $id)->first();
-        $details = ProductDetail::join('units', 'units.unit_id', 'product_details.unit_id')->where('product_id', $id)->get();
+        $product_details = ProductDetail::join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->get();
 
-        return view('barang.detail', compact('product', 'details'));
+        return view('barang.detail.index', compact('product', 'product_details'));
     }
 
-    public function filter($id, Request $request){
+    public function create_detail($id)
+    {
+        $units = Unit::all();
+        $product = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->where('product_id', $id)->first();
+
+        return view('barang.detail.create', compact('units', 'product'));
+    }
+
+    public function store_detail(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+            'unit_id' => 'required',
+        ]);
+
+        $cekDetail = ProductDetail::where('unit_id', $request->unit_id)->first();
+
+        if (!$cekDetail && $cekDetail == null) {
+            ProductDetail::create([
+                'product_id' => $request->id,
+                'unit_id' => $request->unit_id,
+                'purchase_price' => 0,
+                'selling_price' => 0,
+                'stock' => 0,
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Satuan Ini Sudah Tersedia!');
+        }
+
+        return redirect('/barang/detail/' . $request->id)->with('success', 'Detail Barang Berhasil Ditambah!');
+    }
+
+    public function edit_detail($id)
+    {
+        $units = Unit::all();
+        $product = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->where('product_detail_id', $id)->first();
+
+        return view('barang.detail.update', compact('units', 'product'));
+    }
+
+    public function update_detail(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+            'detail_id' => 'required',
+            'unit_id' => 'required',
+            'cek_unit' => 'required',
+        ]);
+
+        if ($request->cek_unit == $request->unit_id) {
+            ProductDetail::where('product_detail_id', $request->detail_id)->update([
+                'unit_id' => $request->unit_id,
+            ]);
+        } else {
+            $cekDetail = ProductDetail::where('unit_id', $request->unit_id)->first();
+            if ($cekDetail && $cekDetail != null) {
+                return redirect()->back()->with('error', 'Satuan Ini Sudah Tersedia!');
+            } else {
+                ProductDetail::where('product_detail_id', $request->detail_id)->update([
+                    'unit_id' => $request->unit_id,
+                ]);
+            }
+        }
+
+        return redirect('/barang/detail/' . $request->id)->with('success', 'Detail Barang Berhasil Diedit!');
+    }
+
+    public function delete_detail($id, Request $request)
+    {
+        ProductDetail::where('product_detail_id', $id)->delete();
+        RefillStock::where('product_detail_id', $id)->delete();
+
+        return redirect('/barang/detail/' . $request->id)->with('success', 'Detail Barang Berhasil Dihapus!');
+    }
+
+    public function index_stock($id)
+    {
+        $product = Product::where('product_id', $id)->first();
+        $refillStocks = RefillStock::join('units', 'units.unit_id', 'refill_stocks.unit_id')->where('product_id', $id)->get();
+
+        return view('barang.stok.index', compact('product', 'refillStocks'));
+    }
+
+    public function filter($id, Request $request)
+    {
         $first = $request->first;
         $second = $request->second;
         $product = Product::where('product_id', $id)->first();
-        $details = ProductDetail::join('units', 'units.unit_id', 'product_details.unit_id')->where('product_id', $id)->whereBetween('entry_date', [$first, $second])->get();
+        $refillStocks = RefillStock::join('units', 'units.unit_id', 'refill_stocks.unit_id')->where('product_id', $id)->whereBetween('entry_date', [$first, $second])->get();
 
-        return view('barang.detail', compact('product', 'details', 'first', 'second'));
+        return view('barang.stok.index', compact('product', 'refillStocks', 'first', 'second'));
     }
 
-    public function add_stock($id){
+    public function add_stock($id)
+    {
         $product = Product::where('product_id', $id)->first();
         $units = Unit::all();
 
-        return view('barang.add_stock', compact('product', 'units'));
+        return view('barang.stok.add_stock', compact('product', 'units'));
     }
 
-    public function store_stock(Request $request){
+    public function store_stock(Request $request)
+    {
         $request->validate([
             'product_id' => 'required|numeric',
             'purchase_price' => 'required|numeric',
@@ -151,7 +239,7 @@ class ProductController extends Controller
             'expired_date' => 'required|date',
         ]);
 
-        ProductDetail::create([
+        RefillStock::create([
             'product_id' => $request->product_id,
             'purchase_price' => $request->purchase_price,
             'unit_id' => $request->unit_id,
@@ -161,7 +249,7 @@ class ProductController extends Controller
             'expired_date' => $request->expired_date,
         ]);
 
-        $new_detail = ProductDetail::where('product_id', $request->product_id)->orderBy('product_detail_id', 'desc')->first();
+        $new_detail = RefillStock::where('product_id', $request->product_id)->orderBy('refill_stock_id', 'desc')->first();
         $product = Product::where('product_id', $request->product_id)->first();
         $margin = 0.20;
         $price_per_pcs = ($new_detail->purchase_price / $new_detail->quantity_of_unit) / $new_detail->amount_per_unit;
@@ -174,6 +262,6 @@ class ProductController extends Controller
             'selling_price' => round(($price_per_pcs + $profit) / 500) * 500,
         ]);
 
-        return redirect('/barang/detail/' . $request->product_id)->with('success', 'Stok Berhasil Ditambahkan!');
+        return redirect('/barang/refillStock/' . $request->product_id)->with('success', 'Stok Berhasil Ditambahkan!');
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('product_detail_id');
             $table->integer('product_id');
             $table->integer('unit_id');
+            $table->integer('purchase_price');
             $table->integer('selling_price');
             $table->integer('stock');
             $table->timestamps();
