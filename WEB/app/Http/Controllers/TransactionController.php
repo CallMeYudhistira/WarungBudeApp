@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Credit;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\Transaction;
@@ -17,7 +19,7 @@ class TransactionController extends Controller
     public function index()
     {
         $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->simplePaginate(4);
-        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->get();
+        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get();
 
         return view('transaksi.index', compact('products', 'carts'));
     }
@@ -30,7 +32,7 @@ class TransactionController extends Controller
         }
 
         $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->simplePaginate(4);
-        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->get();
+        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get();
 
         return view('transaksi.index', compact('products', 'keyword', 'carts'));
     }
@@ -106,6 +108,7 @@ class TransactionController extends Controller
             'total' => $request->total,
             'pay' => $request->pay,
             'change' => $request->change,
+            'payment' => $request->payment,
             'user_id' => Auth::user()->user_id,
         ]);
 
@@ -113,15 +116,18 @@ class TransactionController extends Controller
         $transaction_id = $newTransaction->transaction_id;
 
         if ($request->payment === 'kredit') {
-            $validator->after(function ($validator) use ($request) {
-                if (!$request->pay || $request->pay == 0 || ($request->pay - $request->total) < 0) {
-                    $validator->errors()->add('pay', 'Uang pembayaran kurang dan tidak boleh 0.');
-                }
-            });
+            Customer::create([
+                'customer_name' => $request->customer_name,
+            ]);
 
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+            $customer = Customer::latest()->first();
+
+            Credit::create([
+                'transaction_id' => $transaction_id,
+                'status' => 'belum lunas',
+                'customer_id' => $customer->customer_id,
+                'amount_of_debt' => $request->total,
+            ]);
         }
 
         $carts = Cart::all();
@@ -129,15 +135,15 @@ class TransactionController extends Controller
         foreach ($carts as $cart) {
             TransactionDetail::create([
                 'transaction_id' => $transaction_id,
-                'product_id' => $cart->product_id,
+                'product_detail_id' => $cart->product_detail_id,
                 'selling_price' => $cart->selling_price,
                 'quantity' => $cart->quantity,
                 'subtotal' => $cart->subtotal,
             ]);
 
-            $product = Product::find($cart->product_id);
+            $product = ProductDetail::find($cart->product_detail_id);
 
-            Product::where('product_id', $cart->product_id)->update([
+            ProductDetail::where('product_detail_id', $cart->product_detail_id)->update([
                 'stock' => $product->stock - $cart->quantity,
             ]);
         }

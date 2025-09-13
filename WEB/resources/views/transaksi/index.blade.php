@@ -124,10 +124,9 @@
                         <option value="tunai">Tunai</option>
                         <option value="kredit">Kredit</option>
                     </select>
-                    <div style="display: none;">
-                        <label for="pay" class="mb-2">Nama Penghutang</label>
-                        <input type="text" name="a" class="form-control mb-3"
-                            id="a">
+                    <div style="display: none;" id="hutang">
+                        <label for="customer_name" class="mb-2">Nama Penghutang</label>
+                        <input type="text" name="customer_name" class="form-control mb-3">
                     </div>
                     <label for="pay" class="mb-2">Bayar : (Rp.)</label>
                     <input type="number" min="0" name="pay" value="0" class="form-control mb-3"
@@ -158,9 +157,11 @@
             const pay = document.getElementById('pay');
             if (e.target.value === 'tunai') {
                 pay.readOnly = false;
+                document.getElementById('hutang').style.display = 'none';
             } else if (e.target.value === 'kredit') {
                 pay.readOnly = true;
                 pay.value = 0;
+                document.getElementById('hutang').style.display = 'block';
                 document.getElementById('change').value = 0;
             }
         });
