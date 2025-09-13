@@ -45,7 +45,7 @@
                                         onclick="return confirm('Apakah anda ingin menghapus {{ $product_detail->product_name }} (satuan = {{ $product_detail->unit_name }}) dengan semua riwayat isi stok nya?');">Hapus</button>
                                 </form>
                             </div>
-                            <a href="/barang/refillStock/{{ $product_detail->product_id }}" class="btn btn-secondary w-100">isi Stok</a>
+                            <a href="/barang/refillStock/{{ $product_detail->product_detail_id }}" class="btn btn-secondary w-100">isi Stok</a>
                         </div>
                     </div>
                 </div>

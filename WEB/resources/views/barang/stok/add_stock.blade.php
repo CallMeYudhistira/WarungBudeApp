@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Barang || Tambah Stok')
 @section('content')
-    <h1>Tambah Stok Barang</h1>
+    <h1>Tambah Stok Barang : {{ $product->product_name }}</h1>
     @if ($errors->any())
         <div class="alert alert-danger m-4" role="alert">
             <ul>
@@ -15,28 +15,26 @@
         <form action="/barang/refillStock/store" method="post" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->product_id }}">
-            <div class="mb-3">
-                <label for="purchase_price" class="form-label">Harga Beli</label>
-                <input type="number" class="form-control" name="purchase_price" placeholder="Harga beli..."
-                    autocomplete="off" min="0">
-            </div>
+            <input type="hidden" name="detail_id" value="{{ $product->product_detail_id }}">
             <div class="mb-3">
                 <label for="unit_id" class="form-label">Satuan</label>
-                <select class="form-select" name="unit_id">
-                    <option selected disabled>Satuan...</option>
-                    @foreach ($units as $unit)
-                        <option value="{{ $unit->unit_id }}">{{ $unit->unit_name }}</option>
-                    @endforeach
+                <select class="form-select" disabled>
+                    <option selected>{{ $product->unit_name }}</option>
                 </select>
             </div>
             <div class="mb-3">
-                <label for="quantity_of_unit" class="form-label">Kuantitas dari Satuan</label>
-                <input type="number" class="form-control" name="quantity_of_unit" placeholder="kuantitas dari satuan..."
+                <label for="total" class="form-label">Total</label>
+                <input type="number" class="form-control" name="total" value="0" id="total"
                     autocomplete="off" min="0">
             </div>
             <div class="mb-3">
-                <label for="amount_per_unit" class="form-label">Jumlah Per Satuan</label>
-                <input type="number" class="form-control" name="amount_per_unit" placeholder="Jumlah per satuan..."
+                <label for="quantity" class="form-label">Kuantitas</label>
+                <input type="number" class="form-control" name="quantity" value="0" id="qty"
+                    autocomplete="off" min="0">
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Harga Beli</label>
+                <input type="number" class="form-control" name="price" value="0" id="price" readonly
                     autocomplete="off" min="0">
             </div>
             <div class="mb-3">
@@ -48,4 +46,18 @@
             <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-dark mt-3" style="margin-left: 8px;">Kembali</a>
         </form>
     </div>
+
+    <script>
+        const qty = document.getElementById('qty');
+        const price = document.getElementById('price');
+        const total = document.getElementById('total');
+
+        qty.addEventListener('input', e => {
+            price.value = Math.ceil(total.value / e.target.value);
+        });
+
+        total.addEventListener('input', e => {
+            price.value = Math.ceil(e.target.value / qty.value);
+        });
+    </script>
 @endsection

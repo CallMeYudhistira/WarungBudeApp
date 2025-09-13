@@ -9,5 +9,5 @@ class RefillStock extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'purchase_price', 'unit_id', 'quantity_of_unit', 'amount_per_unit', 'entry_date', 'expired_date'];
+    protected $fillable = ['product_detail_id', 'price', 'quantity', 'total', 'entry_date', 'expired_date'];
 }

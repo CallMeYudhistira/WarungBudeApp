@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('refill_stocks', function (Blueprint $table) {
             $table->increments("refill_stock_id");
             $table->integer('product_detail_id');
-            $table->integer('purchase_price');
+            $table->integer('price');
             $table->integer('quantity');
             $table->integer('total');
             $table->date('entry_date');

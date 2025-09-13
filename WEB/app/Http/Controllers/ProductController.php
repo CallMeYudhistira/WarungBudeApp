@@ -204,8 +204,8 @@ class ProductController extends Controller
 
     public function index_stock($id)
     {
-        $product = Product::where('product_id', $id)->first();
-        $refillStocks = RefillStock::join('units', 'units.unit_id', 'refill_stocks.unit_id')->where('product_id', $id)->get();
+        $product = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('product_detail_id', $id)->first();
+        $refillStocks = RefillStock::join('product_details', 'product_details.product_detail_id', 'refill_stocks.product_detail_id')->where('refill_stocks.product_detail_id', $id)->get();
 
         return view('barang.stok.index', compact('product', 'refillStocks'));
     }
@@ -214,54 +214,55 @@ class ProductController extends Controller
     {
         $first = $request->first;
         $second = $request->second;
-        $product = Product::where('product_id', $id)->first();
-        $refillStocks = RefillStock::join('units', 'units.unit_id', 'refill_stocks.unit_id')->where('product_id', $id)->whereBetween('entry_date', [$first, $second])->get();
+
+        if(!$first && !$second){
+            return redirect('/barang/refillStock/' . $id);
+        }
+
+        $product = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('product_detail_id', $id)->first();
+        $refillStocks = RefillStock::join('product_details', 'product_details.product_detail_id', 'refill_stocks.product_detail_id')->where('refill_stocks.product_detail_id', $id)->whereBetween('entry_date', [$first, $second])->get();
 
         return view('barang.stok.index', compact('product', 'refillStocks', 'first', 'second'));
     }
 
     public function add_stock($id)
     {
-        $product = Product::where('product_id', $id)->first();
-        $units = Unit::all();
+        $product = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('product_detail_id', $id)->first();
 
-        return view('barang.stok.add_stock', compact('product', 'units'));
+        return view('barang.stok.add_stock', compact('product'));
     }
 
     public function store_stock(Request $request)
     {
         $request->validate([
             'product_id' => 'required|numeric',
-            'purchase_price' => 'required|numeric',
-            'unit_id' => 'required|numeric',
-            'quantity_of_unit' => 'required|numeric',
-            'amount_per_unit' => 'required|numeric',
-            'expired_date' => 'required|date',
+            'detail_id' => 'required|numeric',
+            'price' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'total' => 'required|numeric',
         ]);
 
         RefillStock::create([
-            'product_id' => $request->product_id,
-            'purchase_price' => $request->purchase_price,
-            'unit_id' => $request->unit_id,
-            'quantity_of_unit' => $request->quantity_of_unit,
-            'amount_per_unit' => $request->amount_per_unit,
+            'product_detail_id' => $request->detail_id,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'total' => $request->total,
             'entry_date' => now(),
             'expired_date' => $request->expired_date,
         ]);
 
-        $new_detail = RefillStock::where('product_id', $request->product_id)->orderBy('refill_stock_id', 'desc')->first();
-        $product = Product::where('product_id', $request->product_id)->first();
+        $new_refill = RefillStock::where('product_detail_id', $request->detail_id)->orderBy('refill_stock_id', 'desc')->first();
+        $product = ProductDetail::where('product_detail_id', $request->detail_id)->first();
         $margin = 0.20;
-        $price_per_pcs = ($new_detail->purchase_price / $new_detail->quantity_of_unit) / $new_detail->amount_per_unit;
-        $profit = $price_per_pcs * $margin;
+        $price_per_unit = $new_refill->total / $new_refill->quantity;
+        $profit = $new_refill->price * $margin;
 
-        $add_stock = $new_detail->amount_per_unit * $new_detail->quantity_of_unit;
-
-        Product::where('product_id', $request->product_id)->update([
-            'stock' => $product->stock + $add_stock,
-            'selling_price' => round(($price_per_pcs + $profit) / 500) * 500,
+        ProductDetail::where('product_detail_id', $request->detail_id)->update([
+            'stock' => $product->stock + $new_refill->quantity,
+            'purchase_price' => $new_refill->price,
+            'selling_price' => round(($price_per_unit + $profit) / 500) * 500,
         ]);
 
-        return redirect('/barang/refillStock/' . $request->product_id)->with('success', 'Stok Berhasil Ditambahkan!');
+        return redirect('/barang/refillStock/' . $request->detail_id)->with('success', 'Stok Berhasil Ditambahkan!');
     }
 }
