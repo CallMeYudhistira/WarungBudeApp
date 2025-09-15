@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Transaksi || Riwayat')
 @section('content')
-    <h1 style="padding: 12px;">Kofi Shop</h1>
+    <h1 style="padding: 12px;">Riwayat Transaksi</h1>
     <ul class="m-4 d-flex" style="list-style-type: none;">
         <li><a href="/transaksi" class="btn btn-dark m-2">Kembali</a></li>
         <form class="d-flex m-2 ms-auto" action="/transaksi/history/filter" method="get">
@@ -42,18 +42,10 @@
                         <td scope="row"><span style="background: #eee; border-radius: 6px; border: 1px solid #ccc; padding: 2px 14px; color: black;">{{ $transaction->payment }}</span></td>
                         <td scope="row">{{ $transaction->name }}</td>
                         <td scope="row">{{ $transaction->customer_name ? $transaction->customer_name : '-' }}</td>
-                        <td scope="row"><a href="/transaksi/detail/{{ $transaction->transaction_id }}" class="btn btn-success">Detail</a></td>
+                        <td scope="row" class="text-center"><a href="/transaksi/detail/{{ $transaction->transaction_id }}" class="btn btn-success">Detail</a></td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-    @if ($pesan = Session::get('success'))
-        <script>
-            Swal.fire({
-                title: "{{ $pesan }}",
-                icon: "success",
-            });
-        </script>
-    @endif
 @endsection
