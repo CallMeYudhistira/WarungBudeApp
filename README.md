@@ -1,4 +1,4 @@
-# 🛒 WarungBudeApp
+# 🛒 Coffee Shop
 
 WarungBudeApp adalah aplikasi berbasis **Laravel** untuk membantu UMKM, khususnya warung kelontong, dalam mengelola stok barang, transaksi penjualan, hingga pencatatan laporan harian.  
 Dengan tampilan yang sederhana dan fitur yang lengkap, aplikasi ini dibuat agar pemilik warung bisa lebih mudah mengontrol usaha tanpa ribet.
