@@ -7,10 +7,10 @@
         <li><a href="/barang/refillStock/create/{{ $product->product_detail_id }}" class="btn btn-primary m-2">Tambah</a></li>
         <li><a href="/barang/detail/{{ $product->product_id }}" class="btn btn-dark m-2">Kembali</a></li>
         <form class="d-flex m-2 ms-auto" action="/barang/refillStock/{{ $product->product_detail_id }}/filter" method="get">
-            <input class="form-control me-2" type="date" placeholder="Dari tanggal..." name="first"
+            <input class="form-control me-2" type="date" name="first"
                 @isset($first) value="{{ $first }}" @endisset />
             <label for="second" class="form-label m-2">=></label>
-            <input class="form-control me-2" type="date" placeholder="Sampai tanggal..." name="second"
+            <input class="form-control me-2" type="date" name="second"
                 @isset($second) value="{{ $second }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Filter</button>
         </form>

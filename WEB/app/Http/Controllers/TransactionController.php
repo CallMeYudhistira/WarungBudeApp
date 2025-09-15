@@ -152,4 +152,23 @@ class TransactionController extends Controller
 
         return redirect('/transaksi')->with('success', 'Terimakasih Telah Berbelanja!');
     }
+
+    public function history(){
+        $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->get();
+
+        return view('transaksi.history', compact('transactions'));
+    }
+
+    public function filter(Request $request){
+        $first = $request->first;
+        $second = $request->second;
+
+        if(!$first && !$second){
+            return redirect('/transaksi/history');
+        }
+
+        $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->whereBetween('date', [$first, $second])->get();
+
+        return view('transaksi.history', compact('transactions', 'first', 'second'));
+    }
 }

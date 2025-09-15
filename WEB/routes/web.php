@@ -101,5 +101,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/cart/delete/{id}', [TransactionController::class, 'cartDelete']);
 
         Route::post('/proses', [TransactionController::class, 'transactionStore']);
+
+        Route::get('/history', [TransactionController::class, 'history']);
+        Route::get('/history/filter', [TransactionController::class, 'filter']);
     });
 });
