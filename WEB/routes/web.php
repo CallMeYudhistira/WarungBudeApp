@@ -113,6 +113,11 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('/kredit')->group(function () {
             Route::get('/', [CreditController::class, 'index']);
+            Route::get('/edit/{id}', [CreditController::class, 'edit']);
+            Route::put('/update', [CreditController::class, 'update']);
+
+            Route::get('bayar/{id}', [CreditController::class, 'payment']);
+            Route::post('bayar/store/{id}', [CreditController::class, 'pay']);
         });
     });
 });

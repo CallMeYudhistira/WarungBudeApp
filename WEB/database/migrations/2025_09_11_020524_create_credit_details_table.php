@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('customer_id');
             $table->integer('amount_of_paid');
             $table->integer('remaining_debt');
+            $table->integer('change');
             $table->date('payment_date');
             $table->timestamps();
         });
