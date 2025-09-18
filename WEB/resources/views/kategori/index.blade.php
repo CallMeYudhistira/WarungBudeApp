@@ -13,7 +13,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col" style="width: 10%;">#</th>
                     <th scope="col">Nama</th>
                     <th scope="col" colspan="2" class="text-center" style="width: 10%;">Action</th>
                 </tr>

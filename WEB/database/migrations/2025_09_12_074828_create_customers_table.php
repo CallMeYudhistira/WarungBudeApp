@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string("customer_name");
             $table->string("phone_number")->nullable();
             $table->text("address")->nullable();
+            $table->integer('amount_of_debt');
+            $table->string('status');
             $table->timestamps();
         });
     }

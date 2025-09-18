@@ -126,7 +126,7 @@
                     </select>
                     <div style="display: none;" id="hutang">
                         <label for="customer_name" class="mb-2">Nama Penghutang</label>
-                        <input type="text" name="customer_name" id="customer_name" list="customer_names" class="form-control mb-3">
+                        <input type="text" name="customer_name" id="customer_name" list="customer_names" class="form-control mb-3" autocomplete="off">
 
                         <datalist id="customer_names">
                             @foreach ($customers as $customer)

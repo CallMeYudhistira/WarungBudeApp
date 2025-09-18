@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('credits', function (Blueprint $table) {
             $table->increments('credit_id');
             $table->integer('transaction_id');
-            $table->string('status');
             $table->integer('customer_id');
-            $table->integer('amount_of_debt');
+            $table->integer('total');
             $table->timestamps();
         });
     }

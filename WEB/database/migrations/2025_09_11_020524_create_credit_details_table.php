@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('credit_details', function (Blueprint $table) {
             $table->increments('credit_detail_id');
-            $table->integer('credit_id');
-            $table->integer('amount_of_paid')->nullable();
-            $table->date('payment_date')->nullable();
-            $table->integer("remaining_debt");
+            $table->integer('customer_id');
+            $table->integer('amount_of_paid');
+            $table->integer('remaining_debt');
+            $table->date('payment_date');
             $table->timestamps();
         });
     }

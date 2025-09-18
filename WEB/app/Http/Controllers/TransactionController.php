@@ -120,17 +120,27 @@ class TransactionController extends Controller
         $transaction_id = $newTransaction->transaction_id;
 
         if ($request->payment === 'kredit') {
-            Customer::create([
-                'customer_name' => $request->customer_name,
-            ]);
+            $customer = Customer::where('customer_name', $request->customer_name)->first();
 
-            $customer = Customer::latest()->first();
+            if ($customer && $customer !== null) {
+                Customer::where('customer_id', $customer->customer_id)->update([
+                    'amount_of_debt' => $customer->amount_of_debt + $request->total,
+                    'status' => 'belum lunas',
+                ]);
+            } else {
+                Customer::create([
+                    'customer_name' => $request->customer_name,
+                    'amount_of_debt' => $request->total,
+                    'status' => 'belum lunas',
+                ]);
+
+                $customer = Customer::latest()->first();
+            }
 
             Credit::create([
                 'transaction_id' => $transaction_id,
-                'status' => 'belum lunas',
                 'customer_id' => $customer->customer_id,
-                'amount_of_debt' => $request->total,
+                'total' => $request->total,
             ]);
         }
 
@@ -157,26 +167,29 @@ class TransactionController extends Controller
         return redirect('/transaksi')->with('success', 'Terimakasih Telah Berbelanja!');
     }
 
-    public function history(){
-        $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
+    public function history()
+    {
+        $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
 
         return view('transaksi.history', compact('transactions'));
     }
 
-    public function filter(Request $request){
+    public function filter(Request $request)
+    {
         $first = $request->first;
         $second = $request->second;
 
-        if(!$first && !$second){
+        if (!$first && !$second) {
             return redirect('/transaksi/history');
         }
 
-        $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->whereBetween('date', [$first, $second])->get();
+        $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->whereBetween('date', [$first, $second])->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
 
         return view('transaksi.history', compact('transactions', 'first', 'second'));
     }
 
-    public function detail($id){
+    public function detail($id)
+    {
         Carbon::setLocale('id');
         $transaction = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->where('transactions.transaction_id', $id)->first(['transactions.transaction_id', 'transactions.date', 'transactions.payment', 'users.name', 'customers.customer_name', 'transactions.total', 'transactions.pay', 'transactions.change']);
         $transaction_details = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->join('product_details', 'product_details.product_detail_id', '=', 'transaction_details.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('transaction_details.transaction_id', $id)->get(['products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'transaction_details.selling_price', 'transaction_details.quantity', 'transaction_details.subtotal']);
