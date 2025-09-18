@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CreditController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
@@ -93,19 +94,25 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::prefix('/transaksi')->middleware('role:kasir')->group(function () {
-        Route::get('/', [TransactionController::class, 'index']);
-        Route::get('/search', [TransactionController::class, 'search']);
+    Route::middleware('role:kasir')->group(function () {
+        Route::prefix('/transaksi')->group(function () {
+            Route::get('/', [TransactionController::class, 'index']);
+            Route::get('/search', [TransactionController::class, 'search']);
 
-        Route::post('/cart/store', [TransactionController::class, 'cartStore']);
-        Route::delete('/cart/delete/{id}', [TransactionController::class, 'cartDelete']);
+            Route::post('/cart/store', [TransactionController::class, 'cartStore']);
+            Route::delete('/cart/delete/{id}', [TransactionController::class, 'cartDelete']);
 
-        Route::post('/proses', [TransactionController::class, 'transactionStore']);
+            Route::post('/proses', [TransactionController::class, 'transactionStore']);
 
-        Route::get('/history', [TransactionController::class, 'history']);
-        Route::get('/history/filter', [TransactionController::class, 'filter']);
+            Route::get('/history', [TransactionController::class, 'history']);
+            Route::get('/history/filter', [TransactionController::class, 'filter']);
 
-        Route::get('/detail/{id}', [TransactionController::class, 'detail']);
-        Route::get('detail/{id}/print', [TransactionController::class, 'print']);
+            Route::get('/detail/{id}', [TransactionController::class, 'detail']);
+            Route::get('detail/{id}/print', [TransactionController::class, 'print']);
+        });
+
+        Route::prefix('/kredit')->group(function () {
+            Route::get('/', [CreditController::class, 'index']);
+        });
     });
 });
