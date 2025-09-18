@@ -22,8 +22,9 @@ class TransactionController extends Controller
     {
         $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->simplePaginate(4);
         $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get();
+        $customers = Customer::all();
 
-        return view('transaksi.index', compact('products', 'carts'));
+        return view('transaksi.index', compact('products', 'carts', 'customers'));
     }
 
     public function search(Request $request)
@@ -35,8 +36,9 @@ class TransactionController extends Controller
 
         $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->simplePaginate(4);
         $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get();
+        $customers = Customer::all();
 
-        return view('transaksi.index', compact('products', 'keyword', 'carts'));
+        return view('transaksi.index', compact('products', 'keyword', 'carts', 'customers'));
     }
 
     public function cartStore(Request $request)

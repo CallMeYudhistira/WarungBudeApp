@@ -126,7 +126,13 @@
                     </select>
                     <div style="display: none;" id="hutang">
                         <label for="customer_name" class="mb-2">Nama Penghutang</label>
-                        <input type="text" name="customer_name" class="form-control mb-3">
+                        <input type="text" name="customer_name" id="customer_name" list="customer_names" class="form-control mb-3">
+
+                        <datalist id="customer_names">
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->customer_name }}">
+                            @endforeach
+                        </datalist>
                     </div>
                     <label for="pay" class="mb-2">Bayar : (Rp.)</label>
                     <input type="number" min="0" name="pay" value="0" class="form-control mb-3"
