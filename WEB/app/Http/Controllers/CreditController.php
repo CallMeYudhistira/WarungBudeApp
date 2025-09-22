@@ -50,15 +50,19 @@ class CreditController extends Controller
     public function pay(Request $request, $id)
     {
         $request->validate([
-            'amount_of_debt' => 'required',
-            'amount_of_paid' => 'required',
-            'remaining_debt' => 'required',
-            'change' => 'required',
+            'amount_of_debt' => 'required|numeric',
+            'amount_of_paid' => 'required|numeric',
+            'remaining_debt' => 'required|numeric',
+            'change' => 'required|numeric',
         ]);
+
+        if($request->amount_of_paid === 0 || !$request->amount_of_paid){
+            return redirect()->back()->with('error', 'Pembayaran Tidak Boleh 0 atau Kosong');
+        }
 
         CreditDetail::create([
             'customer_id' => $id,
-            'amount_of_paid' => $request->amount_of_paid,
+            'amount_of_paid' => intval($request->amount_of_paid),
             'remaining_debt' => $request->remaining_debt,
             'change' => $request->change,
             'payment_date' => now()->format('Y-m-d'),
