@@ -3,7 +3,7 @@
 @section('content')
     <h1>List Kredit</h1>
     <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/kredit/riwayat" class="btn btn-primary m-2">Riwayat Kredit</a></li>
+        <li><a href="/kredit/history" class="btn btn-primary m-2">Riwayat Kredit</a></li>
         <form class="d-flex m-2 ms-auto" action="/kredit/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword" @isset($keyword) value="{{ $keyword }}" @endisset/>
             <button class="btn btn-outline-primary" type="submit">Search</button>
@@ -24,6 +24,7 @@
             </thead>
             <tbody>
                 @foreach ($customers as $i => $customer)
+                <tr>
                     <th scope="row">{{ $i + 1 }}</th>
                     <td>{{ $customer->customer_name }}</td>
                     <td>{{ $customer->phone_number }}</td>
@@ -36,6 +37,7 @@
                     <td>
                         <a href="/kredit/payment/{{ $customer->customer_id }}" class="btn btn-success">Bayar</a>
                     </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>

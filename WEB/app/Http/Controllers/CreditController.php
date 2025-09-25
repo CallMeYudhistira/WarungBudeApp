@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Credit;
 use App\Models\CreditDetail;
 use App\Models\Customer;
 use Illuminate\Http\Request;
@@ -13,6 +14,18 @@ class CreditController extends Controller
         $customers = Customer::where('status', 'belum lunas')->get();
 
         return view('kredit.index', compact('customers'));
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        if ($keyword === "" || $keyword == null) {
+            return redirect('/kredit');
+        }
+
+        $customers = Customer::where('status', 'belum lunas')->where('customer_name', 'LIKE', '%' . $keyword . '%')->get();
+
+        return view('kredit.index', compact('customers', 'keyword'));
     }
 
     public function edit($id)
@@ -44,7 +57,7 @@ class CreditController extends Controller
     {
         $customer = Customer::where('customer_id', $id)->first();
 
-        return view('kredit.bayar', compact('customer'));
+        return view('kredit.pay', compact('customer'));
     }
 
     public function pay(Request $request, $id)
@@ -79,5 +92,11 @@ class CreditController extends Controller
         }
 
         return redirect('/kredit')->with('success', 'Hutang Berhasil Dibayar!');
+    }
+
+    public function history(){
+        $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'customers.customer_id', '=', 'credit_details.customer_id')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+
+        return view('kredit.history', compact('customers'));
     }
 }

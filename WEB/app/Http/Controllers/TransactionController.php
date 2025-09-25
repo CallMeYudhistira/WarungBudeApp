@@ -20,7 +20,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->simplePaginate(4);
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(4);
         $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get();
         $customers = Customer::all();
 
@@ -34,7 +34,7 @@ class TransactionController extends Controller
             return redirect('/transaksi');
         }
 
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->simplePaginate(4);
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(4);
         $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get();
         $customers = Customer::all();
 
@@ -121,16 +121,19 @@ class TransactionController extends Controller
 
         if ($request->payment === 'kredit') {
             $customer = Customer::where('customer_name', $request->customer_name)->first();
+            $total_of_debt = $request->total;
 
             if ($customer && $customer !== null) {
+                $total_of_debt = $customer->amount_of_debt + $request->total;
+
                 Customer::where('customer_id', $customer->customer_id)->update([
-                    'amount_of_debt' => $customer->amount_of_debt + $request->total,
+                    'amount_of_debt' => $total_of_debt,
                     'status' => 'belum lunas',
                 ]);
             } else {
                 Customer::create([
                     'customer_name' => $request->customer_name,
-                    'amount_of_debt' => $request->total,
+                    'amount_of_debt' => $total_of_debt,
                     'status' => 'belum lunas',
                 ]);
 
@@ -140,7 +143,7 @@ class TransactionController extends Controller
             Credit::create([
                 'transaction_id' => $transaction_id,
                 'customer_id' => $customer->customer_id,
-                'total' => $request->total,
+                'total' => $total_of_debt,
             ]);
         }
 
