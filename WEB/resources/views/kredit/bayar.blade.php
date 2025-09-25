@@ -12,7 +12,7 @@
         </div>
     @endif
     <div class="mt-3 p-4" style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
-        <form action="/kredit/bayar/store/{{ $customer->customer_id }}" method="post">
+        <form action="/kredit/pay/store/{{ $customer->customer_id }}" method="post">
             @csrf
             <div class="mb-3">
                 <label class="form-label">Nama Pelanggan</label>

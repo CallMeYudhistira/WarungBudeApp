@@ -10,7 +10,7 @@ class CreditController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::where('status', 'belum lunas')->get();
 
         return view('kredit.index', compact('customers'));
     }
@@ -72,7 +72,7 @@ class CreditController extends Controller
             'amount_of_debt' => $request->remaining_debt,
         ]);
 
-        if ($request->remaining_debt === 0) {
+        if ($request->remaining_debt == 0 && $request->change >= 0) {
             Customer::where('customer_id', $id)->update([
                 'status' => 'lunas'
             ]);

@@ -29,12 +29,12 @@
                     <td>{{ $customer->phone_number }}</td>
                     <td>{{ $customer->address }}</td>
                     <td>{{ $customer->amount_of_debt }}</td>
-                    <td>{{ $customer->status }}</td>
+                    <td style="text-transform: capitalize;">{{ $customer->status }}</td>
                     <td>
                         <a href="/kredit/edit/{{ $customer->customer_id }}" class="btn btn-warning">Edit</a>
                     </td>
                     <td>
-                        <a href="/kredit/bayar/{{ $customer->customer_id }}" class="btn btn-success">Bayar</a>
+                        <a href="/kredit/payment/{{ $customer->customer_id }}" class="btn btn-success">Bayar</a>
                     </td>
                 @endforeach
             </tbody>

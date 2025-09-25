@@ -116,8 +116,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit/{id}', [CreditController::class, 'edit']);
             Route::put('/update', [CreditController::class, 'update']);
 
-            Route::get('bayar/{id}', [CreditController::class, 'payment']);
-            Route::post('bayar/store/{id}', [CreditController::class, 'pay']);
+            Route::get('payment/{id}', [CreditController::class, 'payment']);
+            Route::post('pay/store/{id}', [CreditController::class, 'pay']);
         });
     });
 });
