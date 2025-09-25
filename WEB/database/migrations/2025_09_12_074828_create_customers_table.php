@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('amount_of_debt');
             $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

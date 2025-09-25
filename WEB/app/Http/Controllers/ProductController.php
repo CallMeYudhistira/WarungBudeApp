@@ -69,7 +69,15 @@ class ProductController extends Controller
         $product = Product::where('product_id', $id)->first();
         $categories = Category::all();
 
-        return view('barang.update', compact('product', 'categories'));
+        $check = false;
+
+        foreach($categories as $category){
+            if($product->category_id == $category->category_id){
+                $check = true;
+            }
+        }
+
+        return view('barang.update', compact('product', 'categories', 'check'));
     }
 
     public function update(Request $request)
@@ -164,7 +172,15 @@ class ProductController extends Controller
         $units = Unit::all();
         $product = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->where('product_detail_id', $id)->first();
 
-        return view('barang.detail.update', compact('units', 'product'));
+        $check = false;
+
+        foreach($units as $unit){
+            if($product->unit_id == $unit->unit_id){
+                $check = true;
+            }
+        }
+
+        return view('barang.detail.update', compact('units', 'product', 'check'));
     }
 
     public function update_detail(Request $request)

@@ -11,6 +11,13 @@
             </ul>
         </div>
     @endif
+    @if ($check == false)
+        <div class="alert alert-danger m-4" role="alert">
+            <ul>
+                <li>Satuan Sudah Dihapus!</li>
+            </ul>
+        </div>
+    @endif
     <div class="mt-3 p-4" style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
         <form action="/barang/detail/update" method="post" enctype="multipart/form-data">
             @csrf
@@ -36,8 +43,9 @@
             <div class="mb-3">
                 <label for="unit_id" class="form-label">Satuan</label>
                 <select class="form-select" name="unit_id">
+                    <option selected disabled>Satuan...</option>
                     @foreach ($units as $unit)
-                        <option value="{{ $unit->unit_id }}" {{ $unit->unit_id == $product->unit_id ? 'selected' : '' }}>{{ $unit->unit_name }}</option>
+                        <option value="{{ $unit->unit_id }}" {{ $unit->unit_id == $product->unit_id && $check == true ? 'selected' : '' }}>{{ $unit->unit_name }}</option>
                     @endforeach
                 </select>
             </div>

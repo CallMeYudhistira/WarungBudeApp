@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('unit_id');
             $table->string('unit_name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

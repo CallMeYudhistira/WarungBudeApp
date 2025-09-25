@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('selling_price');
             $table->integer('stock');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

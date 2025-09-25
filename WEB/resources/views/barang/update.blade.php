@@ -11,6 +11,13 @@
             </ul>
         </div>
     @endif
+    @if ($check == false)
+        <div class="alert alert-danger m-4" role="alert">
+            <ul>
+                <li>Kategori Sudah Dihapus!</li>
+            </ul>
+        </div>
+    @endif
     <div class="mt-3 p-4" style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
         <form action="/barang/update" method="post" enctype="multipart/form-data">
             @csrf
@@ -34,7 +41,7 @@
                     <option selected disabled>Kategori...</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->category_id }}"
-                            {{ $product->category_id == $category->category_id ? 'selected' : '' }}>
+                            {{ $product->category_id == $category->category_id && $check == true ? 'selected' : '' }}>
                             {{ $category->category_name }}</option>
                     @endforeach
                 </select>
