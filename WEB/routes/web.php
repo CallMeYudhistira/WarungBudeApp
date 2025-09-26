@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function () {
             Route::post('pay/store/{id}', [CreditController::class, 'pay']);
 
             Route::get('/history', [CreditController::class, 'history']);
+            Route::get('/history/filter', [CreditController::class, 'filter']);
         });
     });
 });

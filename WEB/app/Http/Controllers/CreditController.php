@@ -97,8 +97,22 @@ class CreditController extends Controller
     }
 
     public function history(){
-        $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+        $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->orderBy('credit_details.created_at', 'desc')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
 
         return view('kredit.history', compact('customers'));
+    }
+
+    public function filter(Request $request)
+    {
+        $first = $request->first;
+        $second = $request->second;
+
+        if (!$first && !$second) {
+            return redirect('/kredit/history');
+        }
+
+        $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->whereBetween('credit_details.payment_date', [$first, $second])->orderBy('credit_details.created_at', 'desc')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+
+        return view('kredit.history', compact('customers', 'first', 'second'));
     }
 }
