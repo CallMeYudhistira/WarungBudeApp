@@ -73,8 +73,10 @@ class CreditController extends Controller
             return redirect()->back()->with('error', 'Pembayaran Tidak Boleh 0 atau Kosong');
         }
 
+        $credit = Credit::where('customer_id', $id)->latest()->first();
+
         CreditDetail::create([
-            'customer_id' => $id,
+            'credit_id' => $credit->credit_id,
             'amount_of_paid' => intval($request->amount_of_paid),
             'remaining_debt' => $request->remaining_debt,
             'change' => $request->change,
@@ -95,7 +97,7 @@ class CreditController extends Controller
     }
 
     public function history(){
-        $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'customers.customer_id', '=', 'credit_details.customer_id')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+        $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
 
         return view('kredit.history', compact('customers'));
     }
