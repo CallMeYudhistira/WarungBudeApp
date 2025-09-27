@@ -1,55 +1,96 @@
-<nav class="navbar navbar-expand-lg bg-light p-3" style="border-radius: 0 0 4px 4px; border-bottom: 1px solid #ccc;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="" style="font-size: 2rem;">🏪</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item m-2">
-                    <a class="nav-link {{ request()->is('home') ? 'active bold' : '' }}" href="/home">Beranda 🏠</a>
-                </li>
+<nav class="sidebar">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="{{ asset('images/logo/bude.png') }}" alt="Logo Warung Bude">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">Warung Bude</span>
+                <span class="address">KP. Gunung Leutik</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
                 @if (Auth::user()->role == 'kasir' || Auth::user()->role == 'admin')
-                    <li class="nav-item m-2">
-                        <a class="nav-link {{ request()->is('transaksi') ? 'active bold' : '' }}"
-                            href="/transaksi">Transaksi 🛒</a>
-                    </li>
-                    <li class="nav-item m-2">
-                        <a class="nav-link {{ request()->is('kredit') ? 'active bold' : '' }}" href="/kredit">Kredit
-                            📒</a>
-                    </li>
-                @endif
-                @if (Auth::user()->role == 'admin')
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle mt-2 {{ request()->is('users') ? 'active bold' : '' }} 
-                        {{ request()->is('barang') ? 'active bold' : '' }} 
-                        {{ request()->is('satuan') ? 'active bold' : '' }}
-                        {{ request()->is('kategori') ? 'active bold' : '' }}"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Kelola Data 📁
+                    <hr class="divider" style="margin-bottom: 30px;">
+                    <li class="nav-link {{ request()->is('home') ? 'active' : '' }}">
+                        <a href="/home">
+                            <i class='bx bx-home icon'></i>
+                            <span class="text nav-text">Beranda</span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/users">Users 👤</a></li>
-                            <li><a class="dropdown-item" href="/barang">Barang 📦</a></li>
-                            <li><a class="dropdown-item" href="/kategori">Kategori 🗂️</a></li>
-                            <li><a class="dropdown-item" href="/satuan">Satuan 📓</a></li>
-                        </ul>
+                    </li>
+                    <li class="nav-link {{ request()->is('transaksi') ? 'active' : '' }}">
+                        <a href="/transaksi">
+                            <i class='bx bx-cart icon'></i>
+                            <span class="text nav-text">Transaksi</span>
+                        </a>
+                    </li>
+                    <li class="nav-link {{ request()->is('kredit') ? 'active' : '' }}">
+                        <a href="/kredit">
+                            <i class='bx bx-notepad icon'></i>
+                            <span class="text nav-text">Kredit</span>
+                        </a>
                     </li>
                 @endif
-                @if (Auth::user()->role == 'gudang')
-                    <li class="nav-item m-2">
-                        <a class="nav-link {{ request()->is('barang') ? 'active bold' : '' }}" href="/barang">Barang
-                            📦</a>
+
+                @if (Auth::user()->role == 'admin')
+                    <hr class="divider">
+                    <li class="nav-link {{ request()->is('users') ? 'active' : '' }}">
+                        <a href="/users">
+                            <i class='bx bxs-group icon'></i>
+                            <span class="text nav-text">Users</span>
+                        </a>
                     </li>
-                    <li class="nav-item m-2">
-                        <a class="nav-link {{ request()->is('kategori') ? 'active bold' : '' }}" href="/kategori">Kategori 🗂️</a>
+                @endif
+
+                @if (Auth::user()->role == 'gudang' || Auth::user()->role == 'admin')
+                    <hr class="divider" style="margin-bottom: 30px;">
+                    <li class="nav-link {{ request()->is('satuan') ? 'active' : '' }}">
+                        <a href="/satuan">
+                            <i class='bx bx-bookmark icon'></i>
+                            <span class="text nav-text">Satuan</span>
+                        </a>
                     </li>
-                    <li class="nav-item m-2">
-                        <a class="nav-link {{ request()->is('satuan') ? 'active bold' : '' }}" href="/satuan">Satuan 📓</a>
+                    <li class="nav-link {{ request()->is('kategori') ? 'active' : '' }}">
+                        <a href="/kategori">
+                            <i class='bx bx-category icon'></i>
+                            <span class="text nav-text">Kategori</span>
+                        </a>
+                    </li>
+                    <li class="nav-link {{ request()->is('barang') ? 'active' : '' }}">
+                        <a href="/barang">
+                            <i class='bx bx-package icon'></i>
+                            <span class="text nav-text">Barang</span>
+                        </a>
                     </li>
                 @endif
             </ul>
-            <form class="d-flex" action="/logout" method="post">
-                @csrf <button class="nav-link" type="submit"
-                    onclick="return confirm('Yakin Ingin Logout?');">Logout</button>
-            </form>
         </div>
     </div>
+
+    <hr class="divider">
+
+    <div class="bottom-content">
+        <li class="nav-link">
+            <a id="logoutbtn">
+                <i class='bx bx-log-out icon'></i>
+                <span class="text nav-text">Logout</span>
+            </a>
+        </li>
+    </div>
 </nav>
+
+@include('layouts.logout')
+
+<script>
+    const logout = document.getElementById('logoutbtn');
+
+    logout.addEventListener("click", function() {
+        var myModal = new bootstrap.Modal(document.getElementById('logout'));
+        myModal.show();
+    });
+</script>

@@ -120,9 +120,9 @@ class ProductController extends Controller
             unlink(public_path('images/' . $data->pict));
         }
 
-        Product::where('product_id', $id)->delete();
-        ProductDetail::where('product_id', $id)->delete();
         RefillStock::where('product_id', $id)->delete();
+        ProductDetail::where('product_id', $id)->delete();
+        Product::where('product_id', $id)->delete();
 
         return redirect('/barang')->with('success', 'Barang Berhasil Dihapus!');
     }
