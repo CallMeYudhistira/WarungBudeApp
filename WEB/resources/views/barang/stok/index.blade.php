@@ -34,9 +34,9 @@
                 @foreach ($refillStocks as $refillStock)
                     <tr>
                         <th scope="row">{{ $no++ }}</th>
-                        <td scope="row">{{ $refillStock->price }}</td>
+                        <td scope="row">{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }}</td>
                         <td scope="row">{{ $refillStock->quantity }}</td>
-                        <td scope="row">{{ $refillStock->total }}</td>
+                        <td scope="row">{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
                         <td scope="row">{{ $refillStock->entry_date }}</td>
                         <td scope="row">{{ $refillStock->expired_date ? $refillStock->expired_date : '-' }}</td>
                     </tr>

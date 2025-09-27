@@ -30,7 +30,7 @@
                                 <tr>
                                     <th>Harga (Rp.)</th>
                                     <td>:</td>
-                                    <td>{{ $product->selling_price }}/{{ $product->unit_name }}</td>
+                                    <td>{{ 'Rp ' . number_format($product->selling_price, 0, ',', '.') }}/{{ $product->unit_name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Kuantitas</th>
@@ -87,9 +87,9 @@
                                         style="width: 90px; border-radius: 8px;"></td>
                                 <td>{{ $cart->product_name }}</td>
                                 <td>{{ $cart->category_name }}</td>
-                                <td>{{ $cart->selling_price }}</td>
+                                <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}</td>
                                 <td>{{ $cart->quantity }}</td>
-                                <td>{{ $cart->subtotal }}</td>
+                                <td>{{ 'Rp ' . number_format($cart->subtotal, 0, ',', '.') }}</td>
                                 <td>{{ $cart->name }}</td>
                                 <td class="text-center">
                                     <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf

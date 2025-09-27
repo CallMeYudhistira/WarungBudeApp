@@ -74,9 +74,9 @@
                         <td><img src="{{ asset('images/' . $transaction_detail->pict) }}" alt="foto barang"
                                 style="width: 90px; border-radius: 8px;"></td>
                         <td>{{ $transaction_detail->category_name }}</td>
-                        <td>{{ $transaction_detail->selling_price }}/{{ $transaction_detail->unit_name }}</td>
+                        <td>{{ 'Rp ' . number_format($transaction_detail->selling_price, 0, ',', '.') }}/{{ $transaction_detail->unit_name }}</td>
                         <td>{{ $transaction_detail->quantity }} {{ $transaction_detail->unit_name }}</td>
-                        <td>{{ $transaction_detail->subtotal }}</td>
+                        <td>{{ 'Rp ' . number_format($transaction_detail->subtotal, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -89,7 +89,7 @@
                     Total Belanja
                 </div>
                 <div class="col-2">
-                    : {{ $transaction->total }}
+                    : {{ 'Rp ' . number_format($transaction->total, 0, ',', '.') }}
                 </div>
             </div>
             <div class="row align-items-center m-2">
@@ -98,7 +98,7 @@
                     Bayar
                 </div>
                 <div class="col-2">
-                    : {{ $transaction->pay }}
+                    : {{ 'Rp ' . number_format($transaction->pay, 0, ',', '.') }}
                 </div>
             </div>
             <div class="row align-items-center m-2">
@@ -107,7 +107,7 @@
                     Kembalian
                 </div>
                 <div class="col-2">
-                    : {{ $transaction->change }}
+                    : {{ 'Rp ' . number_format($transaction->change, 0, ',', '.') }}
                 </div>
             </div>
         </div>

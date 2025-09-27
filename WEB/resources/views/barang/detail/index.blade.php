@@ -24,12 +24,12 @@
                             <tr>
                                 <th>Harga Awal</th>
                                 <td>:</td>
-                                <td>{{ $product_detail->purchase_price }}/{{ $product_detail->unit_name }}</td>
+                                <td>{{ 'Rp ' . number_format($product_detail->purchase_price, 0, ',', '.') }}/{{ $product_detail->unit_name }}</td>
                             </tr>
                             <tr>
                                 <th>Harga Jual</th>
                                 <td>:</td>
-                                <td>{{ $product_detail->selling_price }}/{{ $product_detail->unit_name }}</td>
+                                <td>{{ 'Rp ' . number_format($product_detail->selling_price, 0, ',', '.') }}/{{ $product_detail->unit_name }}</td>
                             </tr>
                             <tr>
                                 <th>Stok</th>
