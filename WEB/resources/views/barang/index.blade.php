@@ -3,7 +3,9 @@
 @section('content')
     <h1>List Barang</h1>
     <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/barang/create" class="btn btn-primary m-2">Tambah</a></li>
+        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#tambahBarang">Tambah</button>
+        @include('barang.modal.create')
+
         <form class="d-flex m-2 ms-auto" action="/barang/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
                 @isset($keyword) value="{{ $keyword }}" @endisset />
@@ -27,17 +29,19 @@
                             </tr>
                         </table>
                         <div class="card-body">
-                            <div class="d-flex pb-2 mb-2" style="justify-content: space-between;">
-                            <a href="/barang/edit/{{ $product->product_id }}" class="btn btn-warning" style="width: 120px;">Edit</a>
-                            <form action="/barang/delete/{{ $product->product_id }}" method="post">@csrf
-                                @method('delete')<button type="submit" class="btn btn-danger" style="width: 120px;"
-                                    onclick="return confirm('Apakah anda ingin menghapus {{ $product->product_name }}?');">Hapus</button>
-                            </form>
+                            <div class="d-flex pb-2 mb-1" style="justify-content: space-between;">
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editBarang{{ $product->product_id }}" style="width: 100%; margin-right: 0.5rem;">Edit</button>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#hapusBarang{{ $product->product_id }}" style="width: 100%; margin-left: 0.5rem;">Hapus</button>
                             </div>
-                            <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-success w-100">Detail Barang</a>
+                            <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-success w-100">Detail
+                                Barang</a>
                         </div>
                     </div>
                 </div>
+                @include('barang.modal.update')
+                @include('barang.modal.delete')
             @endforeach
         </div>
     </div>

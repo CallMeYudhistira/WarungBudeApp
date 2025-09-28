@@ -14,9 +14,10 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $categories = Category::all();
         $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->get();
 
-        return view('barang.index', compact('products'));
+        return view('barang.index', compact('products', 'categories'));
     }
 
     public function search(Request $request)
@@ -26,16 +27,10 @@ class ProductController extends Controller
             return redirect('/barang');
         }
 
+        $categories = Category::all();
         $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->where('product_name', 'like', '%' . $keyword . '%')->get();
 
-        return view('barang.index', compact('products', 'keyword'));
-    }
-
-    public function create()
-    {
-        $categories = Category::all();
-
-        return view('barang.create', compact('categories'));
+        return view('barang.index', compact('products', 'keyword', 'categories'));
     }
 
     public function store(Request $request)
@@ -62,22 +57,6 @@ class ProductController extends Controller
         ]);
 
         return redirect('/barang')->with('success', 'Barang Berhasil Ditambahkan!');
-    }
-
-    public function edit(string $id)
-    {
-        $product = Product::where('product_id', $id)->first();
-        $categories = Category::all();
-
-        $check = false;
-
-        foreach($categories as $category){
-            if($product->category_id == $category->category_id){
-                $check = true;
-            }
-        }
-
-        return view('barang.update', compact('product', 'categories', 'check'));
     }
 
     public function update(Request $request)
@@ -120,9 +99,9 @@ class ProductController extends Controller
             unlink(public_path('images/' . $data->pict));
         }
 
-        RefillStock::where('product_id', $id)->delete();
-        ProductDetail::where('product_id', $id)->delete();
         Product::where('product_id', $id)->delete();
+        ProductDetail::where('product_id', $id)->delete();
+        RefillStock::join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->where('product_details.product_id', $id)->delete();
 
         return redirect('/barang')->with('success', 'Barang Berhasil Dihapus!');
     }
