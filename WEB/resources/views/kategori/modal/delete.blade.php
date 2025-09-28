@@ -10,7 +10,7 @@
                     @csrf
                     @method('delete')
                     <div class="mb-3">
-                        <label for="category_name" class="form-label">Nama Kategori</label>
+                        <label for="category_name" class="form-label">Apakah Anda Yakin Ingin Menghapus Kategori Ini?</label>
                         <input type="text" class="form-control" name="category_name" value="{{ $category->category_name }}" disabled
                             autocomplete="off">
                     </div>

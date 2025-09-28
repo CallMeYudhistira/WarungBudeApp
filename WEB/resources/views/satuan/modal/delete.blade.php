@@ -3,14 +3,14 @@
         <div class="modal-content">
             <form action="/satuan/delete/{{ $unit->unit_id }}" method="post">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Edit Satuan</h1>
+                    <h1 class="modal-title fs-5">Hapus Satuan</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     @csrf
                     @method('delete')
                     <div class="mb-3">
-                        <label for="unit_name" class="form-label">Nama Kategori</label>
+                        <label for="unit_name" class="form-label">Apakah Anda Yakin Ingin Menghapus Satuan Ini?</label>
                         <input type="text" class="form-control" name="unit_name" disabled
                             autocomplete="off" value="{{ $unit->unit_name }}">
                     </div>
