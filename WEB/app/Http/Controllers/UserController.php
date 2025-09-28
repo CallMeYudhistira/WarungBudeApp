@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::where('name', '!=', 'guest')->get();
 
         return view('users.index', compact('users'));
     }
@@ -21,14 +21,9 @@ class UserController extends Controller
             return redirect('/users');
         }
 
-        $users = User::where('name', 'like', '%' . $keyword . '%')->get();
+        $users = User::where('name', 'like', '%' . $keyword . '%')->where('name', '!=', 'guest')->get();
 
         return view('users.index', compact('users', 'keyword'));
-    }
-
-    public function create()
-    {
-        return view('users.create');
     }
 
     public function store(Request $request)
@@ -50,13 +45,6 @@ class UserController extends Controller
         ]);
 
         return redirect('/users')->with('success', 'User Berhasil Ditambahkan!');
-    }
-
-    public function edit(string $id)
-    {
-        $user = User::where('user_id', $id)->first();
-
-        return view('users.update', compact('user'));
     }
 
     public function update(Request $request)

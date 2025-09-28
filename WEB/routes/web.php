@@ -34,13 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/users')->middleware('role:admin')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/search', [UserController::class, 'search']);
-
-        Route::get('/create', [UserController::class, 'create']);
         Route::post('/store', [UserController::class, 'store']);
-
-        Route::get('/edit/{id}', [UserController::class, 'edit']);
         Route::put('/update', [UserController::class, 'update']);
-
         Route::delete('/delete/{id}', [UserController::class, 'destroy']);
     });
 
