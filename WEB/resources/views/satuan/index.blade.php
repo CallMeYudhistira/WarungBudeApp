@@ -3,7 +3,10 @@
 @section('content')
     <h1>List Satuan</h1>
     <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/satuan/create" class="btn btn-primary m-2">Tambah</a></li>
+        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+            data-bs-target="#tambahSatuan">Tambah</button>
+        @include('satuan.modal.create')
+
         <form class="d-flex m-2 ms-auto" action="/satuan/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword" @isset($keyword) value="{{ $keyword }}" @endisset/>
             <button class="btn btn-outline-primary" type="submit">Search</button>
@@ -27,24 +30,61 @@
                         <th scope="row">{{ $no++ }}</th>
                         <td>{{ $unit->unit_name }}</td>
                         <td>
-                            <a href="/satuan/edit/{{ $unit->unit_id }}" class="btn btn-warning">Edit</a>
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                data-bs-target="#editSatuan{{ $unit->unit_id }}">Edit</button>
                         </td>
                         <td>
-                            <form action="/satuan/delete/{{ $unit->unit_id }}" method="post">@csrf
-                                @method('delete')<button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Apakah anda ingin menghapus {{ $unit->unit_name }}?');">Hapus</button>
-                            </form>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#hapusSatuan{{ $unit->unit_id }}">Hapus</button>
                         </td>
+                    </tr>
+                    @include('satuan.modal.update')
+                    @include('satuan.modal.delete')
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
     @if ($pesan = Session::get('success'))
         <script>
             Swal.fire({
                 title: "{{ $pesan }}",
                 icon: "success",
+            });
+        </script>
+    @endif
+
+    @if ($errors->any())
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Error Validation ⚠️</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div role="alert">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var myModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                myModal.show();
             });
         </script>
     @endif

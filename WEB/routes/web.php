@@ -78,13 +78,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('/satuan')->group(callback: function () {
             Route::get('/', [UnitController::class, 'index']);
             Route::get('/search', [UnitController::class, 'search']);
-
-            Route::get('/create', [UnitController::class, 'create']);
             Route::post('/store', [UnitController::class, 'store']);
-
-            Route::get('/edit/{id}', [UnitController::class, 'edit']);
             Route::put('/update', [UnitController::class, 'update']);
-
             Route::delete('/delete/{id}', [UnitController::class, 'destroy']);
         });
     });

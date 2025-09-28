@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'guest',
             'phone_number' => '00000000',
-            'remember_token' => Str::random(10),
             'role' => 'kasir',
             'username' => 'guest',
             'password' => 'guest',
@@ -26,7 +25,6 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'admin',
             'phone_number' => '11111111',
-            'remember_token' => Str::random(10),
             'role' => 'admin',
             'username' => 'admin',
             'password' => 'admin',
@@ -35,7 +33,6 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'gudang',
             'phone_number' => '22222222',
-            'remember_token' => Str::random(10),
             'role' => 'gudang',
             'username' => 'gudang',
             'password' => 'gudang',

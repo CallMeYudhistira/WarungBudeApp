@@ -26,11 +26,6 @@ class UnitController extends Controller
         return view('satuan.index', compact('units', 'keyword'));
     }
 
-    public function create()
-    {
-        return view('satuan.create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -42,13 +37,6 @@ class UnitController extends Controller
         ]);
 
         return redirect('/satuan')->with('success', 'Satuan Berhasil Ditambahkan!');
-    }
-
-    public function edit(string $id)
-    {
-        $unit = Unit::where('unit_id', $id)->first();
-
-        return view('satuan.update', compact('unit'));
     }
 
     public function update(Request $request)
