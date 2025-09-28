@@ -43,13 +43,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('/kategori')->group(function () {
             Route::get('/', [CategoryController::class, 'index']);
             Route::get('/search', [CategoryController::class, 'search']);
-
-            Route::get('/create', [CategoryController::class, 'create']);
             Route::post('/store', [CategoryController::class, 'store']);
-
-            Route::get('/edit/{id}', [CategoryController::class, 'edit']);
             Route::put('/update', [CategoryController::class, 'update']);
-
             Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
         });
 

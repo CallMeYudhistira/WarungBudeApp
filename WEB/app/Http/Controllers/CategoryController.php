@@ -27,11 +27,6 @@ class CategoryController extends Controller
         return view('kategori.index', compact('categories', 'keyword'));
     }
 
-    public function create()
-    {
-        return view('kategori.create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -43,13 +38,6 @@ class CategoryController extends Controller
         ]);
 
         return redirect('/kategori')->with('success', 'Kategori Berhasil Ditambahkan!');
-    }
-
-    public function edit(string $id)
-    {
-        $category = Category::where('category_id', $id)->first();
-
-        return view('kategori.update', compact('category'));
     }
 
     public function update(Request $request)
