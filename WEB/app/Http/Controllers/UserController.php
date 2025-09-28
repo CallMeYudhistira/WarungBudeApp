@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -28,13 +30,23 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'phone_number' => 'required|numeric',
-            'username' => 'required|unique:users',
+            'username' => 'required',
             'password' => 'required',
             'role' => 'required',
         ]);
+
+        $user = User::where('username', $request->username)->first();
+        if($user || $user != null){
+            $validator->errors()->add('username', 'username has been already taken!.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         User::create([
             'name' => $request->name,
