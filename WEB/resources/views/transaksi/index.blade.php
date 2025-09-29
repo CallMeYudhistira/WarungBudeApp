@@ -2,14 +2,14 @@
 @section('title', 'Transaksi')
 @section('content')
     <h1>List Barang</h1>
-    <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/transaksi/history" class="btn btn-primary m-2">Riwayat Transaksi</a></li>
+    <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
+        <a href="/transaksi/history" class="btn btn-primary m-2">Riwayat Transaksi</a>
         <form class="d-flex m-2 ms-auto" action="/transaksi/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
                 @isset($keyword) value="{{ $keyword }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
-    </ul>
+    </div>
     <div class="container">
         <div class="row row-cols-1 row-cols-md-4 g-4">
             @foreach ($products as $product)
@@ -76,13 +76,10 @@
                             <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
-                    @php
-                        $i = 1;
-                    @endphp
                     <tbody>
-                        @foreach ($carts as $cart)
+                        @foreach ($carts as $i => $cart)
                             <tr>
-                                <td>{{ $i++ }}</td>
+                                <td>{{ $i + 1 }}</td>
                                 <td><img src="{{ asset('images/' . $cart->pict) }}" alt="foto barang"
                                         style="width: 90px; border-radius: 8px;"></td>
                                 <td>{{ $cart->product_name }}</td>

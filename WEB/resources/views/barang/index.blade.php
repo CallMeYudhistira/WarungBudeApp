@@ -2,7 +2,7 @@
 @section('title', 'Barang || List')
 @section('content')
     <h1>List Barang</h1>
-    <ul class="m-4 d-flex" style="list-style-type: none;">
+    <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#tambahBarang">Tambah</button>
         @include('barang.modal.create')
 
@@ -11,7 +11,7 @@
                 @isset($keyword) value="{{ $keyword }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
-    </ul>
+    </div>
     <div class="container">
         <div class="row row-cols-1 row-cols-md-4 g-4">
             @foreach ($products as $product)

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Transaksi || Riwayat')
 @section('content')
-    <h1 style="padding: 12px;">Riwayat Transaksi</h1>
-    <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/transaksi" class="btn btn-dark m-2">Kembali</a></li>
+    <h1>Riwayat Transaksi</h1>
+    <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
+        <a href="/transaksi" class="btn btn-dark m-2">Kembali</a>
         <form class="d-flex m-2 ms-auto" action="/transaksi/history/filter" method="get">
             <input class="form-control me-2" type="date" name="first"
                 @isset($first) value="{{ $first }}" @endisset />
@@ -12,7 +12,7 @@
                 @isset($second) value="{{ $second }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Filter</button>
         </form>
-    </ul>
+    </div>
     <div class="mt-3" style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
         <table class="table">
             <thead>

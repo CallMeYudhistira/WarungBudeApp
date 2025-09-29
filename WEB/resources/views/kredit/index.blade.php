@@ -2,13 +2,13 @@
 @section('title', 'Kredit || List')
 @section('content')
     <h1>List Kredit</h1>
-    <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/kredit/history" class="btn btn-primary m-2">Riwayat Kredit</a></li>
+    <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
+        <a href="/kredit/history" class="btn btn-primary m-2">Riwayat Kredit</a>
         <form class="d-flex m-2 ms-auto" action="/kredit/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword" @isset($keyword) value="{{ $keyword }}" @endisset/>
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
-    </ul>
+    </div>
     <div class="mt-3" style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
         <table class="table">
             <thead>

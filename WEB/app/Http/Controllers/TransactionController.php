@@ -107,14 +107,20 @@ class TransactionController extends Controller
             }
         }
 
-        Transaction::create([
-            'date' => now(),
-            'total' => $request->total,
-            'pay' => $request->pay,
-            'change' => $request->change,
-            'payment' => $request->payment,
-            'user_id' => Auth::user()->user_id,
-        ]);
+        if ($request->payment !== 'tunai' && $request->payment !== 'kredit') {
+            $validator->errors()->add('payment', 'Metode pembayaran tidak valid!');
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            Transaction::create([
+                'date' => now(),
+                'total' => $request->total,
+                'pay' => $request->pay,
+                'change' => $request->change,
+                'payment' => $request->payment,
+                'user_id' => Auth::user()->user_id,
+            ]);
+        }
 
         $newTransaction = Transaction::latest()->first();
         $transaction_id = $newTransaction->transaction_id;

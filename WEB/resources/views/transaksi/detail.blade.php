@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('title', 'Transaksi || Riwayat')
 @section('content')
-    <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/transaksi/history" class="btn btn-dark m-2">Kembali</a></li>
-        <li><a class="btn btn-success m-2" href="/transaksi/detail/{{ $transaction->transaction_id }}/print">Cetak</a></li>
-    </ul>
+    <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
+        <a href="/transaksi/history" class="btn btn-dark m-2">Kembali</a>
+        <a class="btn btn-success m-2" href="/transaksi/detail/{{ $transaction->transaction_id }}/print">Cetak</a>
+    </div>
     <div class="mt-3" style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
         <h1 style="padding: 12px; text-align: center; margin: 0.5rem;">Detail Transaksi</h1>
         <div style="margin: auto; margin-top: 3vh; margin-bottom: 6vh;">

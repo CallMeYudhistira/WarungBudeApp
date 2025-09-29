@@ -2,11 +2,12 @@
 @section('title', 'Barang || Detail')
 @section('content')
     <h1>Detail Barang : {{ $product->product_name }}</h1>
-    <ul class="m-4 d-flex" style="list-style-type: none;">
+    <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#tambahDetailBarang">Tambah</button>
         @include('barang.detail.modal.create')
-        <li><a href="/barang/" class="btn btn-dark m-2">Kembali</a></li>
-    </ul>
+
+        <a href="/barang/" class="btn btn-dark m-2">Kembali</a>
+    </div>
     <div class="container">
         <div class="row row-cols-1 row-cols-md-4 g-4">
             @foreach ($product_details as $product_detail)
