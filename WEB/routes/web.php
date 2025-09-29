@@ -6,6 +6,7 @@ use App\Http\Controllers\CreditController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDetailController;
+use App\Http\Controllers\RefillStockController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -61,10 +62,9 @@ Route::middleware('auth')->group(function () {
             Route::put('detail/update', [ProductDetailController::class, 'update']);
             Route::delete('detail/delete/{id}', [ProductDetailController::class, 'delete']);
 
-            Route::get('/refillStock/{id}', [ProductController::class, 'index_stock']);
-            Route::get('/refillStock/{id}/filter', [ProductController::class, 'filter']);
-            Route::get('/refillStock/create/{id}', [ProductController::class, 'add_stock']);
-            Route::post('/refillStock/store', [ProductController::class, 'store_stock']);
+            Route::get('/refillStock/{id}', [RefillStockController::class, 'index']);
+            Route::get('/refillStock/{id}/filter', [RefillStockController::class, 'filter']);
+            Route::post('/refillStock/store', [RefillStockController::class, 'store']);
         });
 
         Route::prefix('/satuan')->group(callback: function () {

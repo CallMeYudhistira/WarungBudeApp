@@ -10,13 +10,13 @@
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
     </div>
-    <div class="container">
+    <div>
         <div class="row row-cols-1 row-cols-md-4 g-4">
             @foreach ($products as $product)
                 <form action="transaksi/cart/store" method="post">
                     @csrf
                     <div class="col">
-                        <div class="card h-100">
+                        <div class="card h-100" style="width: 280px;">
                             <img src="{{ asset('images/' . $product->pict) }}" class="card-img-top" alt="foto barang">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $product->product_name }}</h5>

@@ -13,8 +13,7 @@
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/barang/detail/delete/{{ $product_detail->product_detail_id }}" method="post"
-                enctype="multipart/form-data">
+            <form action="/barang/detail/delete/{{ $product_detail->product_detail_id }}" method="post">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Hapus Detail Barang</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

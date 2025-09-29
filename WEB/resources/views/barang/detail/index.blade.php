@@ -8,11 +8,11 @@
 
         <a href="/barang/" class="btn btn-dark m-2">Kembali</a>
     </div>
-    <div class="container">
+    <div>
         <div class="row row-cols-1 row-cols-md-4 g-4">
             @foreach ($product_details as $product_detail)
                 <div class="col">
-                    <div class="card h-100">
+                    <div class="card h-100" style="width: 280px;">
                         <img src="{{ asset('images/' . $product_detail->pict) }}" class="card-img-top" alt="foto barang">
                         <div class="card-body">
                             <h5 class="card-title">{{ $product_detail->product_name }}</h5>

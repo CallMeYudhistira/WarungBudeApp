@@ -12,7 +12,7 @@
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/barang/detail/update" method="post" enctype="multipart/form-data">
+            <form action="/barang/detail/update" method="post">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Edit Detail Barang</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
