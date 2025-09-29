@@ -28,13 +28,6 @@ class CreditController extends Controller
         return view('kredit.index', compact('customers', 'keyword'));
     }
 
-    public function edit($id)
-    {
-        $customer = Customer::where('customer_id', $id)->first();
-
-        return view('kredit.update', compact('customer'));
-    }
-
     public function update(Request $request)
     {
         $request->validate([
@@ -51,13 +44,6 @@ class CreditController extends Controller
         ]);
 
         return redirect('/kredit')->with('success', 'Pelanggan Berhasil Diedit!');
-    }
-
-    public function payment($id)
-    {
-        $customer = Customer::where('customer_id', $id)->first();
-
-        return view('kredit.pay', compact('customer'));
     }
 
     public function pay(Request $request, $id)

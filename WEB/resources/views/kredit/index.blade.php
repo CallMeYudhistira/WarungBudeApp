@@ -5,7 +5,8 @@
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <a href="/kredit/history" class="btn btn-primary m-2">Riwayat Kredit</a>
         <form class="d-flex m-2 ms-auto" action="/kredit/search" method="get">
-            <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword" @isset($keyword) value="{{ $keyword }}" @endisset/>
+            <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
+                @isset($keyword) value="{{ $keyword }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
     </div>
@@ -24,29 +25,77 @@
             </thead>
             <tbody>
                 @foreach ($customers as $i => $customer)
-                <tr>
-                    <th scope="row">{{ $i + 1 }}</th>
-                    <td>{{ $customer->customer_name }}</td>
-                    <td>{{ $customer->phone_number }}</td>
-                    <td>{{ $customer->address }}</td>
-                    <td>{{ $customer->amount_of_debt }}</td>
-                    <td style="text-transform: capitalize;">{{ $customer->status }}</td>
-                    <td>
-                        <a href="/kredit/edit/{{ $customer->customer_id }}" class="btn btn-warning">Edit</a>
-                    </td>
-                    <td>
-                        <a href="/kredit/payment/{{ $customer->customer_id }}" class="btn btn-success">Bayar</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <th scope="row">{{ $i + 1 }}</th>
+                        <td>{{ $customer->customer_name }}</td>
+                        <td>{{ $customer->phone_number }}</td>
+                        <td>{{ $customer->address }}</td>
+                        <td>{{ $customer->amount_of_debt }}</td>
+                        <td style="text-transform: capitalize;">{{ $customer->status }}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                data-bs-target="#editPelanggan{{ $customer->customer_id }}">Edit</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#bayarKredit{{ $customer->customer_id }}">Bayar</button>
+                        </td>
+                    </tr>
+                    @include('kredit.modal.update')
+                    @include('kredit.modal.pay')
                 @endforeach
             </tbody>
         </table>
     </div>
+
+    @if ($pesan = Session::get('error'))
+        <script>
+            Swal.fire({
+                title: "{{ $pesan }}",
+                icon: "error",
+            });
+        </script>
+    @endif
+
     @if ($pesan = Session::get('success'))
         <script>
             Swal.fire({
                 title: "{{ $pesan }}",
                 icon: "success",
+            });
+        </script>
+    @endif
+
+    @if ($errors->any())
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Error Validation ⚠️</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div role="alert">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var myModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                myModal.show();
             });
         </script>
     @endif

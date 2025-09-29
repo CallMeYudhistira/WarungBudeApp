@@ -97,10 +97,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [CreditController::class, 'index']);
             Route::get('/search', [CreditController::class, 'search']);
 
-            Route::get('/edit/{id}', [CreditController::class, 'edit']);
             Route::put('/update', [CreditController::class, 'update']);
 
-            Route::get('payment/{id}', [CreditController::class, 'payment']);
             Route::post('pay/store/{id}', [CreditController::class, 'pay']);
 
             Route::get('/history', [CreditController::class, 'history']);
