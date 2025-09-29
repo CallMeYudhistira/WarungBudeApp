@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'username' => fake()->userName(),
             'password' => '123', // password
             'role' => fake()->randomElement(['admin', 'kasir', 'gudang']),
-            'remember_token' => Str::random(10),
+            // 'remember_token' => Str::random(10),
         ];
     }
 

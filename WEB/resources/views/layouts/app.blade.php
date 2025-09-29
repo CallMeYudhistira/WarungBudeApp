@@ -32,7 +32,7 @@
 
 <body>
     @include('layouts.navbar')
-    <div class="container p-4 mt-3" id="content">
+    <div class="container-fluid p-5 mt-3" id="content" style="margin-left: 250px">
         @yield('content')
     </div>
 

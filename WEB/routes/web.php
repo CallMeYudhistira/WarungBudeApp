@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -55,12 +56,10 @@ Route::middleware('auth')->group(function () {
             Route::put('/update', [ProductController::class, 'update']);
             Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
 
-            Route::get('detail/{id}', [ProductController::class, 'index_detail']);
-            Route::get('detail/create/{id}', [ProductController::class, 'create_detail']);
-            Route::post('detail/store', [ProductController::class, 'store_detail']);
-            Route::get('detail/edit/{id}', [ProductController::class, 'edit_detail']);
-            Route::put('detail/update', [ProductController::class, 'update_detail']);
-            Route::delete('detail/delete/{id}', [ProductController::class, 'delete_detail']);
+            Route::get('detail/{id}', [ProductDetailController::class, 'index']);
+            Route::post('detail/store', [ProductDetailController::class, 'store']);
+            Route::put('detail/update', [ProductDetailController::class, 'update']);
+            Route::delete('detail/delete/{id}', [ProductDetailController::class, 'delete']);
 
             Route::get('/refillStock/{id}', [ProductController::class, 'index_stock']);
             Route::get('/refillStock/{id}/filter', [ProductController::class, 'filter']);

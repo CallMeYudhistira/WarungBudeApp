@@ -3,7 +3,8 @@
 @section('content')
     <h1>Detail Barang : {{ $product->product_name }}</h1>
     <ul class="m-4 d-flex" style="list-style-type: none;">
-        <li><a href="/barang/detail/create/{{ $product->product_id }}" class="btn btn-primary m-2">Tambah</a></li>
+        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#tambahDetailBarang">Tambah</button>
+        @include('barang.detail.modal.create')
         <li><a href="/barang/" class="btn btn-dark m-2">Kembali</a></li>
     </ul>
     <div class="container">
@@ -39,16 +40,17 @@
                         </table>
                         <div class="card-body">
                             <div class="d-flex pb-2 mb-2" style="justify-content: space-between;">
-                                <a href="/barang/detail/edit/{{ $product_detail->product_detail_id }}" class="btn btn-warning" style="width: 120px;">Edit</a>
-                                <form action="/barang/detail/delete/{{ $product_detail->product_detail_id }}" method="post">@csrf
-                                    @method('delete') <input type="hidden" name="id" value="{{ $product->product_id }}"> <button type="submit" class="btn btn-danger" style="width: 120px;"
-                                        onclick="return confirm('Apakah anda ingin menghapus {{ $product_detail->product_name }} (satuan = {{ $product_detail->unit_name }}) dengan semua riwayat isi stok nya?');">Hapus</button>
-                                </form>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editDetailBarang{{ $product_detail->product_detail_id }}" style="width: 100%; margin-right: 0.5rem;">Edit</button>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#hapusDetailBarang{{ $product_detail->product_detail_id }}" style="width: 100%; margin-left: 0.5rem;">Hapus</button>
                             </div>
                             <a href="/barang/refillStock/{{ $product_detail->product_detail_id }}" class="btn btn-secondary w-100">isi Stok</a>
                         </div>
                     </div>
                 </div>
+                @include('barang.detail.modal.update')
+                @include('barang.detail.modal.delete')
             @endforeach
         </div>
     </div>
@@ -58,6 +60,40 @@
             Swal.fire({
                 title: "{{ $pesan }}",
                 icon: "success",
+            });
+        </script>
+    @endif
+
+    @if ($errors->any())
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Error Validation ⚠️</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div role="alert">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var myModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                myModal.show();
             });
         </script>
     @endif
