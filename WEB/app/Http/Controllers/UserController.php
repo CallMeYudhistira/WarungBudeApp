@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::where('name', '!=', 'guest')->get();
+        $users = User::where('name', '!=', 'guest')->simplePaginate(15);
 
         return view('users.index', compact('users'));
     }
@@ -23,7 +23,7 @@ class UserController extends Controller
             return redirect('/users');
         }
 
-        $users = User::where('name', 'like', '%' . $keyword . '%')->where('name', '!=', 'guest')->get();
+        $users = User::where('name', 'like', '%' . $keyword . '%')->where('name', '!=', 'guest')->simplePaginate(15);
 
         return view('users.index', compact('users', 'keyword'));
     }

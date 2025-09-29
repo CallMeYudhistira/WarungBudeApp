@@ -38,6 +38,6 @@ class DatabaseSeeder extends Seeder
             'password' => 'gudang',
         ]);
 
-        //User::factory(10)->create();
+        User::factory(100)->create();
     }
 }

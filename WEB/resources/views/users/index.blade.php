@@ -27,7 +27,7 @@
             <tbody>
                 @foreach ($users as $i => $user)
                     <tr>
-                        <th scope="row">{{ $i + 1 }}</th>
+                        <th scope="row">{{ $users->firstItem() + $i }}</th>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->phone_number }}</td>
                         <td>{{ $user->username }}</td>
@@ -48,6 +48,12 @@
         </table>
     </div>
 
+    <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh;">
+        {{ $users->links() }}
+    </div>
+
+    <div style="height: 5vh;"></div>
+
     @if ($pesan = Session::get('success'))
         <script>
             Swal.fire({
@@ -56,7 +62,6 @@
             });
         </script>
     @endif
-
 
     @if ($errors->any())
         <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
@@ -91,6 +96,5 @@
             });
         </script>
     @endif
-
 
 @endsection
