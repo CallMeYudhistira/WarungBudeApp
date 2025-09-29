@@ -1,5 +1,5 @@
-<div class="modal fade modal-lg" id="logout" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="logout" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="/logout" method="post">
                 <div class="modal-header">

@@ -11,7 +11,7 @@
 
 <div class="modal fade modal-lg" id="hapusDetailBarang{{ $product_detail->product_detail_id }}" tabindex="-1"
     aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="/barang/detail/delete/{{ $product_detail->product_detail_id }}" method="post">
                 <div class="modal-header">

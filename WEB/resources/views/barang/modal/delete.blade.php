@@ -1,5 +1,5 @@
 <div class="modal fade modal-lg" id="hapusBarang{{ $product->product_id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="/barang/delete/{{ $product->product_id }}" method="post" enctype="multipart/form-data">
                 <div class="modal-header">

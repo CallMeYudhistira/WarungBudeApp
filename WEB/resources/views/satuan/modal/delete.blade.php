@@ -1,5 +1,5 @@
 <div class="modal fade modal-lg" id="hapusSatuan{{ $unit->unit_id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="/satuan/delete/{{ $unit->unit_id }}" method="post">
                 <div class="modal-header">

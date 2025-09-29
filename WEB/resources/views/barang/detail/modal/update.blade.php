@@ -10,7 +10,7 @@
 
 <div class="modal fade modal-lg" id="editDetailBarang{{ $product_detail->product_detail_id }}" tabindex="-1"
     aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="/barang/detail/update" method="post">
                 <div class="modal-header">

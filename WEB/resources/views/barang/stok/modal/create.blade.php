@@ -1,5 +1,5 @@
 <div class="modal fade modal-lg" id="isiStokBarang" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="/barang/refillStock/store" method="post">
                 <div class="modal-header">

@@ -1,5 +1,5 @@
 <div class="modal fade modal-lg" id="editUser{{ $user->user_id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="/users/update" method="post">
                 <div class="modal-header">

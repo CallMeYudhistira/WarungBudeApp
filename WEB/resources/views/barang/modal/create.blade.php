@@ -1,6 +1,6 @@
 <div class="modal fade modal-lg" id="tambahBarang" tabindex="-1" aria-hidden="true">
     <form action="/barang/store" method="post" enctype="multipart/form-data">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Tambah Barang</h1>
