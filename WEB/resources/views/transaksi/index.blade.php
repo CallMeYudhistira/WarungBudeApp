@@ -1,10 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Transaksi')
 @section('content')
-    <h1>List Barang</h1>
+    <h1 style="margin-left: -5px;">List Barang</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <a href="/transaksi/history" class="btn btn-primary m-1 mt-2 mb-2">Riwayat Transaksi</a>
-        <button type="button" class="btn btn-success m-1 mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#bayarTrans">Checkout</button>
         <form class="d-flex ms-auto mt-2 mb-2" action="/transaksi/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
                 @isset($keyword) value="{{ $keyword }}" @endisset />
@@ -57,8 +56,9 @@
             {{ $products->links() }}
         </div>
 
+        <div class="d-flex">
         @if (isset($carts) || $carts != null)
-            <div style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
+            <div style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 75%; max-height: 500px; float: left; margin-right: 15px; overflow-y: scroll;">
                 <table class="table">
                     <thead>
                         <tr>
@@ -101,56 +101,44 @@
                 </table>
             </div>
         @endif
-    </div>
 
-    <div class="modal fade modal-lg" id="bayarTrans" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <form action="/transaksi/proses" method="post">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Pembayaran</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        @php
-                            $total = 0;
+        @php
+            $total = 0;
 
-                            foreach ($carts as $cart) {
-                                $total += $cart->subtotal;
-                            }
-                        @endphp
-                        @csrf
-                        <label for="total" class="mb-2">Total : (Rp.)</label>
-                        <input type="number" min="0" name="total" value="{{ $total }}"
-                            class="form-control mb-3" readonly id="total">
-                        <label for="payment" class="mb-2">Metode Pembayaran</label>
-                        <select class="form-select mb-3" name="payment" id="payment">
-                            <option selected disabled>Metode pembayaran...</option>
-                            <option value="tunai">Tunai</option>
-                            <option value="kredit">Kredit</option>
-                        </select>
-                        <div style="display: none;" id="hutang">
-                            <label for="customer_name" class="mb-2">Nama Penghutang</label>
-                            <input type="text" name="customer_name" id="customer_name" list="customer_names"
-                                class="form-control mb-3" autocomplete="off">
+            foreach ($carts as $cart) {
+                $total += $cart->subtotal;
+            }
+        @endphp
 
-                            <datalist id="customer_names">
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->customer_name }}">
-                                @endforeach
-                            </datalist>
-                        </div>
-                        <label for="pay" class="mb-2">Bayar : (Rp.)</label>
-                        <input type="number" min="0" name="pay" value="0" class="form-control mb-3"
-                            id="pay" oninput="kembalian(this.value)" readonly>
-                        <label for="change" class="mb-2">Kembalian : (Rp.)</label>
-                        <input type="number" min="0" name="change" value="0" class="form-control mb-3"
-                            readonly id="change">
+            <div style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 25%; float: right; margin-left: 15px; max-height: 500px; min-height: 500px;">
+                <form action="transaksi/proses" method="post">
+                    @csrf
+                    <label for="total" class="mb-2">Total : (Rp.)</label>
+                    <input type="number" min="0" name="total" value="{{ $total }}"
+                        class="form-control mb-3" readonly id="total">
+                    <label for="payment" class="mb-2">Metode Pembayaran</label>
+                    <select class="form-select mb-3" name="payment" id="payment">
+                        <option selected disabled>Metode pembayaran...</option>
+                        <option value="tunai">Tunai</option>
+                        <option value="kredit">Kredit</option>
+                    </select>
+                    <div style="display: none;" id="hutang">
+                        <label for="customer_name" class="mb-2">Nama Penghutang</label>
+                        <input type="text" name="customer_name" id="customer_name" list="customer_names" class="form-control mb-3" autocomplete="off">
+
+                        <datalist id="customer_names">
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->customer_name }}">
+                            @endforeach
+                        </datalist>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Bayar</button>
-                    </div>
+                    <label for="pay" class="mb-2">Bayar : (Rp.)</label>
+                    <input type="number" min="0" name="pay" value="0" class="form-control mb-3"
+                        id="pay" oninput="kembalian(this.value)" readonly>
+                    <label for="change" class="mb-2">Kembalian : (Rp.)</label>
+                    <input type="number" min="0" name="change" value="0" class="form-control mb-3"
+                        readonly id="change">
+                    <button type="submit" class="btn btn-primary w-100">Bayar</button>
                 </form>
             </div>
         </div>

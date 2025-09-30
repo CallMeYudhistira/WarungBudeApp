@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Barang || List')
 @section('content')
-    <h1>List Barang</h1>
+    <h1 style="margin-left: -5px;">List Barang</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <button type="button" class="btn btn-primary m-1 mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#tambahBarang">Tambah</button>
         @include('barang.modal.create')
