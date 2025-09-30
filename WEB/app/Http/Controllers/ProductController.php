@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->simplePaginate('10');
 
         return view('barang.index', compact('products', 'categories'));
     }
@@ -28,7 +28,7 @@ class ProductController extends Controller
         }
 
         $categories = Category::all();
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->where('product_name', 'like', '%' . $keyword . '%')->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->where('product_name', 'like', '%' . $keyword . '%')->simplePaginate('10');
 
         return view('barang.index', compact('products', 'keyword', 'categories'));
     }

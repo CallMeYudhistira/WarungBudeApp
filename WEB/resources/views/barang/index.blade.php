@@ -3,7 +3,8 @@
 @section('content')
     <h1 style="margin-left: -5px;">List Barang</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
-        <button type="button" class="btn btn-primary m-1 mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#tambahBarang">Tambah</button>
+        <button type="button" class="btn btn-primary m-1 mt-2 mb-2" data-bs-toggle="modal"
+            data-bs-target="#tambahBarang">Tambah</button>
         @include('barang.modal.create')
 
         <form class="d-flex ms-auto mt-2 mb-2" action="/barang/search" method="get">
@@ -31,9 +32,11 @@
                         <div class="card-body">
                             <div class="d-flex pb-2 mb-1" style="justify-content: space-between;">
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#editBarang{{ $product->product_id }}" style="width: 100%; margin-right: 0.5rem;">Edit</button>
+                                    data-bs-target="#editBarang{{ $product->product_id }}"
+                                    style="width: 100%; margin-right: 0.5rem;">Edit</button>
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#hapusBarang{{ $product->product_id }}" style="width: 100%; margin-left: 0.5rem;">Hapus</button>
+                                    data-bs-target="#hapusBarang{{ $product->product_id }}"
+                                    style="width: 100%; margin-left: 0.5rem;">Hapus</button>
                             </div>
                             <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-success w-100">Detail
                                 Barang</a>
@@ -43,6 +46,10 @@
                 @include('barang.modal.update')
                 @include('barang.modal.delete')
             @endforeach
+        </div>
+
+        <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh;">
+            {{ $products->links() }}
         </div>
     </div>
 
