@@ -41,9 +41,9 @@ class DatabaseSeeder extends Seeder
             'password' => 'gudang',
         ]);
 
-        User::factory(10)->create();
-        Category::factory(10)->create();
-        Unit::factory(10)->create();
-        Product::factory(10)->create();
+        User::factory(100)->create();
+        Category::factory(100)->create();
+        Unit::factory(100)->create();
+        Product::factory(100)->create();
     }
 }
