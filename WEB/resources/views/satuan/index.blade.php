@@ -22,12 +22,9 @@
                 </tr>
             </thead>
             <tbody>
-                @php
-                    $no = 1;
-                @endphp
-                @foreach ($units as $unit)
+                @foreach ($units as $i => $unit)
                     <tr>
-                        <th scope="row">{{ $no++ }}</th>
+                        <th scope="row">{{ $units->firstItem() + $i }}</th>
                         <td>{{ $unit->unit_name }}</td>
                         <td>
                             <button type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -44,6 +41,10 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh;">
+        {{ $units->links() }}
     </div>
 
     @if ($pesan = Session::get('success'))

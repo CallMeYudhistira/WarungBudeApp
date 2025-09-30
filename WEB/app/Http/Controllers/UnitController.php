@@ -9,7 +9,7 @@ class UnitController extends Controller
 {
     public function index()
     {
-        $units = Unit::all();
+        $units = Unit::simplePaginate('15');
 
         return view('satuan.index', compact('units'));
     }
@@ -21,7 +21,7 @@ class UnitController extends Controller
             return redirect('/satuan');
         }
 
-        $units = Unit::where('unit_name', 'like', '%' . $keyword . '%')->get();
+        $units = Unit::where('unit_name', 'like', '%' . $keyword . '%')->simplePaginate('15');
 
         return view('satuan.index', compact('units', 'keyword'));
     }
