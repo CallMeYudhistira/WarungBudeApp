@@ -3,17 +3,17 @@
 @section('content')
     <h1>List Barang</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
-        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#tambahBarang">Tambah</button>
+        <button type="button" class="btn btn-primary m-1 mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#tambahBarang">Tambah</button>
         @include('barang.modal.create')
 
-        <form class="d-flex m-2 ms-auto" action="/barang/search" method="get">
+        <form class="d-flex ms-auto mt-2 mb-2" action="/barang/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
                 @isset($keyword) value="{{ $keyword }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
     </div>
     <div>
-        <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="row row-cols-1 row-cols-md-5 g-5">
             @foreach ($products as $product)
                 <div class="col">
                     <div class="card h-100" style="width: 280px;">

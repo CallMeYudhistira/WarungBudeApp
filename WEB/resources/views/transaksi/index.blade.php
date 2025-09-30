@@ -3,16 +3,16 @@
 @section('content')
     <h1>List Barang</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
-        <a href="/transaksi/history" class="btn btn-primary m-2">Riwayat Transaksi</a>
-        <button type="button" class="btn btn-success m-2" data-bs-toggle="modal" data-bs-target="#bayarTrans">Checkout</button>
-        <form class="d-flex m-2 ms-auto" action="/transaksi/search" method="get">
+        <a href="/transaksi/history" class="btn btn-primary m-1 mt-2 mb-2">Riwayat Transaksi</a>
+        <button type="button" class="btn btn-success m-1 mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#bayarTrans">Checkout</button>
+        <form class="d-flex ms-auto mt-2 mb-2" action="/transaksi/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
                 @isset($keyword) value="{{ $keyword }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
     </div>
-    <div style="padding-bottom: 5vh;">
-        <div class="row row-cols-1 row-cols-md-4 g-4">
+    <div>
+        <div class="row row-cols-1 row-cols-md-5 g-5">
             @foreach ($products as $product)
                 <form action="transaksi/cart/store" method="post">
                     @csrf
@@ -53,12 +53,12 @@
             @endforeach
         </div>
         {{-- pagination links --}}
-        <div class="p-4" style="width:300px; margin: auto; margin-top: 4vh;">
+        <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh; margin-bottom: 2vh;">
             {{ $products->links() }}
         </div>
 
         @if (isset($carts) || $carts != null)
-            <div class="mt-3" style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
+            <div style="border: 1px solid #ccc; border-radius: 12px; padding: 12px;">
                 <table class="table">
                     <thead>
                         <tr>

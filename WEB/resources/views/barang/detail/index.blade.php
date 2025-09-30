@@ -1,15 +1,15 @@
 @extends('layouts.app')
 @section('title', 'Barang || Detail')
 @section('content')
-    <h1>Detail Barang : {{ $product->product_name }}</h1>
+    <h1 style="margin-left: -5px;">Detail Barang : {{ $product->product_name }}</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
-        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#tambahDetailBarang">Tambah</button>
+        <button type="button" class="btn btn-primary m-1 mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#tambahDetailBarang">Tambah</button>
         @include('barang.detail.modal.create')
 
-        <a href="/barang/" class="btn btn-dark m-2">Kembali</a>
+        <a href="/barang/" class="btn btn-dark m-1 mt-2 mb-2">Kembali</a>
     </div>
     <div>
-        <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="row row-cols-1 row-cols-md-5 g-5">
             @foreach ($product_details as $product_detail)
                 <div class="col">
                     <div class="card h-100" style="width: 280px;">
@@ -61,6 +61,15 @@
             Swal.fire({
                 title: "{{ $pesan }}",
                 icon: "success",
+            });
+        </script>
+    @endif
+
+    @if ($pesan = Session::get('error'))
+        <script>
+            Swal.fire({
+                title: "{{ $pesan }}",
+                icon: "error",
             });
         </script>
     @endif

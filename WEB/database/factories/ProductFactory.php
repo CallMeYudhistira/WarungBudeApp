@@ -20,7 +20,7 @@ class ProductFactory extends Factory
         return [
             'product_name' => fake()->title(),
             'pict' => 'photo.png',
-            'category_id' => Random::generate('1', '0-10'),
+            'category_id' => Random::generate('3', '0-9'),
         ];
     }
 }
