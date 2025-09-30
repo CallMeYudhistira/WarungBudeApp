@@ -24,7 +24,7 @@
             width: calc(100% - 250px);
         }
 
-        .modal{
+        .modal {
             z-index: 9999;
         }
     </style>
@@ -34,6 +34,8 @@
     @include('layouts.navbar')
     <div class="container-fluid p-5 mt-3" id="content" style="margin-left: 250px;">
         @yield('content')
+
+        <div style="height: 5vh;"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

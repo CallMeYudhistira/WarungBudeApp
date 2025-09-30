@@ -52,8 +52,6 @@
         {{ $users->links() }}
     </div>
 
-    <div style="height: 5vh;"></div>
-
     @if ($pesan = Session::get('success'))
         <script>
             Swal.fire({

@@ -24,19 +24,6 @@ class UserFactory extends Factory
             'username' => fake()->userName(),
             'password' => '123', // password
             'role' => fake()->randomElement(['admin', 'kasir', 'gudang']),
-            // 'remember_token' => Str::random(10),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return $this
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }
