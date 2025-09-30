@@ -10,7 +10,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::simplePaginate('15');
 
         return view('kategori.index', compact('categories'));
     }
@@ -22,7 +22,7 @@ class CategoryController extends Controller
             return redirect('/kategori');
         }
 
-        $categories = Category::where('category_name', 'like', '%' . $keyword . '%')->get();
+        $categories = Category::where('category_name', 'like', '%' . $keyword . '%')->simplePaginate('15');
 
         return view('kategori.index', compact('categories', 'keyword'));
     }

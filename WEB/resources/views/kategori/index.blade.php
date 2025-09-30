@@ -25,7 +25,7 @@
             <tbody>
                 @foreach ($categories as $i => $category)
                     <tr>
-                        <th scope="row">{{ $i + 1 }}</th>
+                        <th scope="row">{{ $categories->firstItem() + $i }}</th>
                         <td>{{ $category->category_name }}</td>
                         <td>
                             <button type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -41,6 +41,10 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh;">
+        {{ $categories->links() }}
     </div>
 
     @if ($pesan = Session::get('success'))
