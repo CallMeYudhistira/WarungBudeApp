@@ -24,13 +24,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('guest')->group(function () {
-    Route::get('/', [AuthController::class, 'index'])->name('login');
+    Route::get('/', function(){ return view('index'); });
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/guest', [AuthController::class, 'guest']);
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', HomeController::class);
+    Route::get('/home', [HomeController::class, 'index']);
+    Route::get('/home/filter', [HomeController::class, 'filter']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::prefix('/users')->middleware('role:admin')->group(function () {

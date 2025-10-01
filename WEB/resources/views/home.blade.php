@@ -9,9 +9,22 @@
         integrity="sha512-dC9VWzoPczd9ppMRE/FJohD2fB7ByZ0VVLVCMlOrM2LHqoFFuVGcWch1riUcwKJuhWx8OhPjhJsAHrp4CP4gtw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endsection
-<div class="p-4 mt-4 card" style="margin: auto;">
-    <div id="chart"></div>
-</div>
+
+@if ($total != null && $periode != null)
+    <div class="d-flex" style="margin: -0.5rem; margin-top: 1rem; margin-bottom: 1rem;">
+        <form class="d-flex m-2 ms-auto" action="/home/filter" method="get">
+            <input class="form-control me-2" type="date" name="first"
+                @isset($first) value="{{ $first }}" @endisset />
+            <label for="second" class="form-label m-2">=></label>
+            <input class="form-control me-2" type="date" name="second"
+                @isset($second) value="{{ $second }}" @endisset />
+            <button class="btn btn-outline-primary" type="submit">Filter</button>
+        </form>
+    </div>
+    <div class="p-4 mt-4" style="margin: auto;">
+        <div id="chart"></div>
+    </div>
+@endif
 
 <script>
     var options = {

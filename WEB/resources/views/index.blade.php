@@ -1,165 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <title>WarungBudeApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Nata Sans";
+        @font-face {
+            font-family: 'Nata Sans';
+            src: url("{{ asset('fonts/NataSans_Regular.ttf') }}");
         }
 
         body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #0040ff, #002e8b);
+            font-family: 'Nata Sans', sans-serif;
         }
 
-        .login-container {
+        .hero {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: #fff;
+            padding: 100px 0;
             text-align: center;
-            width: 350px;
         }
 
-        .icon {
-            font-size: 70px;
-            margin-bottom: 30px;
-            color: #fff;
-        }
-
-        .input-box {
-            width: 100%;
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        .input-box i {
-            position: absolute;
-            top: 50%;
-            left: 12px;
-            transform: translateY(-50%);
-            color: #ccc;
-            font-size: 14px;
-        }
-
-        .input-box input {
-            width: 100%;
-            padding: 12px 40px;
-            border-radius: 4px;
-            border: 1px solid #eee;
-            outline: none;
-            background: transparent;
-            color: #fff;
-            font-size: 14px;
-        }
-
-        .input-box input::placeholder {
-            color: #ccc;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            background: #eee;
-            color: #1f4ed8;
+        .hero h1 {
+            font-size: 3rem;
             font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
             margin-top: 10px;
         }
 
-        .btn:hover {
-            background: #e4e4e4;
+        .feature-icon {
+            font-size: 40px;
+            color: #ff9800;
+            margin-bottom: 15px;
         }
 
-        .guest {
-            display: block;
-            color: #ddd;
-            font-size: 14px;
-            text-decoration: none;
-            background-color: #00000000;
-            border: none;
-            margin: auto;
-            margin-top: 15px;
-            cursor: pointer;
+        .features {
+            padding: 60px 0;
         }
 
-        .guest:hover {
-            text-decoration: underline;
+        .preview {
+            padding: 60px 0;
+            background-color: #f9f9f9;
         }
 
-        .d-block {
-            display: block;
+        .preview img {
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background: #212529;
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
-    <div class="login-container">
-        <div class="icon"><i class="fas fa-shopping-cart"></i></div>
-        <form action="/login" method="post">
-            @csrf
-            <div class="input-box">
-                <i class="fas fa-user"></i>
-                <input type="text" placeholder="USERNAME" name="username" autocomplete="off">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Kelola Warung Lebih Mudah</h1>
+            <p>Catat transaksi, kelola stok, dan pantau laporan keuangan hanya dengan sekali klik.</p>
+            <a href="/login" class="btn btn-dark btn-lg mt-3">Mulai Sekarang</a>
+        </div>
+    </section>
+
+    <!-- Fitur Section -->
+    <section class="features text-center">
+        <div class="container">
+            <h2 class="mb-5">Fitur-Fitur Aplikasi</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-icon">💰</div>
+                    <h4>Transaksi Cepat</h4>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-icon">📦</div>
+                    <h4>Manajemen Stok</h4>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-icon">📊</div>
+                    <h4>Laporan Otomatis</h4>
+                </div>
             </div>
-            <div class="input-box">
-                <i class="fas fa-lock"></i>
-                <input type="password" placeholder="PASSWORD" name="password" autocomplete="off">
-            </div>
-            <button class="btn" type="submit">LOGIN</button>
-        </form>
-        <form action="/guest" method="post">
-            @csrf
-            <input type="hidden" name="username" value="guest">
-            <input type="hidden" name="password" value="guest">
-            <button class="guest" type="submit">Try guest account?</button>
-        </form>
-    </div>
+        </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Preview Dashboard -->
+    <section class="preview">
+        <div class="container text-center">
+            <img src="{{ asset('images/dashboard.png') }}" alt="Preview Dashboard" class="img-fluid">
+        </div>
+    </section>
 
-    @if ($errors->any())
-        <script>
-            let errorMessages = `
-            @foreach ($errors->all() as $error)
-                <p style="text-align:center; margin:0;"> {{ $error }} </p>
-            @endforeach
-        `;
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 WarungBudeApp. All rights reserved.</p>
+    </footer>
 
-            Swal.fire({
-                title: "Validation Error",
-                html: errorMessages,
-                icon: "error",
-                confirmButtonText: "OK",
-                confirmButtonColor: "#1f4ed8",
-                background: "#fff",
-                color: "#333"
-            });
-        </script>
-    @endif
-
-    @if ($message = Session::get('error'))
-        <script>
-            Swal.fire({
-                title: "{{ $message }}",
-                icon: "error",
-                draggable: false
-            });
-        </script>
-    @endif
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

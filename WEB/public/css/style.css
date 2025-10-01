@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap");
 
 * {
     font-family: "Nata Sans", sans-serif;
@@ -7,12 +7,12 @@
     box-sizing: border-box;
 }
 
-:root{
-    --body-color: #FFF;
-    --sidebar-color: #FFF;
-    --primary-color: #695CFE;
-    --primary-color-light: #F6F5FF;
-    --toggle-color: #DDD;
+:root {
+    --body-color: #fff;
+    --sidebar-color: #fff;
+    --primary-color: #695cfe;
+    --primary-color-light: #f6f5ff;
+    --toggle-color: #ddd;
     --text-color: #404040;
 
     --tran-02: all 0.2s ease;
@@ -21,12 +21,12 @@
     --tran-05: all 0.5s ease;
 }
 
-body{
+body {
     height: 100vh;
     background: var(--body-color);
 }
 
-.sidebar{
+.sidebar {
     position: fixed;
     top: 0;
     left: 0;
@@ -38,7 +38,7 @@ body{
     z-index: 999;
 }
 
-.sidebar li{
+.sidebar li {
     height: 50px;
     margin-top: 10px;
     list-style: none;
@@ -46,12 +46,12 @@ body{
     align-items: center;
 }
 
-.sidebar li.active{
-    background-color: #DDE;
+.sidebar li.active {
+    background-color: #dde;
     border-radius: 6px;
 }
 
-.sidebar li .icon{
+.sidebar li .icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,49 +60,49 @@ body{
 }
 
 .sidebar li .icon,
-.sidebar li .text{
+.sidebar li .text {
     color: var(--text-color);
     transition: var(--tran-02);
 }
 
-.sidebar header{
+.sidebar header {
     position: relative;
     top: 6px;
     bottom: 6px;
 }
 
-.sidebar .text{
+.sidebar .text {
     font-size: 16px;
     font-weight: 500;
     color: var(--text-color);
 }
 
-.sidebar .image{
+.sidebar .image {
     min-width: 60px;
     display: flex;
     align-items: center;
 }
 
-.sidebar .image-text img{
+.sidebar .image-text img {
     width: 40px;
     border-radius: 6px;
 }
 
-.sidebar header .image-text{
+.sidebar header .image-text {
     display: flex;
     align-items: center;
 }
 
-.sidebar header .image-text .header-text{
+.sidebar header .image-text .header-text {
     display: flex;
     flex-direction: column;
 }
 
-.header-text .name{
+.header-text .name {
     font-weight: 600;
 }
 
-.sidebar li a{
+.sidebar li a {
     height: 100%;
     width: 100%;
     display: flex;
@@ -112,23 +112,54 @@ body{
     transition: var(--tran-04);
 }
 
-.sidebar li a:hover{
+.sidebar li a:hover {
     background: var(--primary-color);
 }
 
 .sidebar li a:hover .icon,
-.sidebar li a:hover .text{
+.sidebar li a:hover .text {
     color: var(--sidebar-color);
 }
 
-.sidebar .menu-bar{
+.sidebar .menu-bar {
     margin-left: -30px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.divider{
+.divider {
     margin-top: 20px;
     color: #aaa;
+}
+
+.hero {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    color: #fff;
+    padding: 100px 0;
+    text-align: center;
+}
+.hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+.feature-icon {
+    font-size: 40px;
+    color: #ff9800;
+    margin-bottom: 15px;
+}
+
+.features {
+    padding: 60px 0;
+}
+
+.preview {
+    padding: 60px 0;
+    background-color: white;
 }
