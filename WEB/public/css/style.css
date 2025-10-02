@@ -132,34 +132,3 @@ body {
     margin-top: 20px;
     color: #aaa;
 }
-
-.hero {
-    background: linear-gradient(135deg, #ffc107, #ff9800);
-    color: #fff;
-    padding: 100px 0;
-    text-align: center;
-}
-.hero h1 {
-    font-size: 3rem;
-    font-weight: bold;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    margin-top: 10px;
-}
-
-.feature-icon {
-    font-size: 40px;
-    color: #ff9800;
-    margin-bottom: 15px;
-}
-
-.features {
-    padding: 60px 0;
-}
-
-.preview {
-    padding: 60px 0;
-    background-color: white;
-}
