@@ -31,8 +31,15 @@
 <hr class="m-4">
 @if ($total != null && $periode != null)
     <div class="p-4 mt-4 card d-flex" style="margin: auto;">
-        <div id="chart1" style="margin-left: 5%;"></div>
-        <div id="chart" style="position: absolute; left: 50%;"></div>
+        <h1 class="text-center">Data Penjualan Minggu Ini</h1>
+        <div id="chart1"></div>
+    </div>
+@endif
+<hr class="m-4">
+@if ($dataBulan != null && $dataTahun != null)
+    <div class="p-4 mt-4 card d-flex" style="margin: auto;">
+        <h1 class="text-center">Data Penjualan Tahun Ini</h1>
+        <div id="chart"></div>
     </div>
 @endif
 
@@ -43,7 +50,6 @@
             data: @json($total)
         }],
         chart: {
-            width: 750,
             height: 350,
             type: 'line',
             zoom: {
@@ -55,13 +61,6 @@
         },
         stroke: {
             curve: 'straight'
-        },
-        title: {
-            text: 'Data Penjualan Bulan Ini',
-            align: 'left',
-            style: {
-                fontFamily: 'Nata Sans'
-            }
         },
         grid: {
             row: {
@@ -98,10 +97,9 @@
 <script>
     var options = {
         series: [{
-            data: @json($total)
+            data: @json($dataTahun)
         }],
         chart: {
-            width: 750,
             height: 350,
             type: 'bar',
         },
@@ -120,15 +118,8 @@
         legend: {
             show: false
         },
-        title: {
-            text: 'Data Penjualan Tahun Ini',
-            align: 'left',
-            style: {
-                fontFamily: 'Nata Sans'
-            }
-        },
         xaxis: {
-            categories: @json($periode),
+            categories: @json($dataBulan),
             labels: {
                 style: {
                     colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560',

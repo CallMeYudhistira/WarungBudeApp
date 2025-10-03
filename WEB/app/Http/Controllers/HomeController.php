@@ -13,12 +13,21 @@ class HomeController extends Controller
     {
         Carbon::setLocale('id');
 
-        $datas = DB::select("SELECT transactions.date, SUM(transactions.total) as total FROM transactions INNER JOIN transaction_details ON transactions.transaction_id = transaction_details.transaction_id GROUP BY transactions.date");
+        $datas = DB::select("SELECT transactions.date, SUM(transactions.total) as total FROM transactions GROUP BY transactions.date");
         $periode = [];
         $total = [];
         foreach ($datas as $data) {
-            $periode[] = Carbon::parse($data->date)->translatedFormat('l, d F Y');
+            $periode[] = Carbon::parse($data->date)->translatedFormat('l');
             $total[] = $data->total;
+        }
+
+        $bulan = date('m');
+        $tahun = date('Y');
+        $dataTahun = [];
+        $dataBulan = [];
+        for ($i = 1; $i <= 12; $i++) { 
+            $dataTahun[] = Transaction::whereYear('date', '=', $tahun)->whereMonth('date', '=', $i)->sum('total');
+            $dataBulan[] = Carbon::parse('01-' . $i . '-2000')->translatedFormat('F');
         }
 
         $todays = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->join('product_details', 'product_details.product_detail_id', '=', 'transaction_details.product_detail_id')->where('transactions.date', '=', now()->format('Y-m-d'))->get(['transactions.total', 'transaction_details.selling_price', 'product_details.purchase_price', 'transaction_details.quantity']);
@@ -37,6 +46,6 @@ class HomeController extends Controller
             $labaBulanIni += ($month->selling_price - $month->purchase_price) * $month->quantity;
         }
 
-        return view('home', compact('periode', 'total', 'omsetHariIni', 'labaHariIni', 'omsetBulanIni', 'labaBulanIni'));
+        return view('home', compact('periode', 'total', 'omsetHariIni', 'labaHariIni', 'omsetBulanIni', 'labaBulanIni', 'dataTahun', 'dataBulan'));
     }
 }
