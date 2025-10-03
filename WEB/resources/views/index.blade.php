@@ -7,10 +7,7 @@
     <title>WarungBudeApp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Nata Sans';
-            src: url("{{ asset('fonts/NataSans_Regular.ttf') }}");
-        }
+        @import url("https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap");
 
         body {
             font-family: 'Nata Sans', sans-serif;
@@ -19,7 +16,7 @@
         .hero {
             background: linear-gradient(135deg, #ffc107, #ff9800);
             color: #fff;
-            padding: 100px 0;
+            padding: 280px 0;
             text-align: center;
         }
 
