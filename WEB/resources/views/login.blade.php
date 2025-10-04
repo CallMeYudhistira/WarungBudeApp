@@ -4,89 +4,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>Login Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap" rel="stylesheet">
     <style>
-        /* Reset */
+        @import url("https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap");
+
         * {
-            margin: 0;
+            font-family: "Nata Sans", sans-serif;
             padding: 0;
+            margin: 0;
             box-sizing: border-box;
-            font-family: "Nata Sans";
         }
 
         body {
-            height: 100vh;
+            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
             display: flex;
-            justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #0040ff, #002e8b);
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
         }
 
-        .login-container {
-            text-align: center;
-            width: 350px;
-        }
-
-        .icon {
-            font-size: 70px;
-            margin-bottom: 30px;
-            color: #fff;
-        }
-
-        .input-box {
-            width: 100%;
-            margin-bottom: 15px;
+        .container {
+            background-color: #fff;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
             position: relative;
+            overflow: hidden;
+            width: 768px;
+            max-width: 100%;
+            min-height: 480px;
         }
 
-        .input-box i {
-            position: absolute;
-            top: 50%;
-            left: 12px;
-            transform: translateY(-50%);
-            color: #ccc;
+        .container p {
             font-size: 14px;
+            line-height: 20px;
+            letter-spacing: 0.3px;
+            margin: 20px 0;
         }
 
-        .input-box input {
-            width: 100%;
-            padding: 12px 40px;
-            border-radius: 4px;
-            border: 1px solid #eee;
-            outline: none;
-            background: transparent;
+        .container span {
+            font-size: 12px;
+        }
+
+        .container a {
+            color: #333;
+            font-size: 13px;
+            text-decoration: none;
+            margin: 15px 0 10px;
+        }
+
+        .container button.login {
+            background-color: #512da8;
             color: #fff;
-            font-size: 14px;
-        }
-
-        .input-box input::placeholder {
-            color: #ccc;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            background: #eee;
-            color: #1f4ed8;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
+            font-size: 12px;
+            padding: 10px 45px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
             margin-top: 10px;
+            cursor: pointer;
         }
 
-        .btn:hover {
-            background: #e4e4e4;
+        .container form.form-login {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 40px;
+            height: 100%;
+        }
+
+        .container input {
+            background-color: #eee;
+            border: none;
+            margin: 8px 0;
+            padding: 10px 15px;
+            font-size: 13px;
+            border-radius: 8px;
+            width: 100%;
+            outline: none;
+        }
+
+        .form-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .sign-in {
+            left: 0;
+            width: 50%;
+            z-index: 2;
+        }
+
+        .container.active .sign-in {
+            transform: translateX(100%);
+        }
+
+        .toggle-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: all 0.6s ease-in-out;
+            border-radius: 150px 0 0 100px;
+            z-index: 1000;
+        }
+
+        .container.active .toggle-container {
+            transform: translateX(-100%);
+            border-radius: 0 150px 100px 0;
+        }
+
+        .toggle {
+            height: 100%;
+            background: linear-gradient(to right, #5c6bc0, #512da8);
+            color: #fff;
+            position: relative;
+            height: 100%;
+            width: 200%;
+            transform: translateX(0);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .toggle-panel {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 30px;
+            text-align: center;
+            top: 0;
+            transform: translateX(0);
+            transition: all 0.6s ease-in-out;
         }
 
         .guest {
             display: block;
-            color: #ddd;
+            color: #eee;
             font-size: 14px;
             text-decoration: none;
             background-color: #00000000;
@@ -96,37 +161,39 @@
             cursor: pointer;
         }
 
-        .guest:hover {
+        .guest:hover{
             text-decoration: underline;
-        }
-
-        .d-block {
-            display: block;
         }
     </style>
 </head>
 
 <body>
-    <div class="login-container">
-        <div class="icon"><i class="fas fa-shopping-cart"></i></div>
-        <form action="/login" method="post">
-            @csrf
-            <div class="input-box">
-                <i class="fas fa-user"></i>
-                <input type="text" placeholder="USERNAME" name="username" autocomplete="off">
+
+    <div class="container" id="container">
+        <div class="form-container sign-in">
+            <form action="/login" method="post" class="form-login">
+                @csrf
+                <h1 style="margin-bottom: 1rem;">Sign In!</h1>
+                <span style="margin-bottom: 0.7rem;">Use your username and password.</span>
+                <input type="text" name="username" placeholder="Username" autocomplete="off">
+                <input type="password" name="password" placeholder="Password" autocomplete="off">
+                <button type="submit" class="login">Sign In</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel">
+                    <h1>Welcome Back!</h1>
+                    <p>Enter your personal details to use all of site features.</p>
+                    <form action="/guest" method="post">
+                        @csrf
+                        <input type="hidden" name="username" value="guest">
+                        <input type="hidden" name="password" value="guest">
+                        <button class="guest" type="submit">Try guest account?</button>
+                    </form>
+                </div>
             </div>
-            <div class="input-box">
-                <i class="fas fa-lock"></i>
-                <input type="password" placeholder="PASSWORD" name="password" autocomplete="off">
-            </div>
-            <button class="btn" type="submit">LOGIN</button>
-        </form>
-        <form action="/guest" method="post">
-            @csrf
-            <input type="hidden" name="username" value="guest">
-            <input type="hidden" name="password" value="guest">
-            <button class="guest" type="submit">Try guest account?</button>
-        </form>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

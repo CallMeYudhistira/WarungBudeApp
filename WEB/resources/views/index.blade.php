@@ -14,7 +14,7 @@
         }
 
         .hero {
-            background: linear-gradient(135deg, #ffc107, #ff9800);
+            background: linear-gradient(to right, #5c6bc0, #512da8);
             color: #fff;
             padding: 280px 0;
             text-align: center;
@@ -32,7 +32,7 @@
 
         .feature-icon {
             font-size: 40px;
-            color: #ff9800;
+            color: #512da8;
             margin-bottom: 15px;
         }
 
@@ -66,7 +66,7 @@
         <div class="container">
             <h1>Kelola Warung Lebih Mudah</h1>
             <p>Catat transaksi, kelola stok, dan pantau laporan keuangan hanya dengan sekali klik.</p>
-            <a href="/login" class="btn btn-dark btn-lg mt-3">Mulai Sekarang</a>
+            <a href="/login" class="btn btn-light btn-lg mt-3">Mulai Sekarang</a>
         </div>
     </section>
 

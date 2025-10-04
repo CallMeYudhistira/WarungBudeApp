@@ -132,3 +132,7 @@ body {
     margin-top: 20px;
     color: #aaa;
 }
+
+#logoutbtn:hover{
+    cursor: pointer;
+}
