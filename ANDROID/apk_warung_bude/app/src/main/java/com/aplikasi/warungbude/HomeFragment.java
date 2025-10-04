@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        String imgUrl = "http://192.168.0.119:8000/images/03-09-2025_12-46-51_soM98d3jdggMQEaH2ahvqCNHGDUfHalNtwUxC5eV.png";
+        String imgUrl = "http://192.168.0.122:8000/images/04-10-2025_12-18-50_hNETQCCxMIe53aMrN7eyugyC6gM7E7QbzfqXi8cu.jpg";
         ImageView test = view.findViewById(R.id.test);
         Glide.with(view).load(imgUrl).into(test);
 

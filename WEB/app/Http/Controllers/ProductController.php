@@ -73,7 +73,9 @@ class ProductController extends Controller
 
         if ($request->hasFile('pict')) {
             if ($data->pict && file_exists(public_path('images/' . $data->pict))) {
-                unlink(public_path('images/' . $data->pict));
+                if($data->pict != 'photo.png'){
+                    unlink(public_path('images/' . $data->pict));
+                }
             }
 
             $datetime = now()->format('d-m-Y_H-i-s');
