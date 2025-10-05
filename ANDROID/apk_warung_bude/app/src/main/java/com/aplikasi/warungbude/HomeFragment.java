@@ -1,13 +1,17 @@
 package com.aplikasi.warungbude;
 
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -70,6 +74,22 @@ public class HomeFragment extends Fragment {
         String imgUrl = "http://192.168.0.122:8000/images/04-10-2025_12-18-50_hNETQCCxMIe53aMrN7eyugyC6gM7E7QbzfqXi8cu.jpg";
         ImageView test = view.findViewById(R.id.test);
         Glide.with(view).load(imgUrl).into(test);
+
+        Session session = new Session(getContext());
+        String name = session.getData(session.NAME_KEY);
+        String phone_number = session.getData(session.PHONE_NUMBER_KEY);
+        String role = session.getData(session.ROLE_KEY);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Test");
+        builder.setMessage("Nama : " + name + "\nNomor Telepon : " + phone_number + "\nHak Akses : " + role);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
 
         return view;
     }

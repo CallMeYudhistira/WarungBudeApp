@@ -1,9 +1,10 @@
 package com.aplikasi.warungbude;
 
 public class URL {
-    public static String HTTP = "http://";
-    public static String IP = "192.168.70.79";
+    public static String IP = "http://192.168.0.122:8000/";
 
     // Authenticate
-    public static String URLLogin = HTTP + IP + "";
+    public static String URLLogin = IP + "api/login";
+    public static String URLGuest = IP + "api/guest";
+    public static String URLLogout = IP + "api/logout";
 }
