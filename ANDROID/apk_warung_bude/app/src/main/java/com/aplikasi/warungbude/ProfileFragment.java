@@ -1,12 +1,31 @@
 package com.aplikasi.warungbude;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +74,101 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private TextView tvName, tvPhoneNumber, tvRole;
+    private Button btnLogout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        Session session = new Session(getContext());
+        String name = session.getData(session.NAME_KEY);
+        String phone_number = session.getData(session.PHONE_NUMBER_KEY);
+        String role = session.getData(session.ROLE_KEY);
+
+        tvName = view.findViewById(R.id.tvName);
+        tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber);
+        tvRole = view.findViewById(R.id.tvRole);
+
+        tvName.setText(name);
+        tvPhoneNumber.setText(phone_number);
+        tvRole.setText(role);
+
+        btnLogout = view.findViewById(R.id.btnLogout);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.custom_alert, null);
+
+                ImageView gifView = dialogView.findViewById(R.id.dialogGif);
+                TextView judul = dialogView.findViewById(R.id.title);
+                TextView pesan = dialogView.findViewById(R.id.message);
+
+                judul.setText("Peringatan!");
+                pesan.setText("Apakah kamu ingin logout?");
+
+                Glide.with(getContext())
+                        .asGif()
+                        .load(R.raw.question)
+                        .into(gifView);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setView(dialogView);
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        logoutUser(getContext());
+                    }
+                });
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+        return view;
+    }
+
+    private void logoutUser(Context context){
+        StringRequest request = new StringRequest(Request.Method.POST, URL.URLLogout, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String message = jsonObject.getString("message");
+
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+                    if(jsonObject.getString("status").equals("success")){
+                        Session session = new Session(context);
+                        session.logout();
+
+                        context.startActivity(new Intent(context, Login.class));
+                        getActivity().finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 }

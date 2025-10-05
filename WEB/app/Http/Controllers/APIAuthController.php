@@ -41,6 +41,6 @@ class APIAuthController extends Controller
     public function logout(){
         Auth::logout();
 
-        return response()->json(['status' => 'success', 'message' => 'Logout telah berhasil!'], 302);
+        return response()->json(['status' => 'success', 'message' => 'Logout telah berhasil!'], 200);
     }
 }

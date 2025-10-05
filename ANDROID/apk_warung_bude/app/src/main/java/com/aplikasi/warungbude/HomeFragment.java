@@ -71,10 +71,6 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        String imgUrl = "http://192.168.0.122:8000/images/04-10-2025_12-18-50_hNETQCCxMIe53aMrN7eyugyC6gM7E7QbzfqXi8cu.jpg";
-        ImageView test = view.findViewById(R.id.test);
-        Glide.with(view).load(imgUrl).into(test);
-
         Session session = new Session(getContext());
         String name = session.getData(session.NAME_KEY);
         String phone_number = session.getData(session.PHONE_NUMBER_KEY);
