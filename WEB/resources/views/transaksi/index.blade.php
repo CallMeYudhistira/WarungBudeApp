@@ -86,7 +86,7 @@
                                         style="width: 90px; border-radius: 8px;"></td>
                                 <td>{{ $cart->product_name }}</td>
                                 <td>{{ $cart->category_name }}</td>
-                                <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}</td>
+                                <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}/{{ $product->unit_name }}</td>
                                 <td>{{ $cart->quantity }}</td>
                                 <td>{{ 'Rp ' . number_format($cart->subtotal, 0, ',', '.') }}</td>
                                 <td>{{ $cart->name }}</td>

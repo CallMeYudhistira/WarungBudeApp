@@ -21,7 +21,7 @@ class TransactionController extends Controller
     public function index()
     {
         $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(5);
-        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get();
+        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get(['carts.*', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'users.name']);
         $customers = Customer::all();
 
         return view('transaksi.index', compact('products', 'carts', 'customers'));
@@ -34,8 +34,8 @@ class TransactionController extends Controller
             return redirect('/transaksi');
         }
 
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(4);
-        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(5);
+        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get(['carts.*', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'users.name']);
         $customers = Customer::all();
 
         return view('transaksi.index', compact('products', 'keyword', 'carts', 'customers'));
