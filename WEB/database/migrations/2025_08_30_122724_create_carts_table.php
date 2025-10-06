@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->increments('cart_id');
             $table->integer('product_detail_id');
+            $table->integer('purchase_price');
             $table->integer('selling_price');
             $table->integer('quantity');
             $table->integer('subtotal');

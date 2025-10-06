@@ -43,6 +43,8 @@
                             <div class="card-body">
                                 <input type="hidden" name="selling_price" class="form-control m-2"
                                     value="{{ $product->selling_price }}">
+                                <input type="hidden" name="purchase_price" class="form-control m-2"
+                                    value="{{ $product->purchase_price }}">
                                 <input type="hidden" name="id" value="{{ $product->product_detail_id }}">
                                 <button class="btn btn-success w-100" type="submit">Beli</button>
                             </div>

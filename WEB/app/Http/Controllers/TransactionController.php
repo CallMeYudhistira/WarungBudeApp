@@ -49,6 +49,7 @@ class TransactionController extends Controller
             'id' => 'required',
             'quantity' => 'numeric|required|max:' . $product->stock,
             'selling_price' => 'required',
+            'purchase_price' => 'required',
         ]);
 
         $cekCart = Cart::where('product_detail_id', $request->id)->first();
@@ -59,6 +60,7 @@ class TransactionController extends Controller
 
         Cart::create([
             'product_detail_id' => $request->id,
+            'purchase_price' => $request->purchase_price,
             'selling_price' => $request->selling_price,
             'quantity' => $request->quantity,
             'subtotal' => ($request->quantity * $request->selling_price),
@@ -159,6 +161,7 @@ class TransactionController extends Controller
             TransactionDetail::create([
                 'transaction_id' => $transaction_id,
                 'product_detail_id' => $cart->product_detail_id,
+                'purchase_price' => $cart->purchase_price,
                 'selling_price' => $cart->selling_price,
                 'quantity' => $cart->quantity,
                 'subtotal' => $cart->subtotal,
@@ -199,7 +202,6 @@ class TransactionController extends Controller
 
     public function detail($id)
     {
-        Carbon::setLocale('id');
         $transaction = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->where('transactions.transaction_id', $id)->first(['transactions.transaction_id', 'transactions.date', 'transactions.payment', 'users.name', 'customers.customer_name', 'transactions.total', 'transactions.pay', 'transactions.change']);
         $transaction_details = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->join('product_details', 'product_details.product_detail_id', '=', 'transaction_details.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('transaction_details.transaction_id', $id)->get(['products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'transaction_details.selling_price', 'transaction_details.quantity', 'transaction_details.subtotal']);
 
@@ -208,7 +210,6 @@ class TransactionController extends Controller
 
     public function print($id)
     {
-        Carbon::setLocale('id');
         $transaction = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->where('transactions.transaction_id', $id)->first(['transactions.transaction_id', 'transactions.date', 'transactions.payment', 'users.name', 'customers.customer_name', 'transactions.total', 'transactions.pay', 'transactions.change']);
         $transaction_details = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->join('product_details', 'product_details.product_detail_id', '=', 'transaction_details.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('transaction_details.transaction_id', $id)->get(['products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'transaction_details.selling_price', 'transaction_details.quantity', 'transaction_details.subtotal']);
 

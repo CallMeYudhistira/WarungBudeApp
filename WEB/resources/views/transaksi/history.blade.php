@@ -18,7 +18,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Tanggal</th>
+                    <th scope="col" style="width: 18%;">Tanggal</th>
                     <th scope="col">Total (Rp.)</th>
                     <th scope="col">Bayar (Rp.)</th>
                     <th scope="col">Kembalian (Rp.)</th>
@@ -35,7 +35,7 @@
                 @foreach ($transactions as $transaction)
                     <tr>
                         <th scope="row">{{ $no++ }}</th>
-                        <td scope="row">{{ $transaction->date }}</td>
+                        <td scope="row">{{ \Carbon\Carbon::parse($transaction->date)->translatedFormat('l, d/F/Y') }}</td>
                         <td scope="row">{{ 'Rp ' . number_format($transaction->total, 0, ',', '.') }}</td>
                         <td scope="row">{{ 'Rp ' . number_format($transaction->pay, 0, ',', '.') }}</td>
                         <td scope="row">{{ 'Rp ' . number_format($transaction->change, 0, ',', '.') }}</td>

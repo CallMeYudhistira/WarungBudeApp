@@ -11,8 +11,6 @@ class HomeController extends Controller
 {
     public function __invoke()
     {
-        Carbon::setLocale('id');
-
         $datas = DB::select("SELECT transactions.date, SUM(transactions.total) as total FROM transactions GROUP BY transactions.date");
         $periode = [];
         $total = [];
@@ -23,14 +21,14 @@ class HomeController extends Controller
 
         $bulan = date('m');
         $tahun = date('Y');
-        $dataTahun = [];
+        $totalBulan = [];
         $dataBulan = [];
         for ($i = 1; $i <= 12; $i++) { 
-            $dataTahun[] = Transaction::whereYear('date', '=', $tahun)->whereMonth('date', '=', $i)->sum('total');
+            $totalBulan[] = Transaction::whereYear('date', '=', $tahun)->whereMonth('date', '=', $i)->sum('total');
             $dataBulan[] = Carbon::parse('01-' . $i . '-2000')->translatedFormat('F');
         }
 
-        $todays = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->join('product_details', 'product_details.product_detail_id', '=', 'transaction_details.product_detail_id')->where('transactions.date', '=', now()->format('Y-m-d'))->get(['transactions.total', 'transaction_details.selling_price', 'product_details.purchase_price', 'transaction_details.quantity']);
+        $todays = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->where('transactions.date', '=', now()->format('Y-m-d'))->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
         $omsetHariIni = 0;
         $labaHariIni = 0;
         foreach ($todays as $today) {
@@ -38,14 +36,13 @@ class HomeController extends Controller
             $labaHariIni += ($today->selling_price - $today->purchase_price) * $today->quantity;
         }
 
-        $months = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->join('product_details', 'product_details.product_detail_id', '=', 'transaction_details.product_detail_id')->whereBetween('transactions.date', [now()->format('Y-m-1'), now()->format('Y-m-31')])->get(['transactions.total', 'transaction_details.selling_price', 'product_details.purchase_price', 'transaction_details.quantity']);
-        $omsetBulanIni = 0;
+        $months = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
+        $omsetBulanIni = Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->sum('total');
         $labaBulanIni = 0;
         foreach ($months as $month) {
-            $omsetBulanIni += $month->total;
             $labaBulanIni += ($month->selling_price - $month->purchase_price) * $month->quantity;
         }
 
-        return view('home', compact('periode', 'total', 'omsetHariIni', 'labaHariIni', 'omsetBulanIni', 'labaBulanIni', 'dataTahun', 'dataBulan'));
+        return view('home', compact('periode', 'total', 'omsetHariIni', 'labaHariIni', 'omsetBulanIni', 'labaBulanIni', 'totalBulan', 'dataBulan'));
     }
 }

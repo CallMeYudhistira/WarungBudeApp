@@ -48,6 +48,15 @@
                 @endif
 
                 @if (Auth::user()->role == 'gudang' || Auth::user()->role == 'admin')
+                    @if (Auth::user()->role == 'gudang')
+                        <hr class="divider" style="margin-bottom: 30px;">
+                        <li class="nav-link {{ request()->is('home') ? 'active' : '' }}">
+                            <a href="/home">
+                                <i class='bx bx-home icon'></i>
+                                <span class="text nav-text">Beranda</span>
+                            </a>
+                        </li>
+                    @endif
                     <hr class="divider" style="margin-bottom: 30px;">
                     <li class="nav-link {{ request()->is('satuan') ? 'active' : '' }}">
                         <a href="/satuan">

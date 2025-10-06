@@ -10,5 +10,5 @@ class TransactionDetail extends Model
     use HasFactory;
 
     protected $primaryKey = 'transaction_detail_id';
-    protected $fillable = ['transaction_id', 'product_detail_id', 'selling_price', 'quantity', 'subtotal'];
+    protected $fillable = ['transaction_id', 'product_detail_id', 'purchase_price', 'selling_price', 'quantity', 'subtotal'];
 }

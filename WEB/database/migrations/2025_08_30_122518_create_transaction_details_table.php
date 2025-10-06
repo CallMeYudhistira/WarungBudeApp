@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('transaction_detail_id');
             $table->integer('transaction_id');
             $table->integer('product_detail_id');
+            $table->integer('purchase_price');
             $table->integer('selling_price');
             $table->integer('quantity');
             $table->integer('subtotal');

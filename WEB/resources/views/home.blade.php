@@ -36,7 +36,7 @@
     </div>
 @endif
 <hr class="m-4">
-@if ($dataBulan != null && $dataTahun != null)
+@if ($dataBulan != null && $totalBulan != null)
     <div class="p-4 mt-4 card d-flex" style="margin: auto;">
         <h1 class="text-center">Data Penjualan Tahun Ini</h1>
         <div id="chart"></div>
@@ -97,7 +97,7 @@
 <script>
     var options = {
         series: [{
-            data: @json($dataTahun)
+            data: @json($totalBulan)
         }],
         chart: {
             height: 350,
