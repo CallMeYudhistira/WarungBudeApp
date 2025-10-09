@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('total');
             $table->date('entry_date');
             $table->date('expired_date')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }

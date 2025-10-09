@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/refillStock/store', [RefillStockController::class, 'store']);
 
             Route::get('/expired', [ExpiredController::class, 'index']);
-            Route::post('/expired/delete/{id}', [ExpiredController::class, 'delete']);
+            Route::post('/expired/delete', [ExpiredController::class, 'delete']);
             Route::get('/expired/history', [ExpiredController::class, 'history']);
         });
 

@@ -10,5 +10,5 @@ class RefillStock extends Model
     use HasFactory;
 
     protected $primaryKey = 'refill_stock_id';
-    protected $fillable = ['product_detail_id', 'price', 'quantity', 'total', 'entry_date', 'expired_date'];
+    protected $fillable = ['product_detail_id', 'price', 'quantity', 'total', 'entry_date', 'expired_date', 'status'];
 }

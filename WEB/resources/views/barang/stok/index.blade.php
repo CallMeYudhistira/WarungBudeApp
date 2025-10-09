@@ -22,11 +22,12 @@
             <thead>
                 <tr>
                     <th scope="col" style="width: 5%">#</th>
-                    <th scope="col" style="width: 21%">Harga Beli</th>
-                    <th scope="col" style="width: 21%">Kuantitas</th>
-                    <th scope="col" style="width: 21%">Total</th>
-                    <th scope="col" style="width: 16%">Tanggal Masuk</th>
-                    <th scope="col" style="width: 16%">Tanggal Kedaluwarsa</th>
+                    <th scope="col" style="width: 20%">Harga Beli</th>
+                    <th scope="col" style="width: 20%">Kuantitas</th>
+                    <th scope="col" style="width: 20%">Total</th>
+                    <th scope="col" style="width: 15%">Tanggal Masuk</th>
+                    <th scope="col" style="width: 15%">Tanggal Kedaluwarsa</th>
+                    <th scope="col" style="width: 5%">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,6 +42,7 @@
                         <td scope="row">{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
                         <td scope="row">{{ $refillStock->entry_date }}</td>
                         <td scope="row">{{ $refillStock->expired_date ? $refillStock->expired_date : '-' }}</td>
+                        <td scope="row">{{ $refillStock->status }}</td>
                     </tr>
                 @endforeach
             </tbody>

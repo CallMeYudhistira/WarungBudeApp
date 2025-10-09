@@ -13,7 +13,7 @@ class RefillStockController extends Controller
     public function index($id)
     {
         $product = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('product_detail_id', $id)->first();
-        $refillStocks = RefillStock::join('product_details', 'product_details.product_detail_id', 'refill_stocks.product_detail_id')->where('refill_stocks.product_detail_id', $id)->get();
+        $refillStocks = RefillStock::join('product_details', 'product_details.product_detail_id', 'refill_stocks.product_detail_id')->where('refill_stocks.product_detail_id', $id)->orderBy('refill_stocks.refill_stock_id', 'desc')->get();
 
         return view('barang.stok.index', compact('product', 'refillStocks'));
     }
@@ -28,7 +28,7 @@ class RefillStockController extends Controller
         }
 
         $product = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('product_detail_id', $id)->first();
-        $refillStocks = RefillStock::join('product_details', 'product_details.product_detail_id', 'refill_stocks.product_detail_id')->where('refill_stocks.product_detail_id', $id)->whereBetween('entry_date', [$first, $second])->get();
+        $refillStocks = RefillStock::join('product_details', 'product_details.product_detail_id', 'refill_stocks.product_detail_id')->where('refill_stocks.product_detail_id', $id)->whereBetween('entry_date', [$first, $second])->orderBy('refill_stocks.refill_stock_id', 'desc')->get();
 
         return view('barang.stok.index', compact('product', 'refillStocks', 'first', 'second'));
     }
@@ -59,6 +59,7 @@ class RefillStockController extends Controller
             'total' => $request->total,
             'entry_date' => now(),
             'expired_date' => $request->expired_date,
+            'status' => 'baik',
         ]);
 
         $new_refill = RefillStock::where('product_detail_id', $request->detail_id)->orderBy('refill_stock_id', 'desc')->first();
