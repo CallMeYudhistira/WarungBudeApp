@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CreditController;
+use App\Http\Controllers\ExpiredController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDetailController;
@@ -66,6 +67,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/refillStock/{id}', [RefillStockController::class, 'index']);
             Route::get('/refillStock/{id}/filter', [RefillStockController::class, 'filter']);
             Route::post('/refillStock/store', [RefillStockController::class, 'store']);
+
+            Route::get('/expired', [ExpiredController::class, 'index']);
+            Route::post('/expired/delete/{id}', [ExpiredController::class, 'delete']);
+            Route::get('/expired/history', [ExpiredController::class, 'history']);
         });
 
         Route::prefix('/satuan')->group(callback: function () {

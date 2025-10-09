@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\RefillStock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RefillStockController extends Controller
 {
@@ -34,13 +35,22 @@ class RefillStockController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'product_id' => 'required|numeric',
             'detail_id' => 'required|numeric',
-            'price' => 'required|numeric',
-            'quantity' => 'required|numeric',
-            'total' => 'required|numeric',
+            'price' => 'required|numeric|min:500',
+            'quantity' => 'required|numeric|min:1',
+            'total' => 'required|numeric|min:500',
         ]);
+
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if($request->expired_date <= now()->format('Y-m-d')){
+            $validator->errors()->add('expired_date', 'Tanggal expired sudah lewat!');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         RefillStock::create([
             'product_detail_id' => $request->detail_id,

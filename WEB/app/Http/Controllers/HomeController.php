@@ -11,14 +11,6 @@ class HomeController extends Controller
 {
     public function __invoke()
     {
-        $datas = DB::select("SELECT transactions.date, SUM(transactions.total) as total FROM transactions GROUP BY transactions.date");
-        $periode = [];
-        $total = [];
-        foreach ($datas as $data) {
-            $periode[] = Carbon::parse($data->date)->translatedFormat('l');
-            $total[] = $data->total;
-        }
-
         $bulan = date('m');
         $tahun = date('Y');
         $totalBulan = [];
@@ -43,6 +35,6 @@ class HomeController extends Controller
             $labaBulanIni += ($month->selling_price - $month->purchase_price) * $month->quantity;
         }
 
-        return view('home', compact('periode', 'total', 'omsetHariIni', 'labaHariIni', 'omsetBulanIni', 'labaBulanIni', 'totalBulan', 'dataBulan'));
+        return view('home', compact('omsetHariIni', 'labaHariIni', 'omsetBulanIni', 'labaBulanIni', 'totalBulan', 'dataBulan'));
     }
 }

@@ -29,13 +29,6 @@
     </div>
 </div>
 <hr class="m-4">
-@if ($total != null && $periode != null)
-    <div class="p-4 mt-4 card d-flex" style="margin: auto;">
-        <h1 class="text-center">Data Penjualan Minggu Ini</h1>
-        <div id="chart1"></div>
-    </div>
-@endif
-<hr class="m-4">
 @if ($dataBulan != null && $totalBulan != null)
     <div class="p-4 mt-4 card d-flex" style="margin: auto;">
         <h1 class="text-center">Data Penjualan Tahun Ini</h1>
@@ -46,57 +39,7 @@
 <script>
     var options = {
         series: [{
-            name: "Desktops",
-            data: @json($total)
-        }],
-        chart: {
-            height: 350,
-            type: 'line',
-            zoom: {
-                enabled: false
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            curve: 'straight'
-        },
-        grid: {
-            row: {
-                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                opacity: 0.5
-            },
-        },
-        xaxis: {
-            categories: @json($periode),
-            labels: {
-                fontSize: '8px',
-                fontFamily: 'Nata Sans',
-            }
-        },
-        yaxis: {
-            labels: {
-                formatter: function(value) {
-                    return value.toLocaleString('id-ID', {
-                        style: "currency",
-                        currency: "IDR"
-                    });
-                },
-                style: {
-                    fontFamily: 'Nata Sans'
-                }
-            },
-        },
-    };
-
-    var chart = new ApexCharts(document.querySelector("#chart1"), options);
-    chart.render();
-</script>
-
-<script>
-    var options = {
-        series: [{
+            name: 'Total Omset',
             data: @json($totalBulan)
         }],
         chart: {
