@@ -53,7 +53,7 @@
                 </form>
             @endforeach
         </div>
-        {{-- pagination links --}}
+
         <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh; margin-bottom: 2vh;">
             {{ $products->links() }}
         </div>

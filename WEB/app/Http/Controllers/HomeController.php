@@ -21,10 +21,9 @@ class HomeController extends Controller
         }
 
         $todays = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->where('transactions.date', '=', now()->format('Y-m-d'))->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
-        $omsetHariIni = 0;
+        $omsetHariIni = Transaction::where('date', now()->format('Y-m-d'))->sum('total');
         $labaHariIni = 0;
         foreach ($todays as $today) {
-            $omsetHariIni += $today->total;
             $labaHariIni += ($today->selling_price - $today->purchase_price) * $today->quantity;
         }
 

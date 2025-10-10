@@ -48,6 +48,10 @@
         </table>
     </div>
 
+    <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh; margin-bottom: 2vh;">
+        {{ $customers->links() }}
+    </div>
+
     @if ($pesan = Session::get('error'))
         <script>
             Swal.fire({

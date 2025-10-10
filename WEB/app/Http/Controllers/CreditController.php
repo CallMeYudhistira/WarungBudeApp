@@ -11,7 +11,7 @@ class CreditController extends Controller
 {
     public function index()
     {
-        $customers = Customer::where('status', 'belum lunas')->get();
+        $customers = Customer::where('status', 'belum lunas')->simplePaginate(15);
 
         return view('kredit.index', compact('customers'));
     }
@@ -23,7 +23,7 @@ class CreditController extends Controller
             return redirect('/kredit');
         }
 
-        $customers = Customer::where('status', 'belum lunas')->where('customer_name', 'LIKE', '%' . $keyword . '%')->get();
+        $customers = Customer::where('status', 'belum lunas')->where('customer_name', 'LIKE', '%' . $keyword . '%')->simplePaginate(15);
 
         return view('kredit.index', compact('customers', 'keyword'));
     }
