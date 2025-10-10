@@ -78,7 +78,7 @@
                     <hr class="divider">
                     <li class="nav-link dropdown-btn {{ $isTransaksiActive ? 'active' : '' }}">
                         <a href="javascript:void(0);">
-                            <i class='bx bx-cart icon'></i>
+                            <i class='bx bx-money icon'></i>
                             <span class="text nav-text">Transaksi</span>
                             <i class='bx bx-chevron-down arrow'></i>
                         </a>
@@ -87,7 +87,7 @@
                         <li class="nav-link {{ request()->is('transaksi*') ? 'active' : '' }}">
                             <a href="/transaksi">
                                 <i class='bx bx-cart icon'></i>
-                                <span class="text nav-text">Transaksi</span>
+                                <span class="text nav-text">Penjualan</span>
                             </a>
                         </li>
                         <li class="nav-link {{ request()->is('kredit*') ? 'active' : '' }}">
