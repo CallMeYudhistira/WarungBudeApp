@@ -46,9 +46,7 @@
             height: 350,
             type: 'bar',
         },
-        colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560',
-            '#775DD0', '#546E7A', '#26A69A', '#D10CE8'
-        ],
+        colors: ['#2244FF', '#FF4422', '#22FF44', '#ABCDEF', '#FEDCBA', '#CBDFAB', 'FFFF00', '00FFFF', 'FF00FF'],
         plotOptions: {
             bar: {
                 columnWidth: '45%',
@@ -65,9 +63,7 @@
             categories: @json($dataBulan),
             labels: {
                 style: {
-                    colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560',
-                        '#775DD0', '#546E7A', '#26A69A', '#D10CE8'
-                    ],
+                    colors: ['#000000'],
                     fontSize: '12px',
                     fontFamily: 'Nata Sans'
                 }

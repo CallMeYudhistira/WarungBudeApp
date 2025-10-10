@@ -15,67 +15,88 @@
     <div class="menu-bar">
         <div class="menu">
             <ul class="menu-links">
-                @if (Auth::user()->role == 'kasir' || Auth::user()->role == 'admin')
-                    <hr class="divider" style="margin-bottom: 30px;">
-                    <li class="nav-link {{ request()->is('home') ? 'active' : '' }}">
-                        <a href="/home">
-                            <i class='bx bx-home icon'></i>
-                            <span class="text nav-text">Beranda</span>
-                        </a>
-                    </li>
-                    <li class="nav-link {{ request()->is('transaksi') ? 'active' : '' }}">
-                        <a href="/transaksi">
-                            <i class='bx bx-cart icon'></i>
-                            <span class="text nav-text">Transaksi</span>
-                        </a>
-                    </li>
-                    <li class="nav-link {{ request()->is('kredit') ? 'active' : '' }}">
-                        <a href="/kredit">
-                            <i class='bx bx-notepad icon'></i>
-                            <span class="text nav-text">Kredit</span>
-                        </a>
-                    </li>
-                @endif
+                <hr class="divider" style="margin-bottom: 20px; margin-top: 20px;">
+                <li class="nav-link {{ request()->is('home') ? 'active' : '' }}">
+                    <a href="/home">
+                        <i class='bx bx-home icon'></i>
+                        <span class="text nav-text">Beranda</span>
+                    </a>
+                </li>
 
-                @if (Auth::user()->role == 'admin')
-                    <hr class="divider">
-                    <li class="nav-link {{ request()->is('users') ? 'active' : '' }}">
-                        <a href="/users">
-                            <i class='bx bxs-group icon'></i>
-                            <span class="text nav-text">Users</span>
-                        </a>
-                    </li>
-                @endif
+                @php
+                    $isDataActive =
+                        request()->is('users*') ||
+                        request()->is('kategori*') ||
+                        request()->is('satuan*') ||
+                        request()->is('barang*');
+                @endphp
 
                 @if (Auth::user()->role == 'gudang' || Auth::user()->role == 'admin')
-                    @if (Auth::user()->role == 'gudang')
-                        <hr class="divider" style="margin-bottom: 30px;">
-                        <li class="nav-link {{ request()->is('home') ? 'active' : '' }}">
-                            <a href="/home">
-                                <i class='bx bx-home icon'></i>
-                                <span class="text nav-text">Beranda</span>
+                    <hr class="divider">
+                    <li class="nav-link dropdown-btn {{ $isDataActive ? 'active' : '' }}">
+                        <a href="javascript:void(0);">
+                            <i class='bx bx-data icon'></i>
+                            <span class="text nav-text">Data</span>
+                            <i class='bx bx-chevron-down arrow'></i>
+                        </a>
+                    </li>
+                    <ul class="submenu {{ $isDataActive ? 'show' : '' }}">
+                        @if (Auth::user()->role == 'admin')
+                            <li class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
+                                <a href="/users">
+                                    <i class='bx bxs-group icon'></i>
+                                    <span class="text nav-text">Users</span>
+                                </a>
+                            </li>
+                        @endif
+                        <li class="nav-link {{ request()->is('kategori*') ? 'active' : '' }}">
+                            <a href="/kategori">
+                                <i class='bx bx-category icon'></i>
+                                <span class="text nav-text">Kategori</span>
                             </a>
                         </li>
-                    @endif
-                    <hr class="divider" style="margin-bottom: 30px;">
-                    <li class="nav-link {{ request()->is('satuan') ? 'active' : '' }}">
-                        <a href="/satuan">
-                            <i class='bx bx-bookmark icon'></i>
-                            <span class="text nav-text">Satuan</span>
+                        <li class="nav-link {{ request()->is('satuan*') ? 'active' : '' }}">
+                            <a href="/satuan">
+                                <i class='bx bx-bookmark icon'></i>
+                                <span class="text nav-text">Satuan</span>
+                            </a>
+                        </li>
+                        <li class="nav-link {{ request()->is('barang*') ? 'active' : '' }}">
+                            <a href="/barang">
+                                <i class='bx bx-package icon'></i>
+                                <span class="text nav-text">Barang</span>
+                            </a>
+                        </li>
+                    </ul>
+                @endif
+
+                @php
+                    $isTransaksiActive = request()->is('transaksi*') || request()->is('kredit*');
+                @endphp
+
+                @if (Auth::user()->role == 'kasir' || Auth::user()->role == 'admin')
+                    <hr class="divider">
+                    <li class="nav-link dropdown-btn {{ $isTransaksiActive ? 'active' : '' }}">
+                        <a href="javascript:void(0);">
+                            <i class='bx bx-cart icon'></i>
+                            <span class="text nav-text">Transaksi</span>
+                            <i class='bx bx-chevron-down arrow'></i>
                         </a>
                     </li>
-                    <li class="nav-link {{ request()->is('kategori') ? 'active' : '' }}">
-                        <a href="/kategori">
-                            <i class='bx bx-category icon'></i>
-                            <span class="text nav-text">Kategori</span>
-                        </a>
-                    </li>
-                    <li class="nav-link {{ request()->is('barang') ? 'active' : '' }}">
-                        <a href="/barang">
-                            <i class='bx bx-package icon'></i>
-                            <span class="text nav-text">Barang</span>
-                        </a>
-                    </li>
+                    <ul class="submenu {{ $isTransaksiActive ? 'show' : '' }}">
+                        <li class="nav-link {{ request()->is('transaksi*') ? 'active' : '' }}">
+                            <a href="/transaksi">
+                                <i class='bx bx-cart icon'></i>
+                                <span class="text nav-text">Transaksi</span>
+                            </a>
+                        </li>
+                        <li class="nav-link {{ request()->is('kredit*') ? 'active' : '' }}">
+                            <a href="/kredit">
+                                <i class='bx bx-notepad icon'></i>
+                                <span class="text nav-text">Kredit</span>
+                            </a>
+                        </li>
+                    </ul>
                 @endif
             </ul>
         </div>
@@ -97,9 +118,17 @@
 
 <script>
     const logout = document.getElementById('logoutbtn');
-
     logout.addEventListener("click", function() {
         var myModal = new bootstrap.Modal(document.getElementById('logout'));
         myModal.show();
+    });
+
+    const dropdownBtns = document.querySelectorAll('.dropdown-btn');
+    dropdownBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            const submenu = btn.nextElementSibling;
+            submenu.classList.toggle('show');
+        });
     });
 </script>
