@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/expired', [ExpiredController::class, 'index']);
             Route::post('/expired/delete', [ExpiredController::class, 'delete']);
             Route::get('/expired/history', [ExpiredController::class, 'history']);
+            Route::get('/expired/history/filter', [ExpiredController::class, 'filter']);
         });
 
         Route::prefix('/satuan')->group(callback: function () {

@@ -29,12 +29,9 @@
                 </tr>
             </thead>
             <tbody>
-                @php
-                    $no = 1;
-                @endphp
-                @foreach ($transactions as $transaction)
+                @foreach ($transactions as $i => $transaction)
                     <tr>
-                        <th scope="row">{{ $no++ }}</th>
+                        <th scope="row">{{ $i + 1 }}</th>
                         <td scope="row">{{ \Carbon\Carbon::parse($transaction->date)->translatedFormat('l, d/F/Y') }}</td>
                         <td scope="row">{{ 'Rp ' . number_format($transaction->total, 0, ',', '.') }}</td>
                         <td scope="row">{{ 'Rp ' . number_format($transaction->pay, 0, ',', '.') }}</td>

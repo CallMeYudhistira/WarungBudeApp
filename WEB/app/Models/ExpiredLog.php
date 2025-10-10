@@ -10,5 +10,5 @@ class ExpiredLog extends Model
     use HasFactory;
 
     protected $primaryKey = 'expired_id';
-    protected $fillable = ['product_detail_id', 'unit_id', 'quantity', 'disposed_date', 'note', 'user_id'];
+    protected $fillable = ['refill_stock_id', 'disposed_date', 'note', 'user_id'];
 }

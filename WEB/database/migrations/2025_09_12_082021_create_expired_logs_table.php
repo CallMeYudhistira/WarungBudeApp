@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('expired_logs', function (Blueprint $table) {
             $table->increments('expired_id');
-            $table->integer('product_detail_id');
-            $table->integer('unit_id');
-            $table->integer('quantity');
+            $table->integer('refill_stock_id');
             $table->dateTime('disposed_date');
-            $table->string('note')->nullable(); 
+            $table->string('note')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });

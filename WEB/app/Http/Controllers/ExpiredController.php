@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ExpiredLog;
 use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\RefillStock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpiredController extends Controller
 {
@@ -34,6 +36,19 @@ class ExpiredController extends Controller
             'status' => 'expired',
         ]);
 
+        ExpiredLog::create([
+            'refill_stock_id' => $request->refill_stock_id,
+            'disposed_date' => now()->format('Y-m-d'),
+            'note' => $request->note,
+            'user_id' => Auth::user()->user_id,
+        ]);
+
         return redirect('/barang/expired')->with('success', 'Stok Barang Kedaluwarsa Telah Dibuang!');
+    }
+
+    public function history(){
+        $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'refill_stocks.quantity', 'users.name']);
+
+        return view('barang.expired.history', compact('logs'));
     }
 }

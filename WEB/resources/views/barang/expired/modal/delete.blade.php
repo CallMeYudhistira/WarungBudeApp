@@ -1,5 +1,4 @@
-<div class="modal fade modal-lg" id="hapusStok{{ $product->product_detail_id }}" tabindex="-1"
-    aria-hidden="true">
+<div class="modal fade modal-lg" id="hapusStok{{ $product->product_detail_id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="/barang/expired/delete" method="post">
@@ -16,12 +15,18 @@
                         <label for="product_name" class="form-label">Nama Barang</label>
                         <input type="text" class="form-control" value="{{ $product->product_name }}" disabled>
                     </div>
-                    <div class="mb-3">
-                        <label for="product_name" class="form-label">Tanggal Kedaluwarsa</label>
-                        <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($product->expired_date)->translatedFormat('l, d/F/Y') }}" disabled>
-                    </div>
                     <img id="previewImage" src="{{ asset('images/' . $product->pict) }}" alt="Preview Gambar"
                         style="display: block; max-width: 300px; margin: auto; margin-top: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd; box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.4);">
+                    <div class="mb-3">
+                        <label for="product_name" class="form-label">Tanggal Kedaluwarsa</label>
+                        <input type="text" class="form-control"
+                            value="{{ \Carbon\Carbon::parse($product->expired_date)->translatedFormat('l, d/F/Y') }}"
+                            disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Catatan</label>
+                        <textarea class="form-control" name="note" rows="3"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
