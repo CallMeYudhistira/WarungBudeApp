@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/history/filter', [TransactionController::class, 'filter']);
 
             Route::get('/detail/{id}', [TransactionController::class, 'detail']);
-            Route::get('detail/{id}/print', [TransactionController::class, 'print']);
+            Route::get('/detail/{id}/print', [TransactionController::class, 'print']);
         });
 
         Route::prefix('/kredit')->group(function () {

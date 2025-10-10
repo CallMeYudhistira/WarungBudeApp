@@ -59,60 +59,63 @@
         </div>
 
         <div class="d-flex">
-        @if (isset($carts) || $carts != null)
-            <div style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 75%; max-height: 500px; float: left; margin-right: 15px; overflow-y: scroll;">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th colspan="9">
-                                <h2 class="text-center">Cart List</h2>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Foto Barang</th>
-                            <th scope="col">Nama Barang</th>
-                            <th scope="col">Kategori</th>
-                            <th scope="col">Harga (Rp.)</th>
-                            <th scope="col">Kuantitas</th>
-                            <th scope="col">Subtotal (Rp.)</th>
-                            <th scope="col">Nama Kasir</th>
-                            <th scope="col" class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($carts as $i => $cart)
+            @if (isset($carts) || $carts != null)
+                <div
+                    style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 75%; max-height: 500px; float: left; margin-right: 15px; overflow-y: scroll;">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ $i + 1 }}</td>
-                                <td><img src="{{ asset('images/' . $cart->pict) }}" alt="foto barang"
-                                        style="width: 90px; border-radius: 8px;"></td>
-                                <td>{{ $cart->product_name }}</td>
-                                <td>{{ $cart->category_name }}</td>
-                                <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}/{{ $product->unit_name }}</td>
-                                <td>{{ $cart->quantity }}</td>
-                                <td>{{ 'Rp ' . number_format($cart->subtotal, 0, ',', '.') }}</td>
-                                <td>{{ $cart->name }}</td>
-                                <td class="text-center">
-                                    <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf
-                                        @method('delete')<button type="submit" class="btn btn-danger">Hapus</button>
-                                    </form>
-                                </td>
+                                <th colspan="9">
+                                    <h2 class="text-center">Cart List</h2>
+                                </th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @endif
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Foto Barang</th>
+                                <th scope="col">Nama Barang</th>
+                                <th scope="col">Kategori</th>
+                                <th scope="col">Harga (Rp.)</th>
+                                <th scope="col">Kuantitas</th>
+                                <th scope="col">Subtotal (Rp.)</th>
+                                <th scope="col">Nama Kasir</th>
+                                <th scope="col" class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($carts as $i => $cart)
+                                <tr>
+                                    <td>{{ $i + 1 }}</td>
+                                    <td><img src="{{ asset('images/' . $cart->pict) }}" alt="foto barang"
+                                            style="width: 90px; border-radius: 8px;"></td>
+                                    <td>{{ $cart->product_name }}</td>
+                                    <td>{{ $cart->category_name }}</td>
+                                    <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}/{{ $product->unit_name }}
+                                    </td>
+                                    <td>{{ $cart->quantity }}</td>
+                                    <td>{{ 'Rp ' . number_format($cart->subtotal, 0, ',', '.') }}</td>
+                                    <td>{{ $cart->name }}</td>
+                                    <td class="text-center">
+                                        <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf
+                                            @method('delete')<button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
 
-        @php
-            $total = 0;
+            @php
+                $total = 0;
 
-            foreach ($carts as $cart) {
-                $total += $cart->subtotal;
-            }
-        @endphp
+                foreach ($carts as $cart) {
+                    $total += $cart->subtotal;
+                }
+            @endphp
 
-            <div style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 25%; float: right; margin-left: 15px; max-height: 500px; min-height: 500px;">
+            <div
+                style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 25%; float: right; margin-left: 15px; max-height: 500px; min-height: 500px;">
                 <form action="transaksi/proses" method="post">
                     @csrf
                     <label for="total" class="mb-2">Total : (Rp.)</label>
@@ -126,7 +129,8 @@
                     </select>
                     <div style="display: none;" id="hutang">
                         <label for="customer_name" class="mb-2">Nama Penghutang</label>
-                        <input type="text" name="customer_name" id="customer_name" list="customer_names" class="form-control mb-3" autocomplete="off">
+                        <input type="text" name="customer_name" id="customer_name" list="customer_names"
+                            class="form-control mb-3" autocomplete="off">
 
                         <datalist id="customer_names">
                             @foreach ($customers as $customer)
@@ -173,12 +177,11 @@
         });
     </script>
 
-    @if ($pesan = Session::get('success'))
+    @if ($id = Session::get('id'))
+        @include('transaksi.modal.print')
         <script>
-            Swal.fire({
-                title: "{{ $pesan }}",
-                icon: "success",
-            });
+            var myModal = new bootstrap.Modal(document.getElementById('print' + {{ $id }}));
+            myModal.show();
         </script>
     @endif
 

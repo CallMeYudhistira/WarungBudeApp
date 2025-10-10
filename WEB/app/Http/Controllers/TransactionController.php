@@ -176,7 +176,7 @@ class TransactionController extends Controller
 
         DB::statement('DELETE FROM carts WHERE user_id = ' . Auth::user()->user_id);
 
-        return redirect('/transaksi')->with('success', 'Terimakasih Telah Berbelanja!');
+        return redirect('/transaksi')->with('id', $transaction_id);
     }
 
     public function history()
