@@ -8,7 +8,7 @@
     </div>
     <div>
         <h2 class="text-center mb-3">Barang Kedaluwarsa</h2>
-        @if (!$expired_products->isEmpty())
+        @if (isset($expired) || !$expired_products->isEmpty())
         <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
             <form class="d-flex ms-auto mt-2 mb-2" action="/barang/expired/search" method="get">
                 <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="expired"
@@ -74,7 +74,7 @@
 
     <div>
         <h2 class="text-center mb-3">Barang Aman</h2>
-        @if (!$normal_products->isEmpty())
+        @if (isset($normal) || !$normal_products->isEmpty())
         <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
             <form class="d-flex ms-auto mt-2 mb-2" action="/barang/expired/search" method="get">
                 <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="normal"

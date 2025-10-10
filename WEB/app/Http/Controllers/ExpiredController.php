@@ -18,6 +18,20 @@ class ExpiredController extends Controller
         return view('barang.expired.index', compact('expired_products', 'normal_products'));
     }
 
+    public function search(Request $request){
+        $expired = $request->expired;
+        $normal = $request->normal;
+
+        if (!$expired && !$normal) {
+            return redirect('/barang/expired');
+        }
+
+        $expired_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '<=', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'baik')->where('products.product_name', 'LIKE', "%$expired%")->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'refill_stocks.quantity', 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
+        $normal_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '>', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'baik')->where('products.product_name', 'LIKE', "%$normal%")->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'refill_stocks.quantity', 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
+
+        return view('barang.expired.index', compact('expired_products', 'normal_products', 'expired', 'normal'));
+    }
+
     public function delete(Request $request){
         $request->validate([
             'product_detail_id' => 'required',
