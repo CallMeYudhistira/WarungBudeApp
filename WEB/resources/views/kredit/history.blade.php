@@ -35,7 +35,7 @@
                     <td>{{ $customer->amount_of_paid }}</td>
                     <td>{{ $customer->remaining_debt }}</td>
                     <td>{{ $customer->change }}</td>
-                    <td>{{ $customer->payment_date }}</td>
+                    <td>{{ \Carbon\Carbon::parse($customer->payment_date)->translatedFormat('l, d/F/Y') }}</td>
                 </tr>
                 @endforeach
             </tbody>

@@ -90,6 +90,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/search', [TransactionController::class, 'search']);
 
             Route::post('/cart/store', [TransactionController::class, 'cartStore']);
+            Route::put('/cart/plus/{id}', [TransactionController::class, 'cartPlus']);
+            Route::put('/cart/minus/{id}', [TransactionController::class, 'cartMinus']);
             Route::delete('/cart/delete/{id}', [TransactionController::class, 'cartDelete']);
 
             Route::post('/proses', [TransactionController::class, 'transactionStore']);

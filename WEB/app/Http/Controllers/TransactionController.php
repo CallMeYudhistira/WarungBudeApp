@@ -54,8 +54,11 @@ class TransactionController extends Controller
 
         $cekCart = Cart::where('product_detail_id', $request->id)->first();
 
-        if (!$cekCart || $cekCart != null) {
-            Cart::where('product_detail_id', $request->id)->delete();
+        if ($cekCart || $cekCart != null) {
+            Cart::where('product_detail_id', $request->id)->update([
+                'quantity' => $cekCart->quantity + $request->quantity,
+            ]);
+            return redirect('/transaksi#cart');
         }
 
         Cart::create([
@@ -67,14 +70,34 @@ class TransactionController extends Controller
             'user_id' => Auth::user()->user_id,
         ]);
 
-        return redirect('/transaksi');
+        return redirect('/transaksi#cart');
+    }
+
+    public function cartPlus($id)
+    {
+        $cart = Cart::where('cart_id', $id)->first();
+        $cart->update([
+            'quantity' => $cart->quantity + 1,
+        ]);
+
+        return redirect('/transaksi#cart');
+    }
+
+    public function cartMinus($id)
+    {
+        $cart = Cart::where('cart_id', $id)->first();
+        $cart->update([
+            'quantity' => $cart->quantity - 1,
+        ]);
+
+        return redirect('/transaksi#cart');
     }
 
     public function cartDelete($id)
     {
         Cart::where('cart_id', $id)->delete();
 
-        return redirect('/transaksi');
+        return redirect('/transaksi#cart');
     }
 
     public function transactionStore(Request $request)

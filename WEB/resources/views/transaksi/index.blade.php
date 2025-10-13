@@ -11,6 +11,7 @@
         </form>
     </div>
     <div>
+        @if (!$products->isEmpty())
         <div class="row row-cols-1 row-cols-md-5 g-5">
             @foreach ($products as $product)
                 <form action="transaksi/cart/store" method="post">
@@ -53,19 +54,23 @@
                 </form>
             @endforeach
         </div>
+        @else
+            <div class="alert alert-primary p-3 text-center" role="alert" style="width: 350px; margin: auto; margin-top: 2rem;">
+                ❌ Barang Tidak Tersedia. ❌
+            </div>
+        @endif
 
         <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh; margin-bottom: 2vh;">
             {{ $products->links() }}
         </div>
 
-        <div class="d-flex">
+        <div class="d-flex" id="cart">
             @if (isset($carts) || $carts != null)
-                <div
-                    style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 75%; max-height: 500px; float: left; margin-right: 15px; overflow-y: scroll;">
+                <div style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 75%; max-height: 500px; float: left; margin-right: 15px; overflow-y: scroll;">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th colspan="9">
+                                <th colspan="8">
                                     <h2 class="text-center">Cart List</h2>
                                 </th>
                             </tr>
@@ -77,8 +82,7 @@
                                 <th scope="col">Harga (Rp.)</th>
                                 <th scope="col">Kuantitas</th>
                                 <th scope="col">Subtotal (Rp.)</th>
-                                <th scope="col">Nama Kasir</th>
-                                <th scope="col" class="text-center">Action</th>
+                                <th scope="col" class="text-center" style="width: 10%;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,14 +93,21 @@
                                             style="width: 90px; border-radius: 8px;"></td>
                                     <td>{{ $cart->product_name }}</td>
                                     <td>{{ $cart->category_name }}</td>
-                                    <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}/{{ $product->unit_name }}
+                                    <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}/{{ $cart->unit_name }}
                                     </td>
                                     <td>{{ $cart->quantity }}</td>
                                     <td>{{ 'Rp ' . number_format($cart->subtotal, 0, ',', '.') }}</td>
-                                    <td>{{ $cart->name }}</td>
                                     <td class="text-center">
+                                        <div class="d-flex" style="justify-content: space-between; margin-bottom: 0.3rem;">
+                                            <form action="/transaksi/cart/plus/{{ $cart->cart_id }}" method="post">@csrf
+                                                @method('put')<button type="submit" class="btn btn-success" style="padding: 5px 0.9rem;">+</button>
+                                            </form>
+                                            <form action="/transaksi/cart/minus/{{ $cart->cart_id }}" method="post">@csrf
+                                                @method('put')<button type="submit" class="btn btn-warning" style="padding: 5px 0.9rem;">-</button>
+                                            </form>
+                                        </div>
                                         <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf
-                                            @method('delete')<button type="submit" class="btn btn-danger">Hapus</button>
+                                            @method('delete')<button type="submit" class="btn btn-danger w-100">Hapus</button>
                                         </form>
                                     </td>
                                 </tr>
