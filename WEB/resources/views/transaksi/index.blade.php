@@ -108,8 +108,8 @@
                                             <form action="/transaksi/cart/minus/{{ $cart->cart_id }}" method="post">
                                                 @csrf
                                                 @method('put')<button type="button" class="btn btn-warning"
-                                                    style="padding: 5px 0.9rem;"
-                                                    onclick="if({{ $cart->quantity }} > 1) {this.form.submit()}">-</button>
+                                                    style="padding: 5px 0.9rem;" id="min"
+                                                    onclick="minusQuantity({{ $cart->quantity }})">-</button>
                                             </form>
                                         </div>
                                         <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf
@@ -162,24 +162,40 @@
                     <label for="change" class="mb-2">Kembalian : (Rp.)</label>
                     <input type="number" min="0" name="change" value="0" class="form-control mb-3"
                         readonly id="change">
-                    <button type="submit" class="btn btn-primary w-100">Bayar</button>
+                    <button type="button" class="btn btn-primary w-100" onclick="cekBayar()" id="btnBayar">Bayar</button>
                 </form>
             </div>
         </div>
     </div>
 
+    @include('transaksi.modal.minusTotal')
     <script>
         function kembalian(bayar) {
             const kembali = document.getElementById('change');
             const total = document.getElementById('total').value;
             kembali.value = bayar - total;
-            if (kembali.value < 0) {
-                kembali.value = 0;
+        }
+
+        function minusQuantity(quantity){
+            const min = document.getElementById('min');
+            if (quantity > 1) {min.form.submit();}
+        }
+
+        function cekBayar(){
+            const kembali = document.getElementById('change').value;
+            const btnBayar = document.getElementById('btnBayar');
+            if(kembali >= 0 || document.getElementById('payment').value == 'kredit'){
+                btnBayar.form.submit();
+            } else {
+                var myModal = new bootstrap.Modal(document.getElementById('minusTotal'));
+                myModal.show();
+
+                document.getElementById('totalModal').value = document.getElementById('total').value;
+                document.getElementById('payModal').value = document.getElementById('pay').value;
+                document.getElementById('changeModal').value = document.getElementById('change').value;
             }
         }
-    </script>
 
-    <script>
         const payment = document.getElementById('payment')
         payment.addEventListener('change', e => {
             const pay = document.getElementById('pay');
@@ -189,8 +205,8 @@
             } else if (e.target.value === 'kredit') {
                 pay.readOnly = true;
                 pay.value = 0;
+                kembalian(pay.value);
                 document.getElementById('hutang').style.display = 'block';
-                document.getElementById('change').value = 0;
             }
         });
     </script>

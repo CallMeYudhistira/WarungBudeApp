@@ -125,9 +125,6 @@ class TransactionController extends Controller
         ]);
 
         $validator->after(function ($validator) use ($request) {
-            if (!$request->payment || $request->payment == null) {
-                $validator->errors()->add('payment', 'Metode pembayaran tidak valid!');
-            }
             if ($request->total == 0 || $request->total < 0) {
                 $validator->errors()->add('total', 'Keranjang masih kosong!.');
             }
@@ -135,18 +132,6 @@ class TransactionController extends Controller
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        if ($request->payment === 'tunai') {
-            $validator->after(function ($validator) use ($request) {
-                if (!$request->pay || $request->pay == 0 || ($request->pay - $request->total) < 0) {
-                    $validator->errors()->add('pay', 'Uang pembayaran kurang dan tidak boleh 0.');
-                }
-            });
-
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
         }
 
         if ($request->payment !== 'tunai' && $request->payment !== 'kredit') {
@@ -169,10 +154,10 @@ class TransactionController extends Controller
 
         if ($request->payment === 'kredit') {
             $customer = Customer::where('customer_name', $request->customer_name)->first();
-            $total_of_debt = $request->total;
+            $total_of_debt = $request->change * -1;
 
             if ($customer && $customer !== null) {
-                $total_of_debt = $customer->amount_of_debt + $request->total;
+                $total_of_debt = $customer->amount_of_debt + $total_of_debt;
 
                 Customer::where('customer_id', $customer->customer_id)->update([
                     'amount_of_debt' => $total_of_debt,
