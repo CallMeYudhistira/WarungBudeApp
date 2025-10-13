@@ -44,6 +44,7 @@ class TransactionController extends Controller
     public function cartStore(Request $request)
     {
         $product = ProductDetail::find($request->id);
+        $cekCart = Cart::where('product_detail_id', $request->id)->first();
 
         $request->validate([
             'id' => 'required',
@@ -52,11 +53,19 @@ class TransactionController extends Controller
             'purchase_price' => 'required',
         ]);
 
-        $cekCart = Cart::where('product_detail_id', $request->id)->first();
-
         if ($cekCart || $cekCart != null) {
+            $newQuantity = $cekCart->quantity + $request->quantity;
+            if ($newQuantity > $product->stock){
+                Cart::where('product_detail_id', $request->id)->update([
+                    'quantity' => $product->stock,
+                    'subtotal' => ($product->stock * $request->selling_price),
+                ]);
+
+                return redirect('/transaksi#cart');
+            }
             Cart::where('product_detail_id', $request->id)->update([
-                'quantity' => $cekCart->quantity + $request->quantity,
+                'quantity' => $newQuantity,
+                'subtotal' => ($newQuantity * $request->selling_price),
             ]);
             return redirect('/transaksi#cart');
         }
@@ -76,8 +85,15 @@ class TransactionController extends Controller
     public function cartPlus($id)
     {
         $cart = Cart::where('cart_id', $id)->first();
+        $stock = ProductDetail::where('product_detail_id', $cart->product_detail_id)->first()->stock;
+
+        if(($cart->quantity + 1) > $stock){
+            return redirect('/transaksi#cart');
+        }
+
         $cart->update([
             'quantity' => $cart->quantity + 1,
+            'subtotal' => ($cart->quantity + 1) * $cart->selling_price,
         ]);
 
         return redirect('/transaksi#cart');
@@ -88,6 +104,7 @@ class TransactionController extends Controller
         $cart = Cart::where('cart_id', $id)->first();
         $cart->update([
             'quantity' => $cart->quantity - 1,
+            'subtotal' => ($cart->quantity - 1) * $cart->selling_price,
         ]);
 
         return redirect('/transaksi#cart');

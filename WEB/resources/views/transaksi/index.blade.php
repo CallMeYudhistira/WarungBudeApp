@@ -12,50 +12,51 @@
     </div>
     <div>
         @if (!$products->isEmpty())
-        <div class="row row-cols-1 row-cols-md-5 g-5">
-            @foreach ($products as $product)
-                <form action="transaksi/cart/store" method="post">
-                    @csrf
-                    <div class="col">
-                        <div class="card h-100" style="width: 280px;">
-                            <img src="{{ asset('images/' . $product->pict) }}" class="card-img-top" alt="foto barang">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $product->product_name }}</h5>
-                            </div>
-                            <table class="table p-2">
-                                <tr style="border-top: 0.5px solid #ccc;">
-                                    <th>Kategori</th>
-                                    <td>:</td>
-                                    <td>{{ $product->category_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Harga (Rp.)</th>
-                                    <td>:</td>
-                                    <td>{{ 'Rp ' . number_format($product->selling_price, 0, ',', '.') }}/{{ $product->unit_name }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Kuantitas</th>
-                                    <td>:</td>
-                                    <td><input type="number" name="quantity" min="1" max="{{ $product->stock }}"
-                                            value="1" class="form-control"></td>
-                                </tr>
-                            </table>
-                            <div class="card-body">
-                                <input type="hidden" name="selling_price" class="form-control m-2"
-                                    value="{{ $product->selling_price }}">
-                                <input type="hidden" name="purchase_price" class="form-control m-2"
-                                    value="{{ $product->purchase_price }}">
-                                <input type="hidden" name="id" value="{{ $product->product_detail_id }}">
-                                <button class="btn btn-success w-100" type="submit">Beli</button>
+            <div class="row row-cols-1 row-cols-md-5 g-5">
+                @foreach ($products as $product)
+                    <form action="transaksi/cart/store" method="post">
+                        @csrf
+                        <div class="col">
+                            <div class="card h-100" style="width: 280px;">
+                                <img src="{{ asset('images/' . $product->pict) }}" class="card-img-top" alt="foto barang">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $product->product_name }}</h5>
+                                </div>
+                                <table class="table p-2">
+                                    <tr style="border-top: 0.5px solid #ccc;">
+                                        <th>Kategori</th>
+                                        <td>:</td>
+                                        <td>{{ $product->category_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Harga (Rp.)</th>
+                                        <td>:</td>
+                                        <td>{{ 'Rp ' . number_format($product->selling_price, 0, ',', '.') }}/{{ $product->unit_name }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Kuantitas</th>
+                                        <td>:</td>
+                                        <td><input type="number" name="quantity" min="1" max="{{ $product->stock }}"
+                                                value="1" class="form-control"></td>
+                                    </tr>
+                                </table>
+                                <div class="card-body">
+                                    <input type="hidden" name="selling_price" class="form-control m-2"
+                                        value="{{ $product->selling_price }}">
+                                    <input type="hidden" name="purchase_price" class="form-control m-2"
+                                        value="{{ $product->purchase_price }}">
+                                    <input type="hidden" name="id" value="{{ $product->product_detail_id }}">
+                                    <button class="btn btn-success w-100" type="submit">Beli</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            @endforeach
-        </div>
+                    </form>
+                @endforeach
+            </div>
         @else
-            <div class="alert alert-primary p-3 text-center" role="alert" style="width: 350px; margin: auto; margin-top: 2rem;">
+            <div class="alert alert-primary p-3 text-center" role="alert"
+                style="width: 350px; margin: auto; margin-top: 2rem;">
                 ❌ Barang Tidak Tersedia. ❌
             </div>
         @endif
@@ -66,7 +67,8 @@
 
         <div class="d-flex" id="cart">
             @if (isset($carts) || $carts != null)
-                <div style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 75%; max-height: 500px; float: left; margin-right: 15px; overflow-y: scroll;">
+                <div
+                    style="border: 1px solid #ccc; border-radius: 6px; padding: 12px; width: 75%; max-height: 500px; float: left; margin-right: 15px; overflow-y: scroll;">
                     <table class="table">
                         <thead>
                             <tr>
@@ -95,19 +97,24 @@
                                     <td>{{ $cart->category_name }}</td>
                                     <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}/{{ $cart->unit_name }}
                                     </td>
-                                    <td>{{ $cart->quantity }}</td>
+                                    <td id="quantity{{ $cart->cart_id }}">{{ $cart->quantity }}</td>
                                     <td>{{ 'Rp ' . number_format($cart->subtotal, 0, ',', '.') }}</td>
                                     <td class="text-center">
                                         <div class="d-flex" style="justify-content: space-between; margin-bottom: 0.3rem;">
                                             <form action="/transaksi/cart/plus/{{ $cart->cart_id }}" method="post">@csrf
-                                                @method('put')<button type="submit" class="btn btn-success" style="padding: 5px 0.9rem;">+</button>
+                                                @method('put')<button type="submit" class="btn btn-success"
+                                                    style="padding: 5px 0.9rem;">+</button>
                                             </form>
-                                            <form action="/transaksi/cart/minus/{{ $cart->cart_id }}" method="post">@csrf
-                                                @method('put')<button type="submit" class="btn btn-warning" style="padding: 5px 0.9rem;">-</button>
+                                            <form action="/transaksi/cart/minus/{{ $cart->cart_id }}" method="post">
+                                                @csrf
+                                                @method('put')<button type="button" class="btn btn-warning"
+                                                    style="padding: 5px 0.9rem;"
+                                                    onclick="if({{ $cart->quantity }} > 1) {this.form.submit()}">-</button>
                                             </form>
                                         </div>
                                         <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf
-                                            @method('delete')<button type="submit" class="btn btn-danger w-100">Hapus</button>
+                                            @method('delete')<button type="submit"
+                                                class="btn btn-danger w-100">Hapus</button>
                                         </form>
                                     </td>
                                 </tr>
