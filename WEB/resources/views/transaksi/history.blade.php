@@ -4,6 +4,11 @@
     <h1>Riwayat Transaksi</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <a href="/transaksi" class="btn btn-dark m-2">Kembali</a>
+        <form action="/transaksi/history/export" method="get">
+            <input type="hidden" name="first" @isset($first) value="{{ $first }}" @endisset />
+            <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset />
+            <button class="btn btn-success m-2" type="submit">Cetak</button>
+        </form>
         <form class="d-flex m-2 ms-auto" action="/transaksi/history/filter" method="get">
             <input class="form-control me-2" type="date" name="first"
                 @isset($first) value="{{ $first }}" @endisset />

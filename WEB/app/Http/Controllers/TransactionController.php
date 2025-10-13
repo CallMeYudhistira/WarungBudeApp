@@ -55,7 +55,7 @@ class TransactionController extends Controller
 
         if ($cekCart || $cekCart != null) {
             $newQuantity = $cekCart->quantity + $request->quantity;
-            if ($newQuantity > $product->stock){
+            if ($newQuantity > $product->stock) {
                 Cart::where('product_detail_id', $request->id)->update([
                     'quantity' => $product->stock,
                     'subtotal' => ($product->stock * $request->selling_price),
@@ -87,7 +87,7 @@ class TransactionController extends Controller
         $cart = Cart::where('cart_id', $id)->first();
         $stock = ProductDetail::where('product_detail_id', $cart->product_detail_id)->first()->stock;
 
-        if(($cart->quantity + 1) > $stock){
+        if (($cart->quantity + 1) > $stock) {
             return redirect('/transaksi#cart');
         }
 
@@ -209,6 +209,51 @@ class TransactionController extends Controller
         $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
 
         return view('transaksi.history', compact('transactions'));
+    }
+
+    public function exportExcelHistory(Request $request)
+    {
+        $fileName = 'transaksi_' . date('Y-m-d_H-i-s') . '.xls';
+        $first = $request->first;
+        $second = $request->second;
+
+        if (!$first && !$second) {
+            $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
+        } else {
+            $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->whereBetween('date', [$first, $second])->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
+        }
+
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => "attachment; filename=\"$fileName\"",
+        ];
+
+        $callback = function () use ($transactions) {
+            echo "<table border='1'>";
+            echo "<tr>
+                <th>Tanggal</th>
+                <th>Total</th>
+                <th>Bayar</th>
+                <th>Kembali</th>
+                <th>Metode Pembayaran</th>
+                <th>Nama Kasir</th>
+                <th>Nama Pelanggan</th>
+            </tr>";
+            foreach ($transactions as $t) {
+                echo "<tr>
+                    <td>{$t->date}</td>
+                    <td>{$t->total}</td>
+                    <td>{$t->pay}</td>
+                    <td>{$t->change}</td>
+                    <td>{$t->payment}</td>
+                    <td>" . ($t->name ?? '-') . "</td>
+                    <td>" . ($t->customer_name ?? '-') . "</td>
+                </tr>";
+            }
+            echo "</table>";
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     public function filter(Request $request)
