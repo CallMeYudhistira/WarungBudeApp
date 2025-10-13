@@ -4,29 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Register Page</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 </head>
 
 <body>
 
-    <div class="container" id="container">
-        <div class="form-container sign-in">
-            <form action="/login" method="post" class="form-login">
+    <div class="container active" id="container">
+        <div class="form-container sign-up">
+            <form action="/register" method="post">
                 @csrf
-                <h1 style="margin-bottom: 1rem;">Sign In!</h1>
-                <span style="margin-bottom: 0.7rem;">Use your username and password.</span>
+                <h1 style="margin-bottom: 1rem;">Sign Up!</h1>
+                <span style="margin-bottom: 0.7rem;">Complete the field below.</span>
+                <input type="text" name="name" placeholder="Name" autocomplete="off">
+                <input type="number" name="phone_number" placeholder="Phone Number" autocomplete="off">
                 <input type="text" name="username" placeholder="Username" autocomplete="off">
                 <input type="password" name="password" placeholder="Password" autocomplete="off">
-                <button type="submit" class="login">Sign In</button>
+                <button type="submit" class="register">Sign Up</button>
             </form>
         </div>
         <div class="toggle-container">
             <div class="toggle">
-                <div class="toggle-panel" style="left: 25%;">
-                    <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of site features.</p>
-                    <a href="/register" class="link">Create a new account?</a>
+                <div class="toggle-panel toggle-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Register with your personal details to use all of site features</p>
+                    <a href="/login" class="link">Already have an account?</a>
                 </div>
             </div>
         </div>
