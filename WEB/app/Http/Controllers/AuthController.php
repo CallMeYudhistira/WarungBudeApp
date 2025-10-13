@@ -13,7 +13,13 @@ class AuthController extends Controller
     }
 
     public function login(){
-        return view('login');
+        return view('auth.login');
+    }
+
+    public function profile($id){
+        $user = User::find($id);
+
+        return view('auth.profile', compact('user'));
     }
 
     public function loginProcess(Request $request){
@@ -34,7 +40,7 @@ class AuthController extends Controller
     }
 
     public function register(){
-        return view('register');
+        return view('auth.register');
     }
 
     public function registerProcess(Request $request){

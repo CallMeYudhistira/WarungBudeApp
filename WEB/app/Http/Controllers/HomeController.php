@@ -65,7 +65,7 @@ class HomeController extends Controller
             $dataBulan[] = Carbon::parse('01-' . $i . '-2000')->translatedFormat('F');
         }
 
-        return view('home',
+        return view('auth.home',
         compact('omsetHariIni', 'omsetHariIniTunai', 'omsetHariIniKredit', 
         'labaHariIni', 'labaHariIniTunai', 'labaHariIniKredit',
         'omsetBulanIni', 'omsetBulanIniTunai', 'omsetBulanIniKredit', 

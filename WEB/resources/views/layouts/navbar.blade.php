@@ -98,23 +98,38 @@
                         </li>
                     </ul>
                 @endif
+    
+                @php
+                    $isAccountActive = request()->is('profile*');
+                @endphp
+                <hr class="divider">
+                <li class="nav-link dropdown-btn {{ $isAccountActive ? 'active' : '' }}">
+                    <a href="javascript:void(0);">
+                        <i class='bx bx-user icon'></i>
+                        <span class="text nav-text">Akun</span>
+                        <i class='bx bx-chevron-down arrow'></i>
+                    </a>
+                </li>
+                <ul class="submenu {{ $isAccountActive ? 'show' : '' }}">
+                    <li class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
+                        <a href="/profile/{{ Auth::user()->user_id }}">
+                            <i class='bx bx-id-card icon'></i>
+                            <span class="text nav-text">Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a id="logoutbtn">
+                            <i class='bx bx-log-out icon'></i>
+                            <span class="text nav-text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
             </ul>
         </div>
     </div>
-
-    <hr class="divider">
-
-    <div class="bottom-content">
-        <li class="nav-link">
-            <a id="logoutbtn">
-                <i class='bx bx-log-out icon'></i>
-                <span class="text nav-text">Logout</span>
-            </a>
-        </li>
-    </div>
 </nav>
 
-@include('layouts.logout')
+@include('auth.logout')
 
 <script>
     const logout = document.getElementById('logoutbtn');

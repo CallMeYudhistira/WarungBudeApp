@@ -35,6 +35,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', HomeController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/profile/{id}', [AuthController::class, 'profile']);
 
     Route::prefix('/users')->middleware('role:admin')->group(function () {
         Route::get('/', [UserController::class, 'index']);
