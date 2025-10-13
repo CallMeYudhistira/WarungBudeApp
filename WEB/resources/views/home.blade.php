@@ -14,18 +14,66 @@
     <div class="card text-center m-2" style="width: 350px; height: auto; padding: 2rem;">
         <h3>💰 Omset Hari ini</h3>
         <div style="font-size: 30px;">{{ 'Rp ' . number_format($omsetHariIni, 0, ',', '.') }}</div>
+        <table style="width: 200px; margin: 0 auto; margin-top: 0.7rem;">
+            <tr>
+                <th style="text-align: start; width: 25%;">Tunai</th>
+                <td>:</td>
+                <td style="text-align: end;">{{ 'Rp ' . number_format($omsetHariIniTunai, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: start;">Kredit</th>
+                <td>:</td>
+                <td style="text-align: end;">{{ 'Rp ' . number_format($omsetHariIniKredit, 0, ',', '.') }}</td>
+            </tr>
+        </table>
     </div>
     <div class="card text-center m-2" style="width: 350px; height: auto; padding: 2rem;">
         <h3>💵 Laba Hari Ini</h3>
         <div style="font-size: 30px;">{{ 'Rp ' . number_format($labaHariIni, 0, ',', '.') }}</div>
+        <table style="width: 200px; margin: 0 auto; margin-top: 0.7rem;">
+            <tr>
+                <th style="text-align: start; width: 25%;">Tunai</th>
+                <td>:</td>
+                <td style="text-align: end;">{{ 'Rp ' . number_format($labaHariIniTunai, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: start;">Kredit</th>
+                <td>:</td>
+                <td style="text-align: end;">{{ 'Rp ' . number_format($labaHariIniKredit, 0, ',', '.') }}</td>
+            </tr>
+        </table>
     </div>
     <div class="card text-center m-2" style="width: 350px; height: auto; padding: 2rem;">
         <h3>💰 Omset Bulan ini</h3>
         <div style="font-size: 30px;">{{ 'Rp ' . number_format($omsetBulanIni, 0, ',', '.') }}</div>
+        <table style="width: 200px; margin: 0 auto; margin-top: 0.7rem;">
+            <tr>
+                <th style="text-align: start; width: 25%;">Tunai</th>
+                <td>:</td>
+                <td style="text-align: end;">{{ 'Rp ' . number_format($omsetBulanIniTunai, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: start;">Kredit</th>
+                <td>:</td>
+                <td style="text-align: end;">{{ 'Rp ' . number_format($omsetBulanIniKredit, 0, ',', '.') }}</td>
+            </tr>
+        </table>
     </div>
     <div class="card text-center m-2" style="width: 350px; height: auto; padding: 2rem;">
         <h3>💵 Laba Bulan Ini</h3>
         <div style="font-size: 30px;">{{ 'Rp ' . number_format($labaBulanIni, 0, ',', '.') }}</div>
+        <table style="width: 200px; margin: 0 auto; margin-top: 0.7rem;">
+            <tr>
+                <th style="text-align: start; width: 25%;">Tunai</th>
+                <td>:</td>
+                <td style="text-align: end;">{{ 'Rp ' . number_format($labaBulanIniTunai, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: start;">Kredit</th>
+                <td>:</td>
+                <td style="text-align: end;">{{ 'Rp ' . number_format($labaBulanIniKredit, 0, ',', '.') }}</td>
+            </tr>
+        </table>
     </div>
 </div>
 <hr class="m-4">
