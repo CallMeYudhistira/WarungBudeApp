@@ -88,37 +88,50 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($carts as $i => $cart)
+                            @if (!$carts->isEmpty())
+                                @foreach ($carts as $i => $cart)
+                                    <tr>
+                                        <td>{{ $i + 1 }}</td>
+                                        <td><img src="{{ asset('images/' . $cart->pict) }}" alt="foto barang"
+                                                style="width: 90px; border-radius: 8px;"></td>
+                                        <td>{{ $cart->product_name }}</td>
+                                        <td>{{ $cart->category_name }}</td>
+                                        <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}/{{ $cart->unit_name }}
+                                        </td>
+                                        <td id="quantity{{ $cart->cart_id }}">{{ $cart->quantity }}</td>
+                                        <td>{{ 'Rp ' . number_format($cart->subtotal, 0, ',', '.') }}</td>
+                                        <td class="text-center">
+                                            <div class="d-flex"
+                                                style="justify-content: space-between; margin-bottom: 0.3rem;">
+                                                <form action="/transaksi/cart/plus/{{ $cart->cart_id }}" method="post">
+                                                    @csrf
+                                                    @method('put')<button type="submit" class="btn btn-success"
+                                                        style="padding: 5px 0.9rem;">+</button>
+                                                </form>
+                                                <form action="/transaksi/cart/minus/{{ $cart->cart_id }}" method="post">
+                                                    @csrf
+                                                    @method('put')<button type="button" class="btn btn-warning"
+                                                        style="padding: 5px 0.9rem;" id="min"
+                                                        onclick="minusQuantity({{ $cart->quantity }})">-</button>
+                                                </form>
+                                            </div>
+                                            <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf
+                                                @method('delete')<button type="submit"
+                                                    class="btn btn-danger w-100">Hapus</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td>{{ $i + 1 }}</td>
-                                    <td><img src="{{ asset('images/' . $cart->pict) }}" alt="foto barang"
-                                            style="width: 90px; border-radius: 8px;"></td>
-                                    <td>{{ $cart->product_name }}</td>
-                                    <td>{{ $cart->category_name }}</td>
-                                    <td>{{ 'Rp ' . number_format($cart->selling_price, 0, ',', '.') }}/{{ $cart->unit_name }}
-                                    </td>
-                                    <td id="quantity{{ $cart->cart_id }}">{{ $cart->quantity }}</td>
-                                    <td>{{ 'Rp ' . number_format($cart->subtotal, 0, ',', '.') }}</td>
-                                    <td class="text-center">
-                                        <div class="d-flex" style="justify-content: space-between; margin-bottom: 0.3rem;">
-                                            <form action="/transaksi/cart/plus/{{ $cart->cart_id }}" method="post">@csrf
-                                                @method('put')<button type="submit" class="btn btn-success"
-                                                    style="padding: 5px 0.9rem;">+</button>
-                                            </form>
-                                            <form action="/transaksi/cart/minus/{{ $cart->cart_id }}" method="post">
-                                                @csrf
-                                                @method('put')<button type="button" class="btn btn-warning"
-                                                    style="padding: 5px 0.9rem;" id="min"
-                                                    onclick="minusQuantity({{ $cart->quantity }})">-</button>
-                                            </form>
+                                    <td colspan="8">
+                                        <div class="alert alert-primary p-3 text-center" role="alert"
+                                            style="width: 350px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                            ❌ Keranjang kosong. ❌
                                         </div>
-                                        <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf
-                                            @method('delete')<button type="submit"
-                                                class="btn btn-danger w-100">Hapus</button>
-                                        </form>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -162,7 +175,8 @@
                     <label for="change" class="mb-2">Kembalian : (Rp.)</label>
                     <input type="number" min="0" name="change" value="0" class="form-control mb-3"
                         readonly id="change">
-                    <button type="button" class="btn btn-primary w-100" onclick="cekBayar()" id="btnBayar">Bayar</button>
+                    <button type="button" class="btn btn-primary w-100" onclick="cekBayar()"
+                        id="btnBayar">Bayar</button>
                 </form>
             </div>
         </div>
@@ -176,15 +190,17 @@
             kembali.value = bayar - total;
         }
 
-        function minusQuantity(quantity){
+        function minusQuantity(quantity) {
             const min = document.getElementById('min');
-            if (quantity > 1) {min.form.submit();}
+            if (quantity > 1) {
+                min.form.submit();
+            }
         }
 
-        function cekBayar(){
+        function cekBayar() {
             const kembali = document.getElementById('change').value;
             const btnBayar = document.getElementById('btnBayar');
-            if(kembali >= 0 || document.getElementById('payment').value == 'kredit'){
+            if (kembali >= 0 || document.getElementById('payment').value == 'kredit') {
                 btnBayar.form.submit();
             } else {
                 var myModal = new bootstrap.Modal(document.getElementById('minusTotal'));

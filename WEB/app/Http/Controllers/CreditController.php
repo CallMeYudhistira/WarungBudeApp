@@ -101,4 +101,47 @@ class CreditController extends Controller
 
         return view('kredit.history', compact('customers', 'first', 'second'));
     }
+
+    public function exportExcelHistory(Request $request)
+    {
+        $fileName = 'kredit_' . date('Y-m-d_H-i-s') . '.xls';
+        $first = $request->first;
+        $second = $request->second;
+
+        if (!$first && !$second) {
+            $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->orderBy('credit_details.created_at', 'desc')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+        } else {
+            $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->whereBetween('credit_details.payment_date', [$first, $second])->orderBy('credit_details.created_at', 'desc')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+        }
+
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => "attachment; filename=\"$fileName\"",
+        ];
+
+        $callback = function () use ($customers) {
+            echo "<table border='1'>";
+            echo "<tr>
+                <th>Tanggal Bayar</th>
+                <th>Nama Pelanggan</th>
+                <th>Total Hutang</th>
+                <th>Bayar</th>
+                <th>Sisa</th>
+                <th>Kembali</th>
+            </tr>";
+            foreach ($customers as $c) {
+                echo "<tr>
+                    <td>{$c->payment_date}</td>
+                    <td>" . ($c->customer_name ?? '-') . "</td>
+                    <td>{$c->total}</td>
+                    <td>{$c->amount_of_paid}</td>
+                    <td>{$c->remaining_debt}</td>
+                    <td>{$c->change}</td>
+                </tr>";
+            }
+            echo "</table>";
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

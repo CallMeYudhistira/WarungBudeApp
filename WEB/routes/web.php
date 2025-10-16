@@ -116,6 +116,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/history', [CreditController::class, 'history']);
             Route::get('/history/filter', [CreditController::class, 'filter']);
+            Route::get('/history/export', [CreditController::class, 'exportExcelHistory']);
         });
     });
 });
