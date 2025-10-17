@@ -32,17 +32,28 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($customers as $i => $customer)
-                <tr>
-                    <th scope="row">{{ $i + 1 }}</th>
-                    <td>{{ $customer->customer_name }}</td>
-                    <td>{{ $customer->total }}</td>
-                    <td>{{ $customer->amount_of_paid }}</td>
-                    <td>{{ $customer->remaining_debt }}</td>
-                    <td>{{ $customer->change }}</td>
-                    <td>{{ \Carbon\Carbon::parse($customer->payment_date)->translatedFormat('l, d/F/Y') }}</td>
-                </tr>
-                @endforeach
+                @if (!$customers->isEmpty())
+                    @foreach ($customers as $i => $customer)
+                        <tr>
+                            <th scope="row">{{ $i + 1 }}</th>
+                            <td>{{ $customer->customer_name }}</td>
+                            <td>{{ $customer->total }}</td>
+                            <td>{{ $customer->amount_of_paid }}</td>
+                            <td>{{ $customer->remaining_debt }}</td>
+                            <td>{{ $customer->change }}</td>
+                            <td>{{ \Carbon\Carbon::parse($customer->payment_date)->translatedFormat('l, d/F/Y') }}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="7">
+                            <div class="alert alert-primary p-3 text-center" role="alert"
+                                style="width: 500px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                ❌ Riwayat pembayaran kredit kosong / tidak ditemukan. ❌
+                            </div>
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>

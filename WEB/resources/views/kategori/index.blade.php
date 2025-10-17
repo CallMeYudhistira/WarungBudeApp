@@ -23,22 +23,33 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($categories as $i => $category)
+                @if (!$categories->isEmpty())
+                    @foreach ($categories as $i => $category)
+                        <tr>
+                            <th scope="row">{{ $categories->firstItem() + $i }}</th>
+                            <td>{{ $category->category_name }}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editKategori{{ $category->category_id }}">Edit</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#hapusKategori{{ $category->category_id }}">Hapus</button>
+                            </td>
+                        </tr>
+                        @include('kategori.modal.update')
+                        @include('kategori.modal.delete')
+                    @endforeach
+                @else
                     <tr>
-                        <th scope="row">{{ $categories->firstItem() + $i }}</th>
-                        <td>{{ $category->category_name }}</td>
-                        <td>
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editKategori{{ $category->category_id }}">Edit</button>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#hapusKategori{{ $category->category_id }}">Hapus</button>
+                        <td colspan="4">
+                            <div class="alert alert-primary p-3 text-center" role="alert"
+                                style="width: 500px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                ❌ Kategori kosong / tidak ditemukan. ❌
+                            </div>
                         </td>
                     </tr>
-                    @include('kategori.modal.update')
-                    @include('kategori.modal.delete')
-                @endforeach
+                @endif
             </tbody>
         </table>
     </div>

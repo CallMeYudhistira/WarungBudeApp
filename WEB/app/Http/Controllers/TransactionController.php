@@ -134,6 +134,24 @@ class TransactionController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        if($request->pay < 0){
+            $validator->errors()->add('pay', 'Pembayaran minus!.');
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if($request->pay < 0 && !$request->customer_name){
+            $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong');
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if($request->payment == 'kredit' && !$request->customer_name){
+            $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong');
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         if ($request->payment !== 'tunai' && $request->payment !== 'kredit') {
             $validator->errors()->add('payment', 'Metode pembayaran tidak valid!');
 

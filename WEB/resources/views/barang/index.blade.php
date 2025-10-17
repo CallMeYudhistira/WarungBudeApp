@@ -14,39 +14,46 @@
         </form>
     </div>
     <div>
-        <div class="row row-cols-1 row-cols-md-5 g-5">
-            @foreach ($products as $product)
-                <div class="col">
-                    <div class="card h-100" style="width: 280px;">
-                        <img src="{{ asset('images/' . $product->pict) }}" class="card-img-top" alt="foto barang">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $product->product_name }}</h5>
-                        </div>
-                        <table class="table p-2">
-                            <tr style="border-top: 0.5px solid #ccc;">
-                                <th>Kategori</th>
-                                <td>:</td>
-                                <td>{{ $product->category_name }}</td>
-                            </tr>
-                        </table>
-                        <div class="card-body">
-                            <div class="d-flex pb-2 mb-1" style="justify-content: space-between;">
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#editBarang{{ $product->product_id }}"
-                                    style="width: 100%; margin-right: 0.5rem;">Edit</button>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#hapusBarang{{ $product->product_id }}"
-                                    style="width: 100%; margin-left: 0.5rem;">Hapus</button>
+        @if (!$products->isEmpty())
+            <div class="row row-cols-1 row-cols-md-5 g-5">
+                @foreach ($products as $product)
+                    <div class="col">
+                        <div class="card h-100" style="width: 280px;">
+                            <img src="{{ asset('images/' . $product->pict) }}" class="card-img-top" alt="foto barang">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $product->product_name }}</h5>
                             </div>
-                            <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-success w-100">Detail
-                                Barang</a>
+                            <table class="table p-2">
+                                <tr style="border-top: 0.5px solid #ccc;">
+                                    <th>Kategori</th>
+                                    <td>:</td>
+                                    <td>{{ $product->category_name }}</td>
+                                </tr>
+                            </table>
+                            <div class="card-body">
+                                <div class="d-flex pb-2 mb-1" style="justify-content: space-between;">
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#editBarang{{ $product->product_id }}"
+                                        style="width: 100%; margin-right: 0.5rem;">Edit</button>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#hapusBarang{{ $product->product_id }}"
+                                        style="width: 100%; margin-left: 0.5rem;">Hapus</button>
+                                </div>
+                                <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-success w-100">Detail
+                                    Barang</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @include('barang.modal.update')
-                @include('barang.modal.delete')
-            @endforeach
-        </div>
+                    @include('barang.modal.update')
+                    @include('barang.modal.delete')
+                @endforeach
+            </div>
+        @else
+            <div class="alert alert-primary p-3 text-center" role="alert"
+                style="width: 500px; margin: auto; margin-top: 2rem;">
+                ❌ Barang kosong / tidak ditemukan. ❌
+            </div>
+        @endif
 
         <div class="p-4" style="width:300px; margin: auto; margin-top: 2vh;">
             {{ $products->links() }}

@@ -56,7 +56,7 @@
             </div>
         @else
             <div class="alert alert-primary p-3 text-center" role="alert"
-                style="width: 350px; margin: auto; margin-top: 2rem;">
+                style="width: 500px; margin: auto; margin-top: 2rem;">
                 ❌ Barang Tidak Tersedia. ❌
             </div>
         @endif
@@ -126,7 +126,7 @@
                                 <tr>
                                     <td colspan="8">
                                         <div class="alert alert-primary p-3 text-center" role="alert"
-                                            style="width: 350px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                            style="width: 500px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
                                             ❌ Keranjang kosong. ❌
                                         </div>
                                     </td>
@@ -209,6 +209,7 @@
                 document.getElementById('totalModal').value = document.getElementById('total').value;
                 document.getElementById('payModal').value = document.getElementById('pay').value;
                 document.getElementById('changeModal').value = document.getElementById('change').value;
+                document.getElementById('customer_name_minus').value = "";
             }
         }
 

@@ -26,16 +26,27 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($logs as $i => $log)
+                @if (!$logs->isEmpty())
+                    @foreach ($logs as $i => $log)
+                        <tr>
+                            <th scope="row">{{ $i + 1 }}</th>
+                            <td>{{ $log->product_name }}</td>
+                            <td>{{ $log->quantity }} {{ $log->unit_name }}</td>
+                            <td>{{ $log->note ? $log->note : '-' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($log->disposed_date)->translatedFormat('l, d/F/Y') }}</td>
+                            <td>{{ $log->name }}</td>
+                        </tr>
+                    @endforeach
+                @else
                     <tr>
-                        <th scope="row">{{ $i + 1 }}</th>
-                        <td>{{ $log->product_name }}</td>
-                        <td>{{ $log->quantity }} {{ $log->unit_name }}</td>
-                        <td>{{ $log->note ? $log->note : '-' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($log->disposed_date)->translatedFormat('l, d/F/Y') }}</td>
-                        <td>{{ $log->name }}</td>
+                        <td colspan="6">
+                            <div class="alert alert-primary p-3 text-center" role="alert"
+                                style="width: 500px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                ❌ Riwayat kedaluwarsa kosong / tidak ditemukan. ❌
+                            </div>
+                        </td>
                     </tr>
-                @endforeach
+                @endif
             </tbody>
         </table>
     </div>

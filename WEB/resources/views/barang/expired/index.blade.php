@@ -64,6 +64,12 @@
                 ✅ Tidak Ada Barang Kedaluwarsa. ✅
             </div>
         @endif
+        @if ($expired_products->isEmpty() && Request::has('expired'))
+            <div class="alert alert-primary p-3 text-center" role="alert"
+                style="width: 500px; margin: auto; margin-top: 2rem;">
+                ❌ Barang expired tidak ditemukan. ❌
+            </div>
+        @endif
 
         <div class="p-4" style="width:300px; margin: auto; margin-top: 1vh;">
             {{ $expired_products->links() }}
@@ -123,6 +129,12 @@
         @else
             <div class="alert alert-primary p-3 text-center" role="alert" style="width: 350px; margin: auto; margin-top: 2rem;">
                 ❌ Tidak Ada Barang Aman. ❌
+            </div>
+        @endif
+        @if ($normal_products->isEmpty() && Request::has('normal'))
+            <div class="alert alert-primary p-3 text-center" role="alert"
+                style="width: 500px; margin: auto; margin-top: 2rem;">
+                ❌ Barang aman tidak ditemukan. ❌
             </div>
         @endif
 

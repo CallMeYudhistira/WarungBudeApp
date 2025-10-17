@@ -25,25 +25,36 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $i => $user)
+                @if (!$users->isEmpty())
+                    @foreach ($users as $i => $user)
+                        <tr>
+                            <th scope="row">{{ $users->firstItem() + $i }}</th>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->phone_number }}</td>
+                            <td>{{ $user->username }}</td>
+                            <td>{{ $user->role }}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editUser{{ $user->user_id }}">Edit</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#hapusUser{{ $user->user_id }}">Hapus</button>
+                            </td>
+                        </tr>
+                        @include('users.modal.update')
+                        @include('users.modal.delete')
+                    @endforeach
+                @else
                     <tr>
-                        <th scope="row">{{ $users->firstItem() + $i }}</th>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->phone_number }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->role }}</td>
-                        <td>
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editUser{{ $user->user_id }}">Edit</button>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#hapusUser{{ $user->user_id }}">Hapus</button>
+                        <td colspan="7">
+                            <div class="alert alert-primary p-3 text-center" role="alert"
+                                style="width: 500px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                ❌ Pengguna kosong / tidak ditemukan. ❌
+                            </div>
                         </td>
                     </tr>
-                    @include('users.modal.update')
-                    @include('users.modal.delete')
-                @endforeach
+                @endif
             </tbody>
         </table>
     </div>

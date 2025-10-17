@@ -14,7 +14,7 @@
                     <input type="hidden" name="payment" value="kredit">
                     <div class="mb-3">
                         <label for="customer_name" class="form-label">Nama Pelanggan</label>
-                        <input type="text" class="form-control" name="customer_name" placeholder="Nama pelanggan..." autocomplete="off" list="customer_names">
+                        <input type="text" class="form-control" name="customer_name" id="customer_name_minus" placeholder="Nama pelanggan..." autocomplete="off" list="customer_names">
                     </div>
                 </div>
                 <div class="modal-footer">

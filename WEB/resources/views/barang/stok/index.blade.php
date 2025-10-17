@@ -31,12 +31,10 @@
                 </tr>
             </thead>
             <tbody>
-                @php
-                    $no = 1;
-                @endphp
-                @foreach ($refillStocks as $refillStock)
+                @if (!$refillStocks->isEmpty())
+                @foreach ($refillStocks as $i => $refillStock)
                     <tr>
-                        <th scope="row">{{ $no++ }}</th>
+                        <th scope="row">{{ $i + 1 }}</th>
                         <td scope="row">{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }}</td>
                         <td scope="row">{{ $refillStock->quantity }}</td>
                         <td scope="row">{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
@@ -45,6 +43,16 @@
                         <td scope="row">{{ $refillStock->status }}</td>
                     </tr>
                 @endforeach
+                @else
+                    <tr>
+                        <td colspan="7">
+                            <div class="alert alert-primary p-3 text-center" role="alert"
+                                style="width: 500px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                ❌ Riwayat isi stok kosong / tidak ditemukan. ❌
+                            </div>
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>

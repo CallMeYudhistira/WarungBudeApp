@@ -56,8 +56,8 @@
                     <tr>
                         <td colspan="8">
                             <div class="alert alert-primary p-3 text-center" role="alert"
-                                style="width: 350px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
-                                ❌ Data pelanggan tidak ditemukan. ❌
+                                style="width: 500px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                ❌ Data pelanggan kosong / tidak ditemukan. ❌
                             </div>
                         </td>
                     </tr>
