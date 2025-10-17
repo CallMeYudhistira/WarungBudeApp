@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Barang || Riwayat Isi Stok')
+@section('title', 'Barang || Stok || Riwayat')
 @section('content')
     <h1 style="padding-bottom: 12px; margin-left: -5px;">Riwayat Isi Stok</h1>
     <h2 style="padding-top: 12px; border-top: 1px solid #ccc;">{{ $product->product_name }} ({{ $product->unit_name }}) || History Isi Stok</h2>

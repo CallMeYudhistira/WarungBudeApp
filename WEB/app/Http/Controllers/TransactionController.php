@@ -134,19 +134,19 @@ class TransactionController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if($request->pay < 0){
+        if ($request->pay < 0) {
             $validator->errors()->add('pay', 'Pembayaran minus!.');
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if($request->pay < 0 && !$request->customer_name){
+        if ($request->pay < 0 && !$request->customer_name) {
             $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong');
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if($request->payment == 'kredit' && !$request->customer_name){
+        if ($request->payment == 'kredit' && !$request->customer_name) {
             $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong');
 
             return redirect()->back()->withErrors($validator)->withInput();
@@ -259,7 +259,7 @@ class TransactionController extends Controller
             </tr>";
             foreach ($transactions as $t) {
                 echo "<tr>
-                    <td>{$t->date}</td>
+                    <td>" . Carbon::parse($t->date)->translatedFormat('l, d/F/Y') . "</td>
                     <td>{$t->total}</td>
                     <td>{$t->pay}</td>
                     <td>{$t->change}</td>

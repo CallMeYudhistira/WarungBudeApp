@@ -38,17 +38,17 @@
                     @foreach ($transactions as $i => $transaction)
                         <tr>
                             <th scope="row">{{ $i + 1 }}</th>
-                            <td scope="row">{{ \Carbon\Carbon::parse($transaction->date)->translatedFormat('l, d/F/Y') }}
+                            <td>{{ \Carbon\Carbon::parse($transaction->date)->translatedFormat('l, d/F/Y') }}
                             </td>
-                            <td scope="row">{{ 'Rp ' . number_format($transaction->total, 0, ',', '.') }}</td>
-                            <td scope="row">{{ 'Rp ' . number_format($transaction->pay, 0, ',', '.') }}</td>
-                            <td scope="row">{{ 'Rp ' . number_format($transaction->change, 0, ',', '.') }}</td>
-                            <td scope="row"><span
+                            <td>{{ 'Rp ' . number_format($transaction->total, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($transaction->pay, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($transaction->change, 0, ',', '.') }}</td>
+                            <td><span
                                     style="background: #eee; border-radius: 6px; border: 1px solid #ccc; padding: 2px 14px; color: black;">{{ $transaction->payment }}</span>
                             </td>
-                            <td scope="row">{{ $transaction->name }}</td>
-                            <td scope="row">{{ $transaction->customer_name ? $transaction->customer_name : '-' }}</td>
-                            <td scope="row" class="text-center"><a
+                            <td>{{ $transaction->name }}</td>
+                            <td>{{ $transaction->customer_name ? $transaction->customer_name : '-' }}</td>
+                            <td class="text-center"><a
                                     href="/transaksi/detail/{{ $transaction->transaction_id }}"
                                     class="btn btn-success">Detail</a></td>
                         </tr>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('expired_id');
             $table->integer('refill_stock_id');
             $table->dateTime('disposed_date');
+            $table->integer('quantity');
             $table->string('note')->nullable();
             $table->integer('user_id');
             $table->timestamps();

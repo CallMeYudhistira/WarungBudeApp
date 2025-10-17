@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Barang || List')
+@section('title', 'Barang || Kedaluwarsa || List')
 @section('content')
     <h1 style="margin-left: -5px;">Cek Barang</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">

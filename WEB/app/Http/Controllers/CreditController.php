@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Credit;
 use App\Models\CreditDetail;
 use App\Models\Customer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -142,7 +143,7 @@ class CreditController extends Controller
             </tr>";
             foreach ($customers as $c) {
                 echo "<tr>
-                    <td>{$c->payment_date}</td>
+                    <td>" . Carbon::parse($c->payment_date)->translatedFormat('l, d/F/Y') . "</td>
                     <td>" . ($c->customer_name ?? '-') . "</td>
                     <td>{$c->total}</td>
                     <td>{$c->amount_of_paid}</td>
