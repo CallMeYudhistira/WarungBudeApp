@@ -37,6 +37,22 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile/{id}', [AuthController::class, 'profile']);
 
+    Route::prefix('/laporan')->group(function () {
+        Route::get('/transaksi', function () {
+            return redirect('/transaksi/history');
+        });
+        Route::get('/kredit', function () {
+            return redirect('/kredit/history');
+        });
+        Route::get('/expired', function () {
+            return redirect('/barang/expired/history');
+        });
+        Route::get('/refillStock', function () {
+            return redirect('/barang/refillStock/history');
+        });
+    });
+
+
     Route::prefix('/users')->middleware('role:admin')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/search', [UserController::class, 'search']);
@@ -66,6 +82,9 @@ Route::middleware('auth')->group(function () {
             Route::put('detail/update', [ProductDetailController::class, 'update']);
             Route::delete('detail/delete/{id}', [ProductDetailController::class, 'delete']);
 
+            Route::get('/refillStock/history', [RefillStockController::class, 'history']);
+            Route::get('/refillStock/history/filter', [RefillStockController::class, 'historyFilter']);
+            Route::get('/refillStock/history/export', [RefillStockController::class, 'exportExcelHistory']);
             Route::get('/refillStock/{id}', [RefillStockController::class, 'index']);
             Route::get('/refillStock/{id}/filter', [RefillStockController::class, 'filter']);
             Route::post('/refillStock/store', [RefillStockController::class, 'store']);
