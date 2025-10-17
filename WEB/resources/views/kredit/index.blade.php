@@ -24,26 +24,44 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($customers as $i => $customer)
+                @if (!$customers->isEmpty())
+                    @foreach ($customers as $i => $customer)
+                        <tr>
+                            <th scope="row">{{ $i + 1 }}</th>
+                            <td>{{ $customer->customer_name }}</td>
+                            <td>{{ $customer->phone_number }}</td>
+                            <td>{{ $customer->address }}</td>
+                            <td>{{ $customer->amount_of_debt }}</td>
+                            <td style="text-transform: capitalize;">{{ $customer->status }}</td>
+                            @if ($customer->status != 'lunas')
+                            <td>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editPelanggan{{ $customer->customer_id }}">Edit</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#bayarKredit{{ $customer->customer_id }}">Bayar</button>
+                            </td>
+                            @include('kredit.modal.pay')
+                            @else
+                            <td colspan="2" class="text-center">
+                                <button type="button" class="btn btn-warning w-100" data-bs-toggle="modal"
+                                    data-bs-target="#editPelanggan{{ $customer->customer_id }}">Edit</button>
+                            </td>
+                            @endif
+                        </tr>
+                        @include('kredit.modal.update')
+                    @endforeach
+                @else
                     <tr>
-                        <th scope="row">{{ $i + 1 }}</th>
-                        <td>{{ $customer->customer_name }}</td>
-                        <td>{{ $customer->phone_number }}</td>
-                        <td>{{ $customer->address }}</td>
-                        <td>{{ $customer->amount_of_debt }}</td>
-                        <td style="text-transform: capitalize;">{{ $customer->status }}</td>
-                        <td>
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editPelanggan{{ $customer->customer_id }}">Edit</button>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                data-bs-target="#bayarKredit{{ $customer->customer_id }}">Bayar</button>
+                        <td colspan="8">
+                            <div class="alert alert-primary p-3 text-center" role="alert"
+                                style="width: 350px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
+                                ❌ Data pelanggan tidak ditemukan. ❌
+                            </div>
                         </td>
                     </tr>
-                    @include('kredit.modal.update')
-                    @include('kredit.modal.pay')
-                @endforeach
+                @endif
             </tbody>
         </table>
     </div>

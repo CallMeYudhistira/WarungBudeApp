@@ -6,12 +6,13 @@ use App\Models\Credit;
 use App\Models\CreditDetail;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CreditController extends Controller
 {
     public function index()
     {
-        $customers = Customer::where('status', 'belum lunas')->simplePaginate(15);
+        $customers = Customer::simplePaginate(15);
 
         return view('kredit.index', compact('customers'));
     }
@@ -23,19 +24,29 @@ class CreditController extends Controller
             return redirect('/kredit');
         }
 
-        $customers = Customer::where('status', 'belum lunas')->where('customer_name', 'LIKE', '%' . $keyword . '%')->simplePaginate(15);
+        $customers = Customer::where('customer_name', 'LIKE', '%' . $keyword . '%')->simplePaginate(15);
 
         return view('kredit.index', compact('customers', 'keyword'));
     }
 
     public function update(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'customer_id' => 'required',
             'customer_name' => 'required',
-            'phone_number' => 'required',
-            'address' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $customer = Customer::where('customer_name', $request->customer_name)->first();
+
+        if ($customer && $request->customer_name == $customer->customer_name) {
+            $validator->errors()->add('customer_name', 'Nama customer tidak boleh sama!');
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         Customer::where('customer_id', $request->customer_id)->update([
             'customer_name' => $request->customer_name,
