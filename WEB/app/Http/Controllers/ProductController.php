@@ -9,13 +9,30 @@ use App\Models\RefillStock;
 use App\Models\Unit;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     public function index()
     {
         $categories = Category::all();
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->simplePaginate('10');
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')
+            ->leftJoin('product_details', 'products.product_id', '=', 'product_details.product_id') // left join dipindahkan ke sini
+            ->select(
+                'products.product_id',
+                'products.product_name',
+                'products.pict',
+                'categories.category_name',
+                DB::raw('COALESCE(MIN(product_details.stock), 9999999) as min_stock')
+            )
+            ->groupBy(
+                'products.product_id',
+                'products.product_name',
+                'products.pict',
+                'categories.category_name'
+            )
+            ->orderBy(DB::raw('min_stock'), 'ASC')
+            ->simplePaginate(10);
 
         return view('barang.index', compact('products', 'categories'));
     }
@@ -28,7 +45,24 @@ class ProductController extends Controller
         }
 
         $categories = Category::all();
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->where('product_name', 'like', '%' . $keyword . '%')->simplePaginate('10');
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')
+            ->leftJoin('product_details', 'products.product_id', '=', 'product_details.product_id') // left join dipindahkan ke sini
+            ->select(
+                'products.product_id',
+                'products.product_name',
+                'products.pict',
+                'categories.category_name',
+                DB::raw('COALESCE(MIN(product_details.stock), 9999999) as min_stock')
+            )
+            ->where('products.product_name', 'like', '%' . $keyword . '%')
+            ->groupBy(
+                'products.product_id',
+                'products.product_name',
+                'products.pict',
+                'categories.category_name'
+            )
+            ->orderBy(DB::raw('min_stock'), 'ASC')
+            ->simplePaginate(10);
 
         return view('barang.index', compact('products', 'keyword', 'categories'));
     }
@@ -73,7 +107,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('pict')) {
             if ($data->pict && file_exists(public_path('images/' . $data->pict))) {
-                if($data->pict != 'photo.png'){
+                if ($data->pict != 'photo.png') {
                     unlink(public_path('images/' . $data->pict));
                 }
             }
