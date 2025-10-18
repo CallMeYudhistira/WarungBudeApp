@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
@@ -18,11 +19,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'guest',
+            'name' => 'kasir',
             'phone_number' => '00000000',
             'role' => 'kasir',
-            'username' => 'guest',
-            'password' => 'guest',
+            'username' => 'kasir',
+            'password' => Hash::make('kasir'),
         ]);
 
         User::create([
@@ -30,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '11111111',
             'role' => 'admin',
             'username' => 'admin',
-            'password' => 'admin',
+            'password' => Hash::make('admin'),
         ]);
 
         User::create([
@@ -38,12 +39,12 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '22222222',
             'role' => 'gudang',
             'username' => 'gudang',
-            'password' => 'gudang',
+            'password' => Hash::make('gudang'),
         ]);
 
-        User::factory(100)->create();
-        Category::factory(100)->create();
-        Unit::factory(100)->create();
-        Product::factory(100)->create();
+        User::factory(50)->create();
+        Category::factory(50)->create();
+        Unit::factory(50)->create();
+        Product::factory(50)->create();
     }
 }

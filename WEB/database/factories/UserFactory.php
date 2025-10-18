@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Nette\Utils\Random;
 
@@ -22,7 +23,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'phone_number' => '08' . Random::generate('10', '0-9'),
             'username' => fake()->userName(),
-            'password' => '123', // password
+            'password' => Hash::make('123'), // password
             'role' => fake()->randomElement(['admin', 'kasir', 'gudang']),
         ];
     }

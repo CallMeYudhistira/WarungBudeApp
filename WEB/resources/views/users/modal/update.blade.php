@@ -28,7 +28,7 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="text" class="form-control" name="password" placeholder="Password..."
-                            autocomplete="off" value="{{ $user->password }}">
+                            autocomplete="off" value="- - -">
                     </div>
                     <div class="mb-3">
                         <label for="role" class="form-label">Hak</label>

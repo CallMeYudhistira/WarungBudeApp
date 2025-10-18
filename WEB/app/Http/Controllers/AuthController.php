@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -28,10 +29,12 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('username', $request->username)->first();
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
 
-        if($user && $user->password === $request->password){
-            Auth::login($user);
+        if(Auth::attempt($credentials)){
             $request->session()->regenerate();
             return redirect('/home');
         } else {
@@ -55,7 +58,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'username' => $request->username,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
             'role' => 'kasir',
         ]);
 
