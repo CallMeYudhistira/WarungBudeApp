@@ -8,14 +8,13 @@
     android:padding="28dp"
     tools:context=".Login">
 
-    <!-- Title -->
     <TextView
         android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/nata_bold"
-        android:text="Welcome back to Warung Boede!"
+        android:text="Selamat datang kembali!"
         android:textColor="@android:color/black"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -33,32 +32,28 @@
         app:layout_constraintTop_toBottomOf="@+id/tvWelcome"
         tools:layout_editor_absoluteX="24dp">
 
-        <!-- Sub Title -->
         <TextView
             android:id="@+id/tvCreateAcc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="First time at Warung Boede? "
+            android:text="Belum punya akun di Warung Bude? "
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
 
-        <!-- Link Create Account -->
         <TextView
-            android:id="@+id/tvGuestLink"
+            android:id="@+id/tvRegistLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:textStyle="italic"
             android:fontFamily="@font/nata_medium"
             android:contextClickable="true"
-            android:text="Try guest account"
+            android:text="@string/registLink"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
     </LinearLayout>
 
-    <!-- Email Label -->
     <TextView
         android:id="@+id/tvUsernameLabel"
         android:layout_width="wrap_content"
@@ -70,7 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear" />
 
-    <!-- Email Input -->
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="0dp"
@@ -84,7 +78,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvUsernameLabel" />
 
-    <!-- Password Label -->
     <TextView
         android:id="@+id/tvPasswordLabel"
         android:layout_width="wrap_content"
@@ -96,7 +89,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etUsername" />
 
-    <!-- Password Input -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="0dp"
@@ -120,7 +112,6 @@
         tools:layout_editor_absoluteX="24dp"
         android:layout_marginBottom="30dp">
 
-        <!-- Login Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
@@ -131,17 +122,6 @@
             android:text="Login"
             android:textColor="@android:color/white"
             app:cornerRadius="12dp" />
-
-        <!-- Forgot Password -->
-        <TextView
-            android:id="@+id/tvForgot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="Forgot your password?"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="14sp" />
 
     </LinearLayout>
 

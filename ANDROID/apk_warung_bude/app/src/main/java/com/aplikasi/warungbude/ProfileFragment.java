@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -139,15 +140,41 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    private void Alert(String title, String message, Context context, int icon){
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_alert, null);
+
+        ImageView gifView = dialogView.findViewById(R.id.dialogGif);
+        TextView judul = dialogView.findViewById(R.id.title);
+        TextView pesan = dialogView.findViewById(R.id.message);
+
+        judul.setText(title);
+        pesan.setText(message);
+
+        Glide.with(this)
+                .asGif()
+                .load(icon)
+                .into(gifView);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     private void logoutUser(Context context){
         StringRequest request = new StringRequest(Request.Method.POST, URL.URLLogout, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    String message = jsonObject.getString("message");
-
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 
                     if(jsonObject.getString("status").equals("success")){
                         Session session = new Session(context);
@@ -164,7 +191,28 @@ public class ProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    try {
+                        String responseBody = new String(error.networkResponse.data, "utf-8");
+                        JSONObject jsonObject = new JSONObject(responseBody);
+                        JSONArray errorsArray = jsonObject.getJSONArray("message");
+
+                        StringBuilder message = new StringBuilder();
+                        for (int i = 0; i < errorsArray.length(); i++) {
+                            message.append(errorsArray.getString(i));
+                            if (i < errorsArray.length() - 1) {
+                                message.append("\n");
+                            }
+                        }
+
+                        Alert("Error", message.toString(), getContext(), R.raw.alert);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Alert("Error", "Terjadi kesalahan saat membaca respon server.", getContext(), R.raw.alert);
+                    }
+                } else {
+                    Alert("Error", "Tidak ada koneksi internet atau server tidak merespon.", getContext(), R.raw.alert);
+                }
             }
         });
 

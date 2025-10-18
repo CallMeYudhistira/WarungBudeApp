@@ -24,7 +24,7 @@ class APIAuthController extends Controller
         $user = User::where('username', $request->username)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['status' => 'error', 'message' => 'Username atau Password salah!'], 401);
+            return response()->json(['status' => 'error', 'message' => ['Username atau Password salah!']], 401);
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
@@ -33,12 +33,16 @@ class APIAuthController extends Controller
     }
 
     public function register(Request $request){
-        $request->validate([
+        $validation = Validator::make($request->all(), [
             'name' => 'required',
             'phone_number' => 'required|numeric',
             'username' => 'required|unique:users',
             'password' => 'required',
         ]);
+
+        if($validation->fails()){
+            return response()->json(['status' => 'error', 'message' => $validation->errors()->all()], 400);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -51,9 +55,7 @@ class APIAuthController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Register Berhasil!', 'user' => $user], 201);
     }
 
-    public function logout(Request $request){
-        $request->user()->delete();
-
+    public function logout(){
         return response()->json(['status' => 'success', 'message' => 'Logout telah berhasil!'], 200);
     }
 }

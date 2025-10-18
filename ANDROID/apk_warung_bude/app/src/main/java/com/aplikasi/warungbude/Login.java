@@ -29,6 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
-    TextView tvGuestAccount, forgotPassword;
+    TextView tvRegistLink;
     Button btnLogin;
     EditText etUsername, etPassword;
 
@@ -46,16 +47,16 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        tvGuestAccount = findViewById(R.id.tvGuestLink);
-        forgotPassword = findViewById(R.id.tvForgot);
+        tvRegistLink = findViewById(R.id.tvRegistLink);
         btnLogin = findViewById(R.id.btnLogin);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
 
-        tvGuestAccount.setOnClickListener(new View.OnClickListener() {
+        tvRegistLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                guestAccount();
+                startActivity(new Intent(getApplicationContext(), Register.class));
+                finish();
             }
         });
 
@@ -65,47 +66,9 @@ public class Login extends AppCompatActivity {
                 String username = etUsername.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
 
-                if(username.isEmpty() || password.isEmpty()){
-                    Alert("Error", "Field Wajib Diisi", Login.this, R.raw.alert);
-                } else {
-                    loginUser(username, password);
-                }
+                loginUser(username, password);
             }
         });
-    }
-
-    private void guestAccount(){
-        StringRequest request = new StringRequest(Request.Method.POST, URL.URLGuest, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String message = jsonObject.getString("message");
-
-                    Toast.makeText(Login.this, message, Toast.LENGTH_SHORT).show();
-
-                    if(jsonObject.getString("status").equals("success")){
-                        JSONObject user = jsonObject.getJSONObject("data");
-                        Session session = new Session(Login.this);
-                        session.saveUser(user.getString("name"), user.getString("phone_number"), user.getString("role"));
-
-                        startActivity(new Intent(getApplicationContext(), ParentActivity.class));
-                        finish();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(request);
     }
 
     private void loginUser(String username, String password) {
@@ -114,17 +77,18 @@ public class Login extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    String message = jsonObject.getString("message");
-
-                    Toast.makeText(Login.this, message, Toast.LENGTH_SHORT).show();
 
                     if(jsonObject.getString("status").equals("success")){
-                        JSONObject user = jsonObject.getJSONObject("data");
+                        JSONObject user = jsonObject.getJSONObject("user");
+                        String token = jsonObject.getString("access_token");
                         Session session = new Session(Login.this);
-                        session.saveUser(user.getString("name"), user.getString("phone_number"), user.getString("role"));
+                        session.saveUser(user.getString("name"), user.getString("phone_number"), user.getString("username"), user.getString("role"), token);
 
                         startActivity(new Intent(getApplicationContext(), ParentActivity.class));
                         finish();
+
+                        etUsername.setText("");
+                        etPassword.setText("");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -134,7 +98,28 @@ public class Login extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    try {
+                        String responseBody = new String(error.networkResponse.data, "utf-8");
+                        JSONObject jsonObject = new JSONObject(responseBody);
+                        JSONArray errorsArray = jsonObject.getJSONArray("message");
+
+                        StringBuilder message = new StringBuilder();
+                        for (int i = 0; i < errorsArray.length(); i++) {
+                            message.append(errorsArray.getString(i));
+                            if (i < errorsArray.length() - 1) {
+                                message.append("\n");
+                            }
+                        }
+
+                        Alert("Error", message.toString(), Login.this, R.raw.alert);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Alert("Error", "Terjadi kesalahan saat membaca respon server.", Login.this, R.raw.alert);
+                    }
+                } else {
+                    Alert("Error", "Tidak ada koneksi internet atau server tidak merespon.", Login.this, R.raw.alert);
+                }
             }
         }) {
             @Override
