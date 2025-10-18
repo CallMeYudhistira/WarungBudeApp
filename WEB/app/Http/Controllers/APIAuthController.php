@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class APIAuthController extends Controller
 {
@@ -21,25 +23,36 @@ class APIAuthController extends Controller
 
         $user = User::where('username', $request->username)->first();
 
-        if($user && $user->password === $request->password){
-            Auth::login($user);
-            return response()->json(['status' => 'success', 'message' => 'Login Berhasil!', 'data' => $user], 200);
-        } else {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['status' => 'error', 'message' => 'Username atau Password salah!'], 401);
         }
+
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json(['status' => 'success', 'message' => 'Login Berhasil!', 'access_token' => $token, 'user' => $user], 200);
     }
 
-    public function guest(){
-        $user = User::where('username', 'guest')->first();
+    public function register(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'phone_number' => 'required|numeric',
+            'username' => 'required|unique:users',
+            'password' => 'required',
+        ]);
 
-        if($user){
-            Auth::login($user);
-            return response()->json(['status' => 'success', 'message' => 'You just used guest account!', 'data' => $user], 200);
-        }
+        $user = User::create([
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'role' => 'kasir',
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'Register Berhasil!', 'user' => $user], 201);
     }
 
-    public function logout(){
-        Auth::logout();
+    public function logout(Request $request){
+        $request->user()->delete();
 
         return response()->json(['status' => 'success', 'message' => 'Logout telah berhasil!'], 200);
     }
