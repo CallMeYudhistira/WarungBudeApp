@@ -27,6 +27,19 @@
         .modal {
             z-index: 9999;
         }
+
+        tr.head td{
+            font-weight: 500;
+        }
+
+        tr.body td{
+            font-size: 12px;
+            border: none;
+        }
+
+        tr.footer td{
+            font-size: 12px;
+        }
     </style>
 </head>
 

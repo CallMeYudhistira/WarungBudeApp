@@ -68,7 +68,7 @@ class ExpiredController extends Controller
 
     public function history()
     {
-        $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'expired_logs.quantity', 'users.name']);
+        $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->orderBy('expired_logs.disposed_date', 'desc')->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'expired_logs.quantity', 'users.name']);
 
         return view('barang.expired.history', compact('logs'));
     }
@@ -82,7 +82,7 @@ class ExpiredController extends Controller
             return redirect('/barang/expired/history');
         }
 
-        $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->whereBetween('expired_logs.disposed_date', [$first, $second])->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'expired_logs.quantity', 'users.name']);
+        $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->orderBy('expired_logs.disposed_date', 'desc')->whereBetween('expired_logs.disposed_date', [$first, $second])->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'expired_logs.quantity', 'users.name']);
 
         return view('barang.expired.history', compact('logs', 'first', 'second'));
     }
@@ -94,9 +94,9 @@ class ExpiredController extends Controller
         $second = $request->second;
 
         if (!$first && !$second) {
-            $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'expired_logs.quantity', 'users.name']);
+            $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->orderBy('expired_logs.disposed_date', 'desc')->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'expired_logs.quantity', 'users.name']);
         } else {
-            $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->whereBetween('expired_logs.disposed_date', [$first, $second])->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'expired_logs.quantity', 'users.name']);
+            $logs = ExpiredLog::join('users', 'users.user_id', '=', 'expired_logs.user_id')->join('refill_stocks', 'expired_logs.refill_stock_id', '=', 'refill_stocks.refill_stock_id')->join('product_details', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('products', 'products.product_id', '=', 'product_details.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->orderBy('expired_logs.disposed_date', 'desc')->whereBetween('expired_logs.disposed_date', [$first, $second])->get(['expired_logs.expired_id', 'expired_logs.disposed_date', 'expired_logs.note', 'products.product_name', 'units.unit_name', 'expired_logs.quantity', 'users.name']);
         }
 
         $headers = [

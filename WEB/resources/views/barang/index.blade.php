@@ -7,6 +7,7 @@
             data-bs-target="#tambahBarang">Tambah</button>
         @include('barang.modal.create')
         <a href="/barang/expired" class="btn btn-secondary m-1 mt-2 mb-2">Kedaluwarsa</a>
+        <a href="/barang/refillStock/history" class="btn btn-success m-1 mt-2 mb-2">Riwayat Isi Stok</a>
         <form class="d-flex ms-auto mt-2 mb-2" action="/barang/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
                 @isset($keyword) value="{{ $keyword }}" @endisset />

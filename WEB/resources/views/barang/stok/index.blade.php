@@ -1,12 +1,17 @@
 @extends('layouts.app')
 @section('title', 'Barang || Stok || Riwayat')
 @section('content')
-    <h1 style="padding-bottom: 12px; margin-left: -5px;">Riwayat Isi Stok</h1>
-    <h2 style="padding-top: 12px; border-top: 1px solid #ccc;">{{ $product->product_name }} ({{ $product->unit_name }}) || History Isi Stok</h2>
+    <h1 style="padding-bottom: 12px; margin-left: -5px;">Isi Stok Barang : {{ $product->product_name }}</h1>
+    <h2 style="padding-top: 12px; border-top: 1px solid #ccc;">Satuan : {{ $product->unit_name }}</h2>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <button type="button" class="btn btn-primary m-1 mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#isiStokBarang">Tambah</button>
         @include('barang.stok.modal.create')
         <a href="/barang/detail/{{ $product->product_id }}" class="btn btn-dark m-1 mt-2 mb-2">Kembali</a>
+        <form action="/barang/refillStock/{{ $product->product_detail_id }}/export" method="get">
+            <input type="hidden" name="first" @isset($first) value="{{ $first }}" @endisset />
+            <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset />
+            <button class="btn btn-success m-1 mt-2 mb-2 pb-2" type="submit">Cetak</button>
+        </form>
 
         <form class="d-flex m-1 mt-2 mb-2 ms-auto" action="/barang/refillStock/{{ $product->product_detail_id }}/filter" method="get">
             <input class="form-control me-2" type="date" name="first"

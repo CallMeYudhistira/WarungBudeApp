@@ -304,4 +304,70 @@ class TransactionController extends Controller
         $pdf = Pdf::loadView('transaksi.print.detail', compact('transaction', 'transaction_details'))->setPaper('a4', 'landscape');
         return $pdf->stream($transaction->transaction_id . '_' . $transaction->customer_name . '_' . $transaction->date . '_print.pdf');
     }
+
+    public function income(){
+        $transactions = DB::select("SELECT * FROM RekapHari ORDER BY date DESC");
+
+        return view('transaksi.income', compact('transactions'));
+    }
+
+    public function incomeFilter(Request $request){
+        $first = $request->first;
+        $second = $request->second;
+
+        if (!$first && !$second) {
+            return redirect('/transaksi/pendapatan');
+        }
+
+        $transactions = DB::select("SELECT * FROM RekapHari WHERE date BETWEEN '$first' AND '$second' ORDER BY date DESC");
+
+        return view('transaksi.income', compact('transactions', 'first', 'second'));
+    }
+
+    public function exportExcelIncome(Request $request)
+    {
+        $fileName = 'pendapatan_' . date('Y-m-d_H-i-s') . '.xls';
+        $first = $request->first;
+        $second = $request->second;
+
+        if (!$first && !$second) {
+            $transactions = DB::select("SELECT * FROM RekapHari ORDER BY date DESC");
+        } else {
+            $transactions = DB::select("SELECT * FROM RekapHari WHERE date BETWEEN '$first' AND '$second' ORDER BY date DESC");
+        }
+
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => "attachment; filename=\"$fileName\"",
+        ];
+
+        $callback = function () use ($transactions) {
+            echo "<table border='1'>";
+            echo "<tr>
+                <th>Tanggal</th>
+                <th>Modal</th>
+                <th>Omset</th>
+                <th>Omset Tunai</th>
+                <th>Omset Kredit</th>
+                <th>Laba</th>
+                <th>Laba Tunai</th>
+                <th>Laba Kredit</th>
+            </tr>";
+            foreach ($transactions as $t) {
+                echo "<tr>
+                    <td>" . Carbon::parse($t->date)->translatedFormat('l, d/F/Y') . "</td>
+                    <td>" . ($t->Modal ?? '-') . "</td>
+                    <td>" . ($t->Omset ?? '-') . "</td>
+                    <td>" . ($t->OmsetTunai ?? '-') . "</td>
+                    <td>" . ($t->OmsetKredit ?? '-') . "</td>
+                    <td>" . ($t->Laba ?? '-') . "</td>
+                    <td>" . ($t->LabaTunai ?? '-') . "</td>
+                    <td>" . ($t->LabaKredit ?? '-') . "</td>
+                </tr>";
+            }
+            echo "</table>";
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

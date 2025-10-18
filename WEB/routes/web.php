@@ -50,6 +50,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/refillStock', function () {
             return redirect('/barang/refillStock/history');
         });
+        Route::get('/pendapatan', function () {
+            return redirect('/transaksi/pendapatan');
+        });
     });
 
 
@@ -87,6 +90,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/refillStock/history/export', [RefillStockController::class, 'exportExcelHistory']);
             Route::get('/refillStock/{id}', [RefillStockController::class, 'index']);
             Route::get('/refillStock/{id}/filter', [RefillStockController::class, 'filter']);
+            Route::get('/refillStock/{id}/export', [RefillStockController::class, 'exportExcel']);
             Route::post('/refillStock/store', [RefillStockController::class, 'store']);
 
             Route::get('/expired', [ExpiredController::class, 'index']);
@@ -124,6 +128,10 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/detail/{id}', [TransactionController::class, 'detail']);
             Route::get('/detail/{id}/print', [TransactionController::class, 'print']);
+
+            Route::get('/pendapatan', [TransactionController::class, 'income']);
+            Route::get('/pendapatan/filter', [TransactionController::class, 'incomeFilter']);
+            Route::get('/pendapatan/export', [TransactionController::class, 'exportExcelIncome']);
         });
 
         Route::prefix('/kredit')->group(function () {

@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         #Omset Hari Ini
         $omsetHariIni = Transaction::where('date', now()->format('Y-m-d'))->sum('total');
-        $omsetHariIniTunai = Transaction::where('date', now()->format('Y-m-d'))->where('payment', 'tunai')->sum('pay');
+        $omsetHariIniTunai = Transaction::where('date', now()->format('Y-m-d'))->where('payment', 'tunai')->sum('total') + Transaction::where('date', now()->format('Y-m-d'))->where('payment', 'kredit')->sum('pay');
         $omsetHariIniKredit = Transaction::where('date', now()->format('Y-m-d'))->where('payment', 'kredit')->sum('change') * -1;
 
         #Laba Hari Ini
@@ -35,7 +35,7 @@ class HomeController extends Controller
 
         #Omset Bulan Ini
         $omsetBulanIni = Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->sum('total');
-        $omsetBulanIniTunai = Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('payment', 'tunai')->sum('pay');
+        $omsetBulanIniTunai = Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('payment', 'tunai')->sum('total') + Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('payment', 'kredit')->sum('pay');
         $omsetBulanIniKredit = Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('payment', 'kredit')->sum('change') * -1;
 
         #Laba Bulan Ini
@@ -58,18 +58,43 @@ class HomeController extends Controller
         #Data Omset (Chart) Per Bulan
         $bulan = date('m');
         $tahun = date('Y');
-        $totalBulan = [];
+        $modalBulan = [];
+        $omsetBulan = [];
+        $labaBulan = [];
         $dataBulan = [];
-        for ($i = 1; $i <= 12; $i++) { 
-            $totalBulan[] = Transaction::whereYear('date', '=', $tahun)->whereMonth('date', '=', $i)->sum('total');
+        for ($i = 1; $i <= 12; $i++) {
+            $record = DB::table('RekapBulan')
+                ->select('Modal', 'Omset', 'Laba')
+                ->where('Bulan', $i)
+                ->orderByDesc('Bulan')
+                ->first();
+
+            $modalBulan[] = $record ? $record->Modal : 0;
+            $omsetBulan[] = $record ? $record->Omset : 0;
+            $labaBulan[] = $record ? $record->Laba : 0;
             $dataBulan[] = Carbon::parse('01-' . $i . '-2000')->translatedFormat('F');
         }
 
-        return view('auth.home',
-        compact('omsetHariIni', 'omsetHariIniTunai', 'omsetHariIniKredit', 
-        'labaHariIni', 'labaHariIniTunai', 'labaHariIniKredit',
-        'omsetBulanIni', 'omsetBulanIniTunai', 'omsetBulanIniKredit', 
-        'labaBulanIni', 'labaBulanIniTunai', 'labaBulanIniKredit', 
-        'totalBulan', 'dataBulan'));
+        return view(
+            'auth.home',
+            compact(
+                'omsetHariIni',
+                'omsetHariIniTunai',
+                'omsetHariIniKredit',
+                'labaHariIni',
+                'labaHariIniTunai',
+                'labaHariIniKredit',
+                'omsetBulanIni',
+                'omsetBulanIniTunai',
+                'omsetBulanIniKredit',
+                'labaBulanIni',
+                'labaBulanIniTunai',
+                'labaBulanIniKredit',
+                'modalBulan',
+                'omsetBulan',
+                'labaBulan',
+                'dataBulan'
+            )
+        );
     }
 }

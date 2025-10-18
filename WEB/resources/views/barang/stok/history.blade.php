@@ -1,8 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Barang || Stok || Riwayat')
 @section('content')
-    <h1 style="padding-bottom: 12px; margin-left: -5px;">Riwayat Isi Stok</h1>
+    <h1 style="margin-left: -5px;">Riwayat Isi Stok</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
+        <a href="/barang" class="btn btn-dark m-1 mt-2 mb-2">Kembali</a>
         <form action="/barang/refillStock/history/export" method="get">
             <input type="hidden" name="first" @isset($first) value="{{ $first }}" @endisset />
             <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset />
@@ -22,11 +23,12 @@
             <thead>
                 <tr>
                     <th scope="col" style="width: 5%">#</th>
-                    <th scope="col" style="width: 20%">Harga Beli</th>
-                    <th scope="col" style="width: 20%">Kuantitas</th>
-                    <th scope="col" style="width: 20%">Total</th>
-                    <th scope="col" style="width: 15%">Tanggal Masuk</th>
-                    <th scope="col" style="width: 15%">Tanggal Kedaluwarsa</th>
+                    <th scope="col" style="width: 14%">Nama Barang</th>
+                    <th scope="col" style="width: 16%">Harga Beli</th>
+                    <th scope="col" style="width: 12%">Kuantitas</th>
+                    <th scope="col" style="width: 16%">Total</th>
+                    <th scope="col" style="width: 16%">Tanggal Masuk</th>
+                    <th scope="col" style="width: 16%">Tanggal Kedaluwarsa</th>
                     <th scope="col" style="width: 5%">Status</th>
                 </tr>
             </thead>
@@ -35,12 +37,13 @@
                 @foreach ($refillStocks as $i => $refillStock)
                     <tr>
                         <th scope="row">{{ $i + 1 }}</th>
-                        <td scope="row">{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }}</td>
-                        <td scope="row">{{ $refillStock->quantity }}</td>
-                        <td scope="row">{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
-                        <td scope="row">{{ $refillStock->entry_date }}</td>
-                        <td scope="row">{{ $refillStock->expired_date ? $refillStock->expired_date : '-' }}</td>
-                        <td scope="row">{{ $refillStock->status }}</td>
+                        <td>{{ $refillStock->product_name }}</td>
+                        <td>{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }}</td>
+                        <td>{{ $refillStock->quantity }} {{ $refillStock->unit_name }}</td>
+                        <td>{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($refillStock->entry_date)->translatedFormat('l, d/F/Y') }}</td>
+                        <td>{{ $refillStock->expired_date ? \Carbon\Carbon::parse($refillStock->expired_date)->translatedFormat('l, d/F/Y') : '-' }}</td>
+                        <td>{{ $refillStock->status }}</td>
                     </tr>
                 @endforeach
                 @else

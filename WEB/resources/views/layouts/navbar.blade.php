@@ -1,4 +1,4 @@
-<nav class="sidebar">
+<nav class="sidebar" style="overflow-y: scroll;">
     <header>
         <div class="image-text">
             <span class="image">
@@ -102,32 +102,30 @@
                 @endif
 
                 {{-- Laporan --}}
-                @php
-                    $isLaporanActive =
-                        request()->is('laporan/transaksi*') ||
-                        request()->is('laporan/kredit*') ||
-                        request()->is('laporan/expired*') ||
-                        request()->is('laporan/refillStock*');
-                @endphp
-
                 @if (Auth::user()->role == 'admin' || Auth::user()->role == 'gudang' || Auth::user()->role == 'kasir')
                     <hr class="divider">
-                    <li class="nav-link dropdown-btn {{ $isLaporanActive ? 'active' : '' }}">
+                    <li class="nav-link dropdown-btn">
                         <a href="javascript:void(0);">
                             <i class='bx bx-bar-chart icon'></i>
                             <span class="text nav-text">Laporan</span>
                             <i class='bx bx-chevron-down arrow'></i>
                         </a>
                     </li>
-                    <ul class="submenu {{ $isLaporanActive ? 'show' : '' }}">
+                    <ul class="submenu">
                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
-                            <li class="nav-link {{ request()->is('laporan/transaksi*') ? 'active' : '' }}">
+                            <li class="nav-link">
+                                <a href="/laporan/pendapatan">
+                                    <i class='bx bx-wallet icon'></i>
+                                    <span class="text nav-text">Pendapatan</span>
+                                </a>
+                            </li>
+                            <li class="nav-link">
                                 <a href="/laporan/transaksi">
                                     <i class='bx bx-receipt icon'></i>
                                     <span class="text nav-text">Penjualan</span>
                                 </a>
                             </li>
-                            <li class="nav-link {{ request()->is('laporan/kredit*') ? 'active' : '' }}">
+                            <li class="nav-link">
                                 <a href="/laporan/kredit">
                                     <i class='bx bx-credit-card icon'></i>
                                     <span class="text nav-text">Kredit</span>
@@ -135,13 +133,13 @@
                             </li>
                         @endif
                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'gudang')
-                            <li class="nav-link {{ request()->is('laporan/expired*') ? 'active' : '' }}">
+                            <li class="nav-link">
                                 <a href="/laporan/expired">
                                     <i class='bx bx-time-five icon'></i>
                                     <span class="text nav-text">Kedaluwarsa</span>
                                 </a>
                             </li>
-                            <li class="nav-link {{ request()->is('laporan/refillStock*') ? 'active' : '' }}">
+                            <li class="nav-link">
                                 <a href="/laporan/refillStock">
                                     <i class='bx bx-archive icon'></i>
                                     <span class="text nav-text">Isi Stok</span>

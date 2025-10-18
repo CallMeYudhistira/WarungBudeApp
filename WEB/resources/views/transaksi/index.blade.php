@@ -4,6 +4,7 @@
     <h1 style="margin-left: -5px;">List Barang</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <a href="/transaksi/history" class="btn btn-primary m-1 mt-2 mb-2">Riwayat Transaksi</a>
+        <a href="/transaksi/pendapatan" class="btn btn-secondary m-2">Rekap Pendapatan</a>
         <form class="d-flex ms-auto mt-2 mb-2" action="/transaksi/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
                 @isset($keyword) value="{{ $keyword }}" @endisset />
