@@ -26,12 +26,13 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col" style="width: 5%">#</th>
-                    <th scope="col" style="width: 20%">Harga Beli</th>
-                    <th scope="col" style="width: 20%">Kuantitas</th>
-                    <th scope="col" style="width: 20%">Total</th>
-                    <th scope="col" style="width: 15%">Tanggal Masuk</th>
-                    <th scope="col" style="width: 15%">Tanggal Kedaluwarsa</th>
+                    <th scope="col" style="width: 4%">#</th>
+                    <th scope="col" style="width: 19%">Harga Beli</th>
+                    <th scope="col" style="width: 13%">Kuantitas</th>
+                    <th scope="col" style="width: 13%">Total</th>
+                    <th scope="col" style="width: 18%">Tanggal Masuk</th>
+                    <th scope="col" style="width: 18%">Tanggal Kedaluwarsa</th>
+                    <th scope="col" style="width: 10%">Stok Terbaru</th>
                     <th scope="col" style="width: 5%">Status</th>
                 </tr>
             </thead>
@@ -43,8 +44,9 @@
                         <td scope="row">{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }}</td>
                         <td scope="row">{{ $refillStock->quantity }}</td>
                         <td scope="row">{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
-                        <td scope="row">{{ $refillStock->entry_date }}</td>
-                        <td scope="row">{{ $refillStock->expired_date ? $refillStock->expired_date : '-' }}</td>
+                        <td scope="row">{{ \Carbon\Carbon::parse($refillStock->entry_date)->translatedFormat('d/F/Y') }}</td>
+                        <td scope="row">{{ $refillStock->expired_date ? \Carbon\Carbon::parse($refillStock->expired_date)->translatedFormat('d/F/Y') : '-' }}</td>
+                        <td scope="row">{{ $refillStock->updated_stock }}</td>
                         <td scope="row">{{ $refillStock->status }}</td>
                     </tr>
                 @endforeach

@@ -171,6 +171,7 @@ class RefillStockController extends Controller
             'total' => $request->total,
             'entry_date' => now(),
             'expired_date' => $request->expired_date,
+            'updated_stock' => $request->quantity,
             'status' => 'baik',
         ]);
 

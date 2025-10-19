@@ -15,8 +15,8 @@ class ExpiredController extends Controller
 {
     public function index()
     {
-        $expired_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '<=', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'pending')->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', DB::raw('IIF(refill_stocks.quantity > product_details.stock, product_details.stock, refill_stocks.quantity) AS quantity'), 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
-        $normal_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '>', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'baik')->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', DB::raw('IIF(refill_stocks.quantity > product_details.stock, product_details.stock, refill_stocks.quantity) AS quantity'), 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
+        $expired_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '<=', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'pending')->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', DB::raw('refill_stocks.updated_stock AS quantity'), 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
+        $normal_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '>', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'baik')->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', DB::raw('refill_stocks.updated_stock AS quantity'), 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
 
         return view('barang.expired.index', compact('expired_products', 'normal_products'));
     }
@@ -30,8 +30,8 @@ class ExpiredController extends Controller
             return redirect('/barang/expired');
         }
 
-        $expired_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '<=', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'baik')->where('products.product_name', 'LIKE', "%$expired%")->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', DB::raw('IIF(refill_stocks.quantity > product_details.stock, product_details.stock, refill_stocks.quantity) AS quantity'), 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
-        $normal_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '>', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'baik')->where('products.product_name', 'LIKE', "%$normal%")->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', DB::raw('IIF(refill_stocks.quantity > product_details.stock, product_details.stock, refill_stocks.quantity) AS quantity'), 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
+        $expired_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '<=', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'baik')->where('products.product_name', 'LIKE', "%$expired%")->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', DB::raw('refill_stocks.updated_stock AS quantity'), 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
+        $normal_products = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('refill_stocks', 'product_details.product_detail_id', '=', 'refill_stocks.product_detail_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('refill_stocks.expired_date', '>', now()->format('Y-m-d'))->where('refill_stocks.status', '=', 'baik')->where('products.product_name', 'LIKE', "%$normal%")->select(['refill_stocks.refill_stock_id', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', DB::raw('refill_stocks.updated_stock AS quantity'), 'refill_stocks.expired_date', 'refill_stocks.entry_date'])->simplePaginate(3);
 
         return view('barang.expired.index', compact('expired_products', 'normal_products', 'expired', 'normal'));
     }
@@ -44,16 +44,14 @@ class ExpiredController extends Controller
             'quantity' => 'required'
         ]);
 
-        $product = ProductDetail::find($request->product_detail_id);
         $refill = RefillStock::find($request->refill_stock_id);
 
-        $product->update([
-            'stock' => $product->stock - $request->quantity,
-        ]);
-
         $refill->update([
+            'updated_stock' => $refill->updated_stock - $request->quantity,
             'status' => 'expired',
         ]);
+
+        DB::statement("UPDATE product_details SET stock = (SELECT SUM(updated_stock) FROM refill_stocks WHERE product_detail_id = '$request->product_detail_id') WHERE product_detail_id = '$request->product_detail_id'");
 
         ExpiredLog::create([
             'refill_stock_id' => $request->refill_stock_id,

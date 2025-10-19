@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('total');
             $table->date('entry_date');
             $table->date('expired_date')->nullable();
+            $table->integer('updated_stock');
             $table->string('status');
             $table->timestamps();
         });

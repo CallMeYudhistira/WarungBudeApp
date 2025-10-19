@@ -7,6 +7,7 @@ use App\Models\Credit;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductDetail;
+use App\Models\RefillStock;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -210,11 +211,12 @@ class TransactionController extends Controller
                 'subtotal' => $cart->subtotal,
             ]);
 
-            $product = ProductDetail::find($cart->product_detail_id);
-
-            ProductDetail::where('product_detail_id', $cart->product_detail_id)->update([
-                'stock' => $product->stock - $cart->quantity,
+            $refill = RefillStock::where('product_detail_id', $cart->product_detail_id)->orderBy('expired_date', 'asc')->first();
+            $refill->update([
+                'updated_stock' => $refill->updated_stock - $cart->quantity,
             ]);
+
+            DB::statement("UPDATE product_details SET stock = (SELECT SUM(updated_stock) FROM refill_stocks WHERE product_detail_id = '$cart->product_detail_id') WHERE product_detail_id = '$cart->product_detail_id'");
         }
 
         DB::statement('DELETE FROM carts WHERE user_id = ' . Auth::user()->user_id);

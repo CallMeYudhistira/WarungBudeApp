@@ -22,13 +22,14 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col" style="width: 5%">#</th>
-                    <th scope="col" style="width: 14%">Nama Barang</th>
-                    <th scope="col" style="width: 16%">Harga Beli</th>
-                    <th scope="col" style="width: 12%">Kuantitas</th>
-                    <th scope="col" style="width: 16%">Total</th>
-                    <th scope="col" style="width: 16%">Tanggal Masuk</th>
-                    <th scope="col" style="width: 16%">Tanggal Kedaluwarsa</th>
+                    <th scope="col" style="width: 4%">#</th>
+                    <th scope="col" style="width: 13%">Nama Produk</th>
+                    <th scope="col" style="width: 13%">Harga Beli</th>
+                    <th scope="col" style="width: 10%">Kuantitas</th>
+                    <th scope="col" style="width: 13%">Total</th>
+                    <th scope="col" style="width: 18%">Tanggal Masuk</th>
+                    <th scope="col" style="width: 18%">Tanggal Kedaluwarsa</th>
+                    <th scope="col" style="width: 10%">Stok Terbaru</th>
                     <th scope="col" style="width: 5%">Status</th>
                 </tr>
             </thead>
@@ -37,13 +38,14 @@
                 @foreach ($refillStocks as $i => $refillStock)
                     <tr>
                         <th scope="row">{{ $i + 1 }}</th>
-                        <td>{{ $refillStock->product_name }}</td>
-                        <td>{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }}</td>
-                        <td>{{ $refillStock->quantity }} {{ $refillStock->unit_name }}</td>
-                        <td>{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($refillStock->entry_date)->translatedFormat('l, d/F/Y') }}</td>
-                        <td>{{ $refillStock->expired_date ? \Carbon\Carbon::parse($refillStock->expired_date)->translatedFormat('l, d/F/Y') : '-' }}</td>
-                        <td>{{ $refillStock->status }}</td>
+                        <td scope="row">{{ $refillStock->product_name }}</td>
+                        <td scope="row">{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }}</td>
+                        <td scope="row">{{ $refillStock->quantity }}</td>
+                        <td scope="row">{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
+                        <td scope="row">{{ \Carbon\Carbon::parse($refillStock->entry_date)->translatedFormat('d/F/Y') }}</td>
+                        <td scope="row">{{ $refillStock->expired_date ? \Carbon\Carbon::parse($refillStock->expired_date)->translatedFormat('d/F/Y') : '-' }}</td>
+                        <td scope="row">{{ $refillStock->updated_stock }}</td>
+                        <td scope="row">{{ $refillStock->status }}</td>
                     </tr>
                 @endforeach
                 @else
