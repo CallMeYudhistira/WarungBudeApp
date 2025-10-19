@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         DB::statement("TRUNCATE TABLE notifications");
         $schedule->command('stock:check')->everyMinute();
         $schedule->command('expired:check')->everyMinute();
+        $schedule->command('products:check-expired')->everyMinute();
     }
 
 
