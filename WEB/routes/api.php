@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\APIAuthController;
+use App\Http\Controllers\APIHomeController;
 use App\Http\Controllers\APITransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,6 @@ Route::post('/logout', [APIAuthController::class, 'logout']);
 //Transactions
 Route::get('/product/list', [APITransactionController::class, 'show_products']);
 Route::get('/carts/list/{user_id}', [APITransactionController::class, 'show_carts']);
+
+//Dashboard
+Route::get('/dashboard', APIHomeController::class);

@@ -7,4 +7,7 @@ public class URL {
     public static String URLLogin = IP + "api/login";
     public static String URLRegist = IP + "api/register";
     public static String URLLogout = IP + "api/logout";
+
+    //Dashboard
+    public static String URLDasbhboard = IP + "api/dashboard";
 }
