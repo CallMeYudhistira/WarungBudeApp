@@ -15,8 +15,6 @@ class CheckLowStock extends Command
 
     public function handle()
     {
-        DB::statement("TRUNCATE TABLE notifications");
-
         $lowStockProducts = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->where('product_details.stock', '<', 10)->get();
 
         if ($lowStockProducts->isEmpty()) {

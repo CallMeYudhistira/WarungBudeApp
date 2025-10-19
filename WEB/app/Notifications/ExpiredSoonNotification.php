@@ -2,10 +2,11 @@
 
 namespace App\Notifications;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class LowStockNotification extends Notification
+class ExpiredSoonNotification extends Notification
 {
     use Queueable;
 
@@ -24,8 +25,8 @@ class LowStockNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'Stok Menipis',
-            'message' => "Stok produk \"{$this->product->product_name}\" tersisa {$this->product->stock}",
+            'title' => 'Produk Akan Kedaluwarsa',
+            'message' => "Produk \"{$this->product->product_name}\" akan kedaluwarsa pada " . Carbon::parse($this->product->expired_date)->translatedFormat('l, d/F/Y'),
         ];
     }
 }
