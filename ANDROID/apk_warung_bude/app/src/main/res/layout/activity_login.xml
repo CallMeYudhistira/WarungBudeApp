@@ -71,6 +71,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/edittext_background"
+        android:drawableRight="@drawable/user"
         android:hint="Username"
         android:inputType="text"
         android:padding="12dp"
@@ -95,12 +96,24 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/edittext_background"
+        android:drawableRight="@drawable/hidden"
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvPasswordLabel" />
+
+    <CheckBox
+        android:id="@+id/cbPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lihat password"
+        android:layout_marginTop="6dp"
+        android:buttonTintMode="multiply"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPassword"/>
 
     <LinearLayout
         android:id="@+id/linear2"

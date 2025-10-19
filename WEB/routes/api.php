@@ -27,7 +27,7 @@ Route::post('/register', [APIAuthController::class, 'register']);
 Route::post('/logout', [APIAuthController::class, 'logout']);
 
 //Transactions
-Route::get('/product/list', [APITransactionController::class, 'show_products']);
+Route::get('/products/list', [APITransactionController::class, 'show_products']);
 Route::get('/carts/list/{user_id}', [APITransactionController::class, 'show_carts']);
 
 //Dashboard

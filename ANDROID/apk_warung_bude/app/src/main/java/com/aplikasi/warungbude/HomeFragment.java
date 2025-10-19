@@ -81,7 +81,6 @@ public class HomeFragment extends Fragment {
     }
 
     private LinearLayout card_parent;
-    private ViewGroup parent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,7 +88,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        parent = container;
 
         card_parent = view.findViewById(R.id.card_parent);
 
@@ -128,7 +126,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadDashboard(Context context){
-        StringRequest request = new StringRequest(Request.Method.GET, URL.URLDasbhboard, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URL.URLDashboard, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
