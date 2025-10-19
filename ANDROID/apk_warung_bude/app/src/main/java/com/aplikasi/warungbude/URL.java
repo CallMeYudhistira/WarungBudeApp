@@ -11,6 +11,9 @@ public class URL {
     // Dashboard
     public static String URLDashboard = IP + "api/dashboard";
 
+    // Image
+    public static String URLImage = IP + "images/";
+
     // Transaction
     public static String URLGetProduct = IP + "api/products/list";
     public static String URLGetCart = IP + "api/carts/list/";

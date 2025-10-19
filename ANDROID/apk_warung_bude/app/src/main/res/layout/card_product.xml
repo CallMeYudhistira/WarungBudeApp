@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivPict"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"
+        android:src="@raw/question"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:textColor="@android:color/black"
+            android:textSize="19sp"
+            android:layout_margin="4dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvCategoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category Name"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_margin="4dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp. 0 / KG"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_margin="4dp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnMin"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_background"
+                android:backgroundTint="#F44336"
+                android:layout_margin="4dp"
+                android:text="-"
+                android:textSize="19sp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tvQty"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="1"
+                android:textColor="@android:color/black"
+                android:textSize="23sp"
+                android:layout_margin="4dp"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAdd"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_background"
+                android:backgroundTint="#4CAF50"
+                android:layout_margin="4dp"
+                android:text="+"
+                android:textSize="19sp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBuy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:backgroundTint="#AEF8CC"
+            android:layout_margin="4dp"
+            android:text="Buy"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+</LinearLayout>
