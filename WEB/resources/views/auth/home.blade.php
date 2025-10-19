@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Beranda || Laporan Penjualan')
+@section('title', 'Beranda')
 @section('content')
 @section('script')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/5.3.5/apexcharts.min.css"

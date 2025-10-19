@@ -9,21 +9,31 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('index');
     }
 
-    public function login(){
+    public function login()
+    {
         return view('auth.login');
     }
 
-    public function profile($id){
+    public function profile($id)
+    {
         $user = User::find($id);
 
         return view('auth.profile', compact('user'));
     }
 
-    public function loginProcess(Request $request){
+    public function notifications()
+    {
+        $notifications = auth()->user()->notifications;
+        return view('auth.notifikasi', compact('notifications'));
+    }
+
+    public function loginProcess(Request $request)
+    {
         $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -34,7 +44,7 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
 
-        if(Auth::attempt($credentials)){
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect('/home');
         } else {
@@ -42,11 +52,13 @@ class AuthController extends Controller
         }
     }
 
-    public function register(){
+    public function register()
+    {
         return view('auth.register');
     }
 
-    public function registerProcess(Request $request){
+    public function registerProcess(Request $request)
+    {
         $request->validate([
             'name' => 'required',
             'phone_number' => 'required|numeric',
@@ -65,7 +77,8 @@ class AuthController extends Controller
         return redirect('/login')->with('success', 'Registrasi Berhasil!\nAnda Bisa Login Sekarang!');
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerate();

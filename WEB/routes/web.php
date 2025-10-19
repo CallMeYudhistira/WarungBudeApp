@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', HomeController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile/{id}', [AuthController::class, 'profile']);
+    Route::get('/notifikasi', [AuthController::class, 'notifications']);
 
     Route::prefix('/laporan')->group(function () {
         Route::get('/transaksi', function () {

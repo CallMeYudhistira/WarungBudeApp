@@ -151,7 +151,7 @@
 
                 {{-- Akun --}}
                 @php
-                    $isAccountActive = request()->is('profile*');
+                    $isAccountActive = request()->is('profile*') || request()->is('notifikasi*');
                 @endphp
                 <hr class="divider">
                 <li class="nav-link dropdown-btn {{ $isAccountActive ? 'active' : '' }}">
@@ -162,6 +162,12 @@
                     </a>
                 </li>
                 <ul class="submenu {{ $isAccountActive ? 'show' : '' }}">
+                    <li class="nav-link {{ request()->is('notifikasi*') ? 'active' : '' }}">
+                        <a href="/notifikasi">
+                            <i class='bx bx-bell icon'></i>
+                            <span class="text nav-text">Notifikasi</span>
+                        </a>
+                    </li>
                     <li class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
                         <a href="/profile/{{ Auth::user()->user_id }}">
                             <i class='bx bx-id-card icon'></i>
