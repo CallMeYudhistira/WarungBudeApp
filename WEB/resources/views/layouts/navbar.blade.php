@@ -152,12 +152,16 @@
                 {{-- Akun --}}
                 @php
                     $isAccountActive = request()->is('profile*') || request()->is('notifikasi*');
+                    $unreadCount = Auth::user()->unreadNotifications()->count();
                 @endphp
                 <hr class="divider">
                 <li class="nav-link dropdown-btn {{ $isAccountActive ? 'active' : '' }}">
                     <a href="javascript:void(0);">
                         <i class='bx bx-user icon'></i>
                         <span class="text nav-text">Akun</span>
+                        @if ($unreadCount > 0)
+                            <span class="notif-badge">{{ $unreadCount }}</span>
+                        @endif
                         <i class='bx bx-chevron-down arrow'></i>
                     </a>
                 </li>
@@ -166,6 +170,9 @@
                         <a href="/notifikasi">
                             <i class='bx bx-bell icon'></i>
                             <span class="text nav-text">Notifikasi</span>
+                            @if ($unreadCount > 0)
+                                <span class="notif-badge">{{ $unreadCount }}</span>
+                            @endif
                         </a>
                     </li>
                     <li class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
@@ -181,6 +188,7 @@
                         </a>
                     </li>
                 </ul>
+
             </ul>
         </div>
     </div>

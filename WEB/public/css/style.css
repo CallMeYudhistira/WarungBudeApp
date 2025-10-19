@@ -133,7 +133,7 @@ body {
     color: #aaa;
 }
 
-#logoutbtn:hover{
+#logoutbtn:hover {
     cursor: pointer;
 }
 
@@ -156,4 +156,18 @@ body {
 
 .dropdown-btn.active .arrow {
     transform: rotate(180deg);
+}
+
+.notif-badge {
+    background-color: rgb(189, 27, 27);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 35%;
+    padding: 2px 6px;
+    margin-left: 14px;
+    display: inline-block;
+    min-width: 16px;
+    text-align: center;
+    vertical-align: middle;
 }

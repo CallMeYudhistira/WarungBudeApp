@@ -20,6 +20,7 @@ class CheckExpiredProducts extends Command
 
         $soonToExpireProducts = ProductDetail::join('products', 'products.product_id', '=', 'product_details.product_id')->join('refill_stocks', 'refill_stocks.product_detail_id', '=', 'product_details.product_detail_id')
             ->whereBetween('refill_stocks.expired_date', [$today, $threshold])
+            ->where('refill_stocks.status', 'baik')
             ->select('products.product_name', 'product_details.stock', 'refill_stocks.expired_date')
             ->get();
 
