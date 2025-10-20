@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -55,7 +56,11 @@ class APIAuthController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Register Berhasil!', 'user' => $user], 201);
     }
 
-    public function logout(){
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+
+        DB::statement('DELETE FROM personal_access_tokens WHERE tokenable_id = ?', [$request->user()->user_id]);
+
         return response()->json(['status' => 'success', 'message' => 'Logout telah berhasil!'], 200);
     }
 }

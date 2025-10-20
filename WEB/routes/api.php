@@ -24,11 +24,12 @@ use Illuminate\Support\Facades\Route;
 //Auth
 Route::post('/login', [APIAuthController::class, 'login']);
 Route::post('/register', [APIAuthController::class, 'register']);
-Route::post('/logout', [APIAuthController::class, 'logout']);
+Route::post('/logout', [APIAuthController::class, 'logout'])->middleware('auth:sanctum');
 
 //Transactions
 Route::get('/products/list', [APITransactionController::class, 'show_products']);
-Route::get('/carts/list/{user_id}', [APITransactionController::class, 'show_carts']);
+Route::post('/carts/store', [APITransactionController::class, 'cartStore'])->middleware('auth:sanctum');
+Route::get('/carts/list', [APITransactionController::class, 'show_carts'])->middleware('auth:sanctum');
 
 //Dashboard
 Route::get('/dashboard', APIHomeController::class);

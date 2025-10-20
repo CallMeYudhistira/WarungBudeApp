@@ -23,13 +23,15 @@ class ProductController extends Controller
                 'products.product_name',
                 'products.pict',
                 'categories.category_name',
+                'categories.category_id',
                 DB::raw('COALESCE(MIN(product_details.stock), 9999999) as min_stock')
             )
             ->groupBy(
                 'products.product_id',
                 'products.product_name',
                 'products.pict',
-                'categories.category_name'
+                'categories.category_name',
+                'categories.category_id',
             )
             ->orderBy(DB::raw('min_stock'), 'ASC')
             ->simplePaginate(10);
@@ -52,6 +54,7 @@ class ProductController extends Controller
                 'products.product_name',
                 'products.pict',
                 'categories.category_name',
+                'categories.category_id',
                 DB::raw('COALESCE(MIN(product_details.stock), 9999999) as min_stock')
             )
             ->where('products.product_name', 'like', '%' . $keyword . '%')
@@ -59,7 +62,8 @@ class ProductController extends Controller
                 'products.product_id',
                 'products.product_name',
                 'products.pict',
-                'categories.category_name'
+                'categories.category_name',
+                'categories.category_id',
             )
             ->orderBy(DB::raw('min_stock'), 'ASC')
             ->simplePaginate(10);

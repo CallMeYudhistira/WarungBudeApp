@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,6 +28,9 @@ import com.bumptech.glide.Glide;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,6 +92,7 @@ public class ProfileFragment extends Fragment {
         String name = session.getData(session.NAME_KEY);
         String phone_number = session.getData(session.PHONE_NUMBER_KEY);
         String role = session.getData(session.ROLE_KEY);
+        String token = session.getData(session.TOKEN_KEY);
 
         tvName = view.findViewById(R.id.tvName);
         tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber);
@@ -122,7 +127,7 @@ public class ProfileFragment extends Fragment {
                 builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        logoutUser(getContext());
+                        logoutUser(getContext(), token);
                     }
                 });
                 builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
@@ -140,36 +145,7 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void Alert(String title, String message, Context context, int icon){
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.custom_alert, null);
-
-        ImageView gifView = dialogView.findViewById(R.id.dialogGif);
-        TextView judul = dialogView.findViewById(R.id.title);
-        TextView pesan = dialogView.findViewById(R.id.message);
-
-        judul.setText(title);
-        pesan.setText(message);
-
-        Glide.with(this)
-                .asGif()
-                .load(icon)
-                .into(gifView);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(dialogView);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void logoutUser(Context context){
+    private void logoutUser(Context context, String token){
         StringRequest request = new StringRequest(Request.Method.POST, URL.URLLogout, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -205,16 +181,24 @@ public class ProfileFragment extends Fragment {
                             }
                         }
 
-                        Alert("Error", message.toString(), getContext(), R.raw.alert);
+                        Alert.Show("Error", message.toString(), getContext(), R.raw.alert);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Alert("Error", "Terjadi kesalahan saat membaca respon server.", getContext(), R.raw.alert);
+                        Alert.Show("Error", "Terjadi kesalahan saat membaca respon server.", getContext(), R.raw.alert);
                     }
                 } else {
-                    Alert("Error", "Tidak ada koneksi internet atau server tidak merespon.", getContext(), R.raw.alert);
+                    Alert.Show("Error", "Tidak ada koneksi internet atau server tidak merespon.", getContext(), R.raw.alert);
                 }
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + token);
+                headers.put("Accept", "application/json");
+                return headers;
+            };
+        };
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);

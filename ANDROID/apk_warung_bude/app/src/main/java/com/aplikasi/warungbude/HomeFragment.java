@@ -96,35 +96,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void Alert(String title, String message, Context context, int icon){
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.custom_alert, null);
-
-        ImageView gifView = dialogView.findViewById(R.id.dialogGif);
-        TextView judul = dialogView.findViewById(R.id.title);
-        TextView pesan = dialogView.findViewById(R.id.message);
-
-        judul.setText(title);
-        pesan.setText(message);
-
-        Glide.with(this)
-                .asGif()
-                .load(icon)
-                .into(gifView);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(dialogView);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
     private void loadDashboard(Context context){
         StringRequest request = new StringRequest(Request.Method.GET, URL.URLDashboard, new Response.Listener<String>() {
             @Override
@@ -239,13 +210,13 @@ public class HomeFragment extends Fragment {
                             }
                         }
 
-                        Alert("Error", message.toString(), getContext(), R.raw.alert);
+                        Alert.Show("Error", message.toString(), getContext(), R.raw.alert);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Alert("Error", "Terjadi kesalahan saat membaca respon server.", getContext(), R.raw.alert);
+                        Alert.Show("Error", "Terjadi kesalahan saat membaca respon server.", getContext(), R.raw.alert);
                     }
                 } else {
-                    Alert("Error", "Tidak ada koneksi internet atau server tidak merespon.", getContext(), R.raw.alert);
+                    Alert.Show("Error", "Tidak ada koneksi internet atau server tidak merespon.", getContext(), R.raw.alert);
                 }
             }
         });

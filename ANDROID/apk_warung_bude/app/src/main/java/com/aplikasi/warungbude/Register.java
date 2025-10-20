@@ -83,7 +83,7 @@ public class Register extends AppCompatActivity {
 
                     Toast.makeText(Register.this, message, Toast.LENGTH_SHORT).show();
 
-                    Alert("Informasi", message, Register.this, R.raw.check);
+                    Alert.Show("Informasi", message, Register.this, R.raw.check);
 
                     etName.setText("");
                     etPhoneNumber.setText("");
@@ -111,13 +111,13 @@ public class Register extends AppCompatActivity {
                             }
                         }
 
-                        Alert("Error", message.toString(), Register.this, R.raw.alert);
+                        Alert.Show("Error", message.toString(), Register.this, R.raw.alert);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Alert("Error", "Terjadi kesalahan saat membaca respon server.", Register.this, R.raw.alert);
+                        Alert.Show("Error", "Terjadi kesalahan saat membaca respon server.", Register.this, R.raw.alert);
                     }
                 } else {
-                    Alert("Error", "Tidak ada koneksi internet atau server tidak merespon.", Register.this, R.raw.alert);
+                    Alert.Show("Error", "Tidak ada koneksi internet atau server tidak merespon.", Register.this, R.raw.alert);
                 }
             }
         }) {
@@ -134,34 +134,5 @@ public class Register extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
-    }
-
-    private void Alert(String title, String message, Context context, int icon){
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.custom_alert, null);
-
-        ImageView gifView = dialogView.findViewById(R.id.dialogGif);
-        TextView judul = dialogView.findViewById(R.id.title);
-        TextView pesan = dialogView.findViewById(R.id.message);
-
-        judul.setText(title);
-        pesan.setText(message);
-
-        Glide.with(this)
-                .asGif()
-                .load(icon)
-                .into(gifView);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(dialogView);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }
