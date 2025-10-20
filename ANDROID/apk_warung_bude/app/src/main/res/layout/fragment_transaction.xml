@@ -70,10 +70,19 @@
             android:background="@drawable/edittext_background"
             android:layout_margin="4dp"/>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            style="?android:attr/progressBarStyleLarge" />
+
         <ListView
             android:id="@+id/listViewProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="visible"
             android:layout_margin="4dp"
             android:divider="#00000000"/>
 

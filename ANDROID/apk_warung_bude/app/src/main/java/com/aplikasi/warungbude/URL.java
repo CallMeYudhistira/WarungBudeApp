@@ -18,4 +18,7 @@ public class URL {
     public static String URLGetProduct = IP + "api/products/list?product_name=";
     public static String URLGetCart = IP + "api/carts/list";
     public static String URLStoreCart = IP + "api/carts/store";
+    public static String URLAddQTYCart = IP + "api/carts/plus";
+    public static String URLMinQTYCart = IP + "api/carts/min";
+    public static String URLDeleteCart = IP + "api/carts/delete";
 }

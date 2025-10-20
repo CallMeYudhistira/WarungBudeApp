@@ -1,5 +1,6 @@
 package com.aplikasi.warungbude;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,6 +93,7 @@ public class TransactionFragment extends Fragment {
     private ProductAdapter productAdapter;
     private ImageView cartLink;
     private EditText etSearch;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -126,12 +129,16 @@ public class TransactionFragment extends Fragment {
             }
         });
 
+        progressBar = view.findViewById(R.id.progressBar);
+
         loadProduct(getContext(), "");
 
         return view;
     }
 
     private void loadProduct(Context context, String product_name){
+        progressBar.setVisibility(View.VISIBLE);
+        listViewProduct.setVisibility(View.GONE);
         StringRequest request = new StringRequest(Request.Method.GET, URL.URLGetProduct + product_name, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -161,6 +168,9 @@ public class TransactionFragment extends Fragment {
                         }
                         productAdapter = new ProductAdapter(context, productList);
                         listViewProduct.setAdapter(productAdapter);
+
+                        progressBar.setVisibility(View.GONE);
+                        listViewProduct.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -170,6 +180,9 @@ public class TransactionFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+                listViewProduct.setVisibility(View.VISIBLE);
+
                 if (error.networkResponse != null && error.networkResponse.data != null) {
                     try {
                         String responseBody = new String(error.networkResponse.data, "utf-8");

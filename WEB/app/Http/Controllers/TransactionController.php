@@ -211,7 +211,7 @@ class TransactionController extends Controller
                 'subtotal' => $cart->subtotal,
             ]);
 
-            $refill = RefillStock::where('product_detail_id', $cart->product_detail_id)->where('status', 'baik')->orderBy('expired_date', 'asc')->first();
+            $refill = RefillStock::where('product_detail_id', $cart->product_detail_id)->where('status', 'baik')->where('updated_stock', '>', '0')->orderBy('expired_date', 'asc')->first();
             $refill->update([
                 'updated_stock' => $refill->updated_stock - $cart->quantity,
             ]);

@@ -4,24 +4,43 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class CartAdapter extends BaseAdapter {
     private Context context;
     private List<Cart> cartList;
+    private CartFragment fragment;
 
-    public CartAdapter(Context context, List<Cart> cartList) {
+    public CartAdapter(Context context, List<Cart> cartList, CartFragment fragment) {
         this.context = context;
         this.cartList = cartList;
+        this.fragment = fragment;
     }
 
     @Override
@@ -63,6 +82,7 @@ public class CartAdapter extends BaseAdapter {
 
         Session session = new Session(context);
         String token = session.getData(session.TOKEN_KEY);
+        String cart_id = cart.getCart_id();
 
         tvProductName.setText("📝 " + cart.getProduct_name());
         tvCategoryName.setText("🗂️ " + cart.getCategory_name());
@@ -76,7 +96,11 @@ public class CartAdapter extends BaseAdapter {
             public void onClick(View view) {
                 int qty = Integer.parseInt(tvQty.getText().toString());
                 if(qty < cart.getStock()){
-                    tvQty.setText("" + (qty + 1));
+                    btnAdd.setEnabled(false);
+
+                    editCart(context, URL.URLAddQTYCart, token, cart_id);
+
+                    btnAdd.setEnabled(true);
                 }
             }
         });
@@ -85,12 +109,83 @@ public class CartAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 int qty = Integer.parseInt(tvQty.getText().toString());
-                if(qty > 1){
-                    tvQty.setText("" + (qty - 1));
+                if (qty > 1){
+                    btnMin.setEnabled(false);
+
+                    editCart(context, URL.URLMinQTYCart, token, cart_id);
+
+                    btnMin.setEnabled(true);
                 }
             }
         });
 
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnDelete.setEnabled(false);
+
+                editCart(context, URL.URLDeleteCart, token, cart_id);
+
+                btnDelete.setEnabled(true);
+            }
+        });
+
         return view;
+    }
+
+    private void editCart(Context context, String url, String token, String cart_id){
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    if(jsonObject.getString("status").equals("deleted")){
+                        Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+
+                    fragment.loadCart(context, token);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    try {
+                        String responseBody = new String(error.networkResponse.data, "utf-8");
+                        JSONObject jsonObject = new JSONObject(responseBody);
+                        JSONArray errorsArray = jsonObject.getJSONArray("message");
+
+                        StringBuilder message = new StringBuilder();
+                        for (int i = 0; i < errorsArray.length(); i++) {
+                            message.append(errorsArray.getString(i));
+                            if (i < errorsArray.length() - 1) {
+                                message.append("\n");
+                            }
+                        }
+
+                        Alert.Show("Error", message.toString(), context, R.raw.alert);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Alert.Show("Error", "Terjadi kesalahan saat membaca respon server.", context, R.raw.alert);
+                    }
+                } else {
+                    Alert.Show("Error", "Tidak ada koneksi internet atau server tidak merespon.", context, R.raw.alert);
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("cart_id", cart_id);
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 }

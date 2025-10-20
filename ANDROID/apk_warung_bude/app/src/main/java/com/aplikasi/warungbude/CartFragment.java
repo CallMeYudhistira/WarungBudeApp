@@ -1,5 +1,6 @@
 package com.aplikasi.warungbude;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -106,7 +108,17 @@ public class CartFragment extends Fragment {
         return view;
     }
 
-    private void loadCart(Context context, String token) {
+    public void loadCart(Context context, String token) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Memuat data...🔃");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        getActivity().getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        );
+
         StringRequest request = new StringRequest(Request.Method.GET, URL.URLGetCart, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -114,6 +126,8 @@ public class CartFragment extends Fragment {
                     if (!isAdded() || getContext() == null) {
                         return;
                     }
+
+                    cartList = new ArrayList<>();
 
                     JSONObject jsonObject = new JSONObject(response);
 
@@ -135,8 +149,11 @@ public class CartFragment extends Fragment {
 
                             cartList.add(new Cart(cart_id, product_name, pict, category_name, unit_name, user_name, selling_price, quantity, subtotal, stock));
                         }
-                        cartAdapter = new CartAdapter(context, cartList);
+                        cartAdapter = new CartAdapter(context, cartList, CartFragment.this);
                         listViewCart.setAdapter(cartAdapter);
+
+                        if (progressDialog.isShowing()) progressDialog.dismiss();
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                         JSONArray customers = jsonObject.getJSONArray("customers");
                         customer_names = new ArrayList<>();
@@ -156,6 +173,9 @@ public class CartFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (progressDialog.isShowing()) progressDialog.dismiss();
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                 if (error.networkResponse != null && error.networkResponse.data != null) {
                     try {
                         String responseBody = new String(error.networkResponse.data, "utf-8");

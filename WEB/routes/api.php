@@ -28,8 +28,11 @@ Route::post('/logout', [APIAuthController::class, 'logout'])->middleware('auth:s
 
 //Transactions
 Route::get('/products/list', [APITransactionController::class, 'show_products']);
-Route::post('/carts/store', [APITransactionController::class, 'cartStore'])->middleware('auth:sanctum');
 Route::get('/carts/list', [APITransactionController::class, 'show_carts'])->middleware('auth:sanctum');
+Route::post('/carts/store', [APITransactionController::class, 'cartStore'])->middleware('auth:sanctum');
+Route::post('/carts/plus', [APITransactionController::class, 'cartPlus']);
+Route::post('/carts/min', [APITransactionController::class, 'cartMinus']);
+Route::post('/carts/delete', [APITransactionController::class, 'cartDelete']);
 
 //Dashboard
 Route::get('/dashboard', APIHomeController::class);

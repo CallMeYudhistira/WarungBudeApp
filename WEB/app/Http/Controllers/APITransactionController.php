@@ -73,4 +73,42 @@ class APITransactionController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Produk ditambahkan ke keranjang'], 201);
     }
+
+    public function cartPlus(Request $request)
+    {
+        $id = $request->cart_id;
+        $cart = Cart::where('cart_id', $id)->first();
+        $stock = ProductDetail::where('product_detail_id', $cart->product_detail_id)->first()->stock;
+
+        if (($cart->quantity + 1) > $stock) {
+            return redirect('/transaksi#cart');
+        }
+
+        $cart->update([
+            'quantity' => $cart->quantity + 1,
+            'subtotal' => ($cart->quantity + 1) * $cart->selling_price,
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'Kuantitas +1'], 200);
+    }
+
+    public function cartMinus(Request $request)
+    {
+        $id = $request->cart_id;
+        $cart = Cart::where('cart_id', $id)->first();
+        $cart->update([
+            'quantity' => $cart->quantity - 1,
+            'subtotal' => ($cart->quantity - 1) * $cart->selling_price,
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'Kuantitas -1'], 200);
+    }
+
+    public function cartDelete(Request $request)
+    {
+        $id = $request->cart_id;
+        Cart::where('cart_id', $id)->delete();
+
+        return response()->json(['status' => 'deleted', 'message' => 'Produk dihapus dari keranjang'], 200);
+    }
 }
