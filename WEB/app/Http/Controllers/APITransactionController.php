@@ -9,6 +9,7 @@ use App\Models\ProductDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class APITransactionController extends Controller
@@ -23,7 +24,7 @@ class APITransactionController extends Controller
     public function show_carts(Request $request)
     {
         $user_id = $request->user()->user_id;
-        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', $user_id)->select('carts.*', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'users.name', 'product_details.stock')->get();
+        $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', $user_id)->select('carts.*', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'users.name', 'product_details.stock', DB::raw('(SELECT SUM(subtotal) FROM carts WHERE user_id = ' . $user_id . ') AS total'))->get();
         $customers = Customer::get(['customer_id', 'customer_name']);
 
         return response()->json(['status' => 'success', 'carts' => $carts, 'customers' => $customers], 200);

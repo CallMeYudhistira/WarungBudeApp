@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,9 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -82,6 +85,7 @@ public class CartFragment extends Fragment {
     private List<Cart> cartList;
     private CartAdapter cartAdapter;
     private ArrayList<String> customer_names;
+    private TextView tvTotal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,6 +101,7 @@ public class CartFragment extends Fragment {
             }
         });
 
+        tvTotal = view.findViewById(R.id.tvTotal);
         listViewCart = view.findViewById(R.id.listViewCart);
         cartList = new ArrayList<>();
 
@@ -133,6 +138,7 @@ public class CartFragment extends Fragment {
 
                     if(jsonObject.getString("status").equals("success")){
                         JSONArray products = jsonObject.getJSONArray("carts");
+                        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
 
                         for (int i = 0; i < products.length(); i++) {
                             JSONObject obj = products.getJSONObject(i);
@@ -146,6 +152,7 @@ public class CartFragment extends Fragment {
                             int selling_price = obj.getInt("selling_price");
                             int quantity = obj.getInt("quantity");
                             int stock = obj.getInt("stock");
+                            tvTotal.setText(formatRupiah.format(obj.getInt("total")).replace(",00", ""));
 
                             cartList.add(new Cart(cart_id, product_name, pict, category_name, unit_name, user_name, selling_price, quantity, subtotal, stock));
                         }

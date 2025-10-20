@@ -24,6 +24,10 @@ class APIAuthController extends Controller
 
         $user = User::where('username', $request->username)->first();
 
+        if($user->role == 'gudang'){
+            return response()->json(['status' => 'error', 'message' => ['Anda tidak memiliki hak akses!']], 403);
+        }
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['status' => 'error', 'message' => ['Username atau Password salah!']], 401);
         }

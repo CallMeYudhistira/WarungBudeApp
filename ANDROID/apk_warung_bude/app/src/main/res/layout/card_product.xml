@@ -106,7 +106,7 @@
             android:background="@drawable/button_background"
             android:backgroundTint="#AEF8CC"
             android:layout_margin="4dp"
-            android:text="Buy"
+            android:text="Buy ✅"
             android:textColor="@android:color/black"/>
 
     </LinearLayout>

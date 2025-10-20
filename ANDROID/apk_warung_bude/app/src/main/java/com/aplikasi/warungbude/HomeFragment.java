@@ -1,5 +1,6 @@
 package com.aplikasi.warungbude;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -97,6 +98,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadDashboard(Context context){
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Memuat data...🔃");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         StringRequest request = new StringRequest(Request.Method.GET, URL.URLDashboard, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -187,6 +193,8 @@ public class HomeFragment extends Fragment {
                         tvCash4.setText(formatRupiah.format(labaBulanIniTunai).replace(",00", ""));
                         tvCredit4.setText(formatRupiah.format(labaBulanIniKredit).replace(",00", ""));
                         card_parent.addView(cardLabaBulan);
+
+                        if (progressDialog.isShowing()) progressDialog.dismiss();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -196,6 +204,8 @@ public class HomeFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (progressDialog.isShowing()) progressDialog.dismiss();
+
                 if (error.networkResponse != null && error.networkResponse.data != null) {
                     try {
                         String responseBody = new String(error.networkResponse.data, "utf-8");

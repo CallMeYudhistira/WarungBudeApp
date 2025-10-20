@@ -17,7 +17,7 @@
         android:padding="15dp">
 
         <TextView
-            android:id="@+id/tvUsernameLabel"
+            android:id="@+id/tvHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Keranjang"
@@ -51,19 +51,75 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:padding="18dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider">
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintBottom_toTopOf="@+id/cardTotal">
 
         <ListView
             android:id="@+id/listViewCart"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:divider="#00000000"/>
 
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardTotal"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:backgroundTint="#eef"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/master">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvTotalLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Total"
+                android:textColor="@android:color/black"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="12dp"
+                android:background="@drawable/edittext_background"
+                android:drawableRight="@drawable/money"
+                android:padding="15dp"
+                android:text="Rp. 0"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCheckout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="14dp"
+                android:background="@drawable/button_background"
+                android:backgroundTint="#4CAF50"
+                android:text="Checkout"
+                android:textColor="@android:color/white"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
