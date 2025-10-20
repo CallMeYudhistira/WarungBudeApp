@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Validator;
 
 class APITransactionController extends Controller
 {
-    public function show_products()
+    public function show_products(Request $request)
     {
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->select('product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'product_details.purchase_price', 'product_details.selling_price', 'product_details.stock')->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->where('products.product_name', 'LIKE', '%' . $request->product_name . '%')->select('product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'product_details.purchase_price', 'product_details.selling_price', 'product_details.stock')->get();
         $customers = Customer::get(['customer_id', 'customer_name']);
 
         return response()->json(['status' => 'success', 'products' => $products, 'customers' => $customers], 200);

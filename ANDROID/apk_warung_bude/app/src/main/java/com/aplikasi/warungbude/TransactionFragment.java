@@ -4,17 +4,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,8 +34,10 @@ import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,22 +90,50 @@ public class TransactionFragment extends Fragment {
     private List<Product> productList;
     private ProductAdapter productAdapter;
     private ArrayList<String> customer_names;
+    private ImageView cartLink;
+    private EditText etSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_transaction, container, false);
 
+        cartLink = view.findViewById(R.id.cartLink);
+        cartLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new CartFragment()).commit();
+            }
+        });
+
         listViewProduct = view.findViewById(R.id.listViewProduct);
         productList = new ArrayList<>();
 
-        loadProduct(getContext());
+        etSearch = view.findViewById(R.id.etSearch);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                loadProduct(getContext(), charSequence.toString());
+            }
+        });
+
+        loadProduct(getContext(), "");
 
         return view;
     }
 
-    private void loadProduct(Context context){
-        StringRequest request = new StringRequest(Request.Method.GET, URL.URLGetProduct, new Response.Listener<String>() {
+    private void loadProduct(Context context, String product_name){
+        StringRequest request = new StringRequest(Request.Method.GET, URL.URLGetProduct + product_name, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -110,6 +145,7 @@ public class TransactionFragment extends Fragment {
 
                     if(jsonObject.getString("status").equals("success")){
                         JSONArray products = jsonObject.getJSONArray("products");
+                        productList = new ArrayList<>();
 
                         for (int i = 0; i < products.length(); i++) {
                             JSONObject obj = products.getJSONObject(i);
