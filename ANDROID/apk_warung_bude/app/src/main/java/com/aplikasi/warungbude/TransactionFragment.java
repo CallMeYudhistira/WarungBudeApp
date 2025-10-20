@@ -89,7 +89,6 @@ public class TransactionFragment extends Fragment {
     private ListView listViewProduct;
     private List<Product> productList;
     private ProductAdapter productAdapter;
-    private ArrayList<String> customer_names;
     private ImageView cartLink;
     private EditText etSearch;
 
@@ -162,16 +161,6 @@ public class TransactionFragment extends Fragment {
                         }
                         productAdapter = new ProductAdapter(context, productList);
                         listViewProduct.setAdapter(productAdapter);
-
-                        JSONArray customers = jsonObject.getJSONArray("customers");
-                        customer_names = new ArrayList<>();
-
-                        for (int i = 0; i < customers.length(); i++) {
-                            JSONObject obj = customers.getJSONObject(i);
-                            String customer_name = obj.getString("customer_name");
-
-                            customer_names.add(customer_name);
-                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

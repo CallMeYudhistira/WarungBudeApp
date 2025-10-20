@@ -82,9 +82,9 @@ public class ProductAdapter extends BaseAdapter {
         Session session = new Session(context);
         String token = session.getData(session.TOKEN_KEY);
 
-        tvProductName.setText(product.getProduct_name());
-        tvCategoryName.setText(product.getCategory_name());
-        tvPrice.setText(formatRupiah.format(selling_price).replace(",00", "") + "/" + product.getUnit_name());
+        tvProductName.setText("📝 " + product.getProduct_name());
+        tvCategoryName.setText("🗂️ " + product.getCategory_name());
+        tvPrice.setText("💲 " + formatRupiah.format(selling_price).replace(",00", "") + "/" + product.getUnit_name());
         Glide.with(context).load(URL.URLImage + product.getPict()).into(ivPict);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
