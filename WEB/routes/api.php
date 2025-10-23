@@ -34,6 +34,7 @@ Route::post('/carts/plus', [APITransactionController::class, 'cartPlus']);
 Route::post('/carts/min', [APITransactionController::class, 'cartMinus']);
 Route::post('/carts/delete', [APITransactionController::class, 'cartDelete']);
 Route::post('/transaction/store', [APITransactionController::class, 'transactionStore'])->middleware('auth:sanctum');
+Route::get('/transaction/detail', [APITransactionController::class, 'invoice'])->middleware('auth:sanctum');
 
 //Dashboard
 Route::get('/dashboard', APIHomeController::class);
