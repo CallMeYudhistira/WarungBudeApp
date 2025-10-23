@@ -50,9 +50,9 @@ public class InvoiceAdapter extends BaseAdapter {
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
 
         product_name.setText(invoice.getProduct_name());
-        selling_price.setText(formatRupiah.format(invoice.getSelling_price()));
+        selling_price.setText(formatRupiah.format(invoice.getSelling_price()).replace(",00", ""));
         quantity.setText(String.valueOf(invoice.getQuantity()));
-        subtotal.setText(formatRupiah.format(invoice.getSubtotal()));
+        subtotal.setText(formatRupiah.format(invoice.getSubtotal()).replace(",00", ""));
 
         return view;
     }

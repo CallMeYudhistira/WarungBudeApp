@@ -16,6 +16,14 @@
         app:layout_constraintBottom_toTopOf="@+id/divider"
         android:padding="15dp">
 
+        <ImageView
+            android:id="@+id/historyLink"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:src="@drawable/time"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="start"/>
+
         <TextView
             android:id="@+id/tvUsernameLabel"
             android:layout_width="wrap_content"

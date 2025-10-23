@@ -80,7 +80,7 @@ public class InvoiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!transaction_id.equals("")){
-                    String url = URL.IP + "transaksi/detail/" + transaction_id + "/print";
+                    String url = URL.URLTransactionPrint + transaction_id;
                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
                     request.setTitle("Mengunduh File PDF");
                     request.setDescription("File sedang diunduh...");

@@ -1,7 +1,7 @@
 package com.aplikasi.warungbude;
 
 public class URL {
-    public static String IP = "http://10.158.181.197:8000/";
+    public static String IP = "http://192.168.0.112:8000/";
 
     // Authentication
     public static String URLLogin = IP + "api/login";
@@ -23,4 +23,5 @@ public class URL {
     public static String URLDeleteCart = IP + "api/carts/delete";
     public static String URLTransactionStore = IP + "api/transaction/store";
     public static String URLTransactionDetail = IP + "api/transaction/detail";
+    public static String URLTransactionPrint = IP + "api/transaction/print/";
 }
