@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Credit;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductDetail;
+use App\Models\RefillStock;
+use App\Models\Transaction;
+use App\Models\TransactionDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -116,5 +120,105 @@ class APITransactionController extends Controller
         Cart::where('cart_id', $id)->delete();
 
         return response()->json(['status' => 'deleted', 'message' => 'Produk dihapus dari keranjang'], 200);
+    }
+
+    public function transactionStore(Request $request)
+    {
+        $user_id = $request->user()->user_id;
+        $validator = Validator::make($request->all(), [
+            'total' => 'required',
+            'change' => 'required',
+        ]);
+
+        $validator->after(function ($validator) use ($request) {
+            if ($request->total == 0 || $request->total < 0) {
+                $validator->errors()->add('total', 'Keranjang masih kosong!.');
+            }
+            if ($request->pay < 0) {
+                $validator->errors()->add('pay', 'Pembayaran minus!.');
+            }
+
+            if ($request->pay < 0 && !$request->customer_name) {
+                $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong');
+            }
+
+            if ($request->payment == 'kredit' && !$request->customer_name) {
+                $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong');
+            }
+        });
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'message' => $validator->errors()->all()], 400);
+        }
+
+        if ($request->payment !== 'tunai' && $request->payment !== 'kredit') {
+            $validator->errors()->add('payment', 'Metode pembayaran tidak valid!');
+
+            return response()->json(['status' => 'error', 'message' => $validator->errors()->all()], 400);
+        } else {
+            Transaction::create([
+                'date' => now(),
+                'total' => $request->total,
+                'pay' => $request->pay,
+                'change' => $request->change,
+                'payment' => $request->payment,
+                'user_id' => $user_id,
+            ]);
+        }
+
+        $newTransaction = Transaction::latest()->first();
+        $transaction_id = $newTransaction->transaction_id;
+
+        if ($request->payment === 'kredit') {
+            $customer = Customer::where('customer_name', $request->customer_name)->first();
+            $total_of_debt = $request->change * -1;
+
+            if ($customer && $customer !== null) {
+                $total_of_debt = $customer->amount_of_debt + $total_of_debt;
+
+                Customer::where('customer_id', $customer->customer_id)->update([
+                    'amount_of_debt' => $total_of_debt,
+                    'status' => 'belum lunas',
+                ]);
+            } else {
+                Customer::create([
+                    'customer_name' => $request->customer_name,
+                    'amount_of_debt' => $total_of_debt,
+                    'status' => 'belum lunas',
+                ]);
+
+                $customer = Customer::latest()->first();
+            }
+
+            Credit::create([
+                'transaction_id' => $transaction_id,
+                'customer_id' => $customer->customer_id,
+                'total' => $total_of_debt,
+            ]);
+        }
+
+        $carts = Cart::all();
+
+        foreach ($carts as $cart) {
+            TransactionDetail::create([
+                'transaction_id' => $transaction_id,
+                'product_detail_id' => $cart->product_detail_id,
+                'purchase_price' => $cart->purchase_price,
+                'selling_price' => $cart->selling_price,
+                'quantity' => $cart->quantity,
+                'subtotal' => $cart->subtotal,
+            ]);
+
+            $refill = RefillStock::where('product_detail_id', $cart->product_detail_id)->where('status', 'baik')->where('updated_stock', '>', '0')->orderBy('expired_date', 'asc')->first();
+            $refill->update([
+                'updated_stock' => $refill->updated_stock - $cart->quantity,
+            ]);
+
+            DB::statement("UPDATE product_details SET stock = (SELECT SUM(updated_stock) FROM refill_stocks WHERE product_detail_id = '$cart->product_detail_id') WHERE product_detail_id = '$cart->product_detail_id'");
+        }
+
+        DB::statement('DELETE FROM carts WHERE user_id = ' . $user_id);
+
+        return response()->json(['status' => 'success', 'message' => 'Transaksi Berhasil!'], 201);
     }
 }

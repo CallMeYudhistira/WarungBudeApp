@@ -120,6 +120,7 @@ public class CartFragment extends Fragment {
                 CheckoutFragment checkoutFragment = new CheckoutFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("total", total);
+                bundle.putStringArrayList("customer_names", customer_names);
                 checkoutFragment.setArguments(bundle);
 
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, checkoutFragment).commit();

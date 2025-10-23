@@ -21,4 +21,5 @@ public class URL {
     public static String URLAddQTYCart = IP + "api/carts/plus";
     public static String URLMinQTYCart = IP + "api/carts/min";
     public static String URLDeleteCart = IP + "api/carts/delete";
+    public static String URLTransactionStore = IP + "api/transaction/store";
 }

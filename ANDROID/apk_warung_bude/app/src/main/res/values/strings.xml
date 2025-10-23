@@ -7,7 +7,7 @@
     <string name="dropdown_payment">Metode Pembayaran</string>
     <string-array name="array_payment">
         <item>Pilih</item>
-        <item>Tunai</item>
-        <item>Kredit</item>
+        <item>tunai</item>
+        <item>kredit</item>
     </string-array>
 </resources>
