@@ -22,6 +22,8 @@ public class URL {
     public static String URLMinQTYCart = IP + "api/carts/min";
     public static String URLDeleteCart = IP + "api/carts/delete";
     public static String URLTransactionStore = IP + "api/transaction/store";
-    public static String URLTransactionDetail = IP + "api/transaction/detail";
+    public static String URLTransactionInvoice = IP + "api/transaction/invoice";
     public static String URLTransactionPrint = IP + "api/transaction/print/";
+    public static String URLTransactionHistory = IP + "api/transaction/history";
+    public static String URLTransactionDetail = IP + "api/transaction/detail/";
 }

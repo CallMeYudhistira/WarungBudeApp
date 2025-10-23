@@ -47,7 +47,7 @@ public class InvoiceActivity extends AppCompatActivity {
     private Button btnSave, btnClose;
     private List<Invoice> invoiceList;
     private InvoiceAdapter invoiceAdapter;
-    private String transaction_id = "";
+    private String transaction_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +96,22 @@ public class InvoiceActivity extends AppCompatActivity {
             }
         });
 
-        loadInvoice(InvoiceActivity.this, token);
+        try {
+            transaction_id = getIntent().getStringExtra("transaction_id");
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction_id = "";
+        }
+
+        if(transaction_id.equals("")){
+            loadInvoice(InvoiceActivity.this, token, URL.URLTransactionInvoice);
+        } else {
+            loadInvoice(InvoiceActivity.this, token, URL.URLTransactionDetail + transaction_id);
+        }
     }
 
-    public void loadInvoice(Context context, String token) {
-        StringRequest request = new StringRequest(Request.Method.GET, URL.URLTransactionDetail, new Response.Listener<String>() {
+    public void loadInvoice(Context context, String token, String url) {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -125,9 +136,9 @@ public class InvoiceActivity extends AppCompatActivity {
                         payment.setText(metode);
                         user_name.setText(kasir);
                         customer_name.setText(pelanggan);
-                        tvTotal.setText(formatRupiah.format(total));
-                        tvPay.setText(formatRupiah.format(bayar));
-                        tvChange.setText(formatRupiah.format(kembali));
+                        tvTotal.setText(formatRupiah.format(total).replace(",00", ""));
+                        tvPay.setText(formatRupiah.format(bayar).replace(",00", ""));
+                        tvChange.setText(formatRupiah.format(kembali).replace(",00", ""));
 
                         JSONArray transaction_details = jsonObject.getJSONArray("transaction_details");
 

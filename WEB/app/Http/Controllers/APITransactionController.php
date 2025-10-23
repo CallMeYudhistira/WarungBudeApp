@@ -232,7 +232,7 @@ class APITransactionController extends Controller
         $transaction = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->where('transactions.transaction_id', $id)->first(['transactions.date', 'transactions.payment', 'users.name', 'customers.customer_name', 'transactions.total', 'transactions.pay', 'transactions.change']);
         $transaction_details = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->join('product_details', 'product_details.product_detail_id', '=', 'transaction_details.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('transaction_details.transaction_id', $id)->get(['products.product_name', 'transaction_details.selling_price', 'transaction_details.quantity', 'transaction_details.subtotal']);
 
-        return response()->json(['status' => 'success', 'message' => 'Detail Transaksi Berhasil Dikirim!', 'transaction' => $transaction, 'transaction_details' => $transaction_details, 'transaction_id' => $id], 200);
+        return response()->json(['status' => 'success', 'transaction' => $transaction, 'transaction_details' => $transaction_details, 'transaction_id' => $id], 200);
     }
 
     public function print($id)
@@ -242,5 +242,20 @@ class APITransactionController extends Controller
 
         $pdf = Pdf::loadView('transaksi.print.detail', compact('transaction', 'transaction_details'))->setPaper('a4', 'landscape');
         return $pdf->stream($transaction->transaction_id . '_' . $transaction->customer_name . '_' . $transaction->date . '_print.pdf');
+    }
+
+    public function history()
+    {
+        $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
+
+        return response()->json(['status' => 'success', 'transactions' => $transactions], 200);
+    }
+
+    public function detail($id)
+    {
+        $transaction = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->where('transactions.transaction_id', $id)->first(['transactions.date', 'transactions.payment', 'users.name', 'customers.customer_name', 'transactions.total', 'transactions.pay', 'transactions.change']);
+        $transaction_details = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->join('product_details', 'product_details.product_detail_id', '=', 'transaction_details.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', 'product_details.unit_id')->where('transaction_details.transaction_id', $id)->get(['products.product_name', 'transaction_details.selling_price', 'transaction_details.quantity', 'transaction_details.subtotal']);
+
+        return response()->json(['status' => 'success', 'transaction' => $transaction, 'transaction_details' => $transaction_details, 'transaction_id' => $id], 200);
     }
 }

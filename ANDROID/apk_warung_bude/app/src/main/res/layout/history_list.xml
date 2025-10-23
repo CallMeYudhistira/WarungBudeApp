@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Tanggal Transaksi"
+            android:layout_gravity="center"
+            android:fontFamily="@font/nata_bold"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvPayment"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="Pembayaran"
+            android:background="@drawable/button_background"
+            android:padding="4dp"
+            android:gravity="center"
+            android:backgroundTint="#ddd"
+            android:fontFamily="@font/nata_bold"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvTotalLabel"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Total : "
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Rp. 0"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvUserLabel"
+            android:layout_width="130dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Nama Kasir : "
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvUser"
+            android:layout_width="90dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Kasir"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvPayLabel"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Bayar : "
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvPay"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Rp. 0"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvCustomerLabel"
+            android:layout_width="130dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Nama Pelanggan : "
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvCustomer"
+            android:layout_width="90dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Pelanggan"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvChangeLabel"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Kembali : "
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvChange"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Rp. 0"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDetail"
+            android:layout_width="220dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:background="@drawable/button_background"
+            android:backgroundTint="#009689"
+            android:textSize="12dp"
+            android:text="Detail"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+</LinearLayout>

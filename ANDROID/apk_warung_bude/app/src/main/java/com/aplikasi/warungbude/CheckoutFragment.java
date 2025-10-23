@@ -1,5 +1,6 @@
 package com.aplikasi.warungbude;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -258,8 +259,10 @@ public class CheckoutFragment extends Fragment {
 
                     if(jsonObject.getString("status").equals("success")){
                         Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                        getContext().startActivity(new Intent(getActivity(), InvoiceActivity.class));
-                        getActivity().finish();
+                        Intent intent = new Intent(context, InvoiceActivity.class);
+                        intent.putExtra("transaction_id", "");
+                        context.startActivity(intent);
+                        ((Activity) context).finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

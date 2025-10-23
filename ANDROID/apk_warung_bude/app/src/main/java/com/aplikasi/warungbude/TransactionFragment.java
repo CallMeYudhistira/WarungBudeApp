@@ -91,7 +91,7 @@ public class TransactionFragment extends Fragment {
     private ListView listViewProduct;
     private List<Product> productList;
     private ProductAdapter productAdapter;
-    public ImageView cartLink;
+    public ImageView cartLink, historyLink;
     private EditText etSearch;
     private ProgressBar progressBar;
 
@@ -107,6 +107,14 @@ public class TransactionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new CartFragment()).commit();
+            }
+        });
+
+        historyLink = view.findViewById(R.id.historyLink);
+        historyLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HistoryFragment()).commit();
             }
         });
 
