@@ -43,7 +43,7 @@ class APITransactionController extends Controller
             'purchase_price' => 'required',
         ]);
 
-        if($validation->fails()){
+        if ($validation->fails()) {
             return response()->json(['status' => 'error', 'message' => $validation->errors()->all()], 400);
         }
 
@@ -81,28 +81,33 @@ class APITransactionController extends Controller
         $cart = Cart::where('cart_id', $id)->first();
         $stock = ProductDetail::where('product_detail_id', $cart->product_detail_id)->first()->stock;
 
-        if (($cart->quantity + 1) > $stock) {
-            return redirect('/transaksi#cart');
+        if ($cart->quantity < $stock) {
+            $cart->update([
+                'quantity' => $cart->quantity + 1,
+                'subtotal' => ($cart->quantity + 1) * $cart->selling_price,
+            ]);
+
+            return response()->json(['status' => 'success', 'message' => 'Kuantitas +1'], 200);
+        } else {
+            return response()->json(['status' => 'success', 'message' => null], 200);
         }
-
-        $cart->update([
-            'quantity' => $cart->quantity + 1,
-            'subtotal' => ($cart->quantity + 1) * $cart->selling_price,
-        ]);
-
-        return response()->json(['status' => 'success', 'message' => 'Kuantitas +1'], 200);
     }
 
     public function cartMinus(Request $request)
     {
         $id = $request->cart_id;
         $cart = Cart::where('cart_id', $id)->first();
-        $cart->update([
-            'quantity' => $cart->quantity - 1,
-            'subtotal' => ($cart->quantity - 1) * $cart->selling_price,
-        ]);
 
-        return response()->json(['status' => 'success', 'message' => 'Kuantitas -1'], 200);
+        if ($cart->quantity > 1) {
+            $cart->update([
+                'quantity' => $cart->quantity - 1,
+                'subtotal' => ($cart->quantity - 1) * $cart->selling_price,
+            ]);
+
+            return response()->json(['status' => 'success', 'message' => 'Kuantitas -1'], 200);
+        } else {
+            return response()->json(['status' => 'success', 'message' => null], 200);
+        }
     }
 
     public function cartDelete(Request $request)

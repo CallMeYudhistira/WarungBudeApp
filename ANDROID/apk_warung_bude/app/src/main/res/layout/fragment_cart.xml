@@ -54,7 +54,6 @@
         android:paddingLeft="18dp"
         android:paddingRight="18dp"
         android:paddingTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider"
@@ -115,8 +114,7 @@
                 android:background="@drawable/button_background"
                 android:backgroundTint="#4CAF50"
                 android:text="Checkout"
-                android:textColor="@android:color/white"
-                app:cornerRadius="12dp" />
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
 

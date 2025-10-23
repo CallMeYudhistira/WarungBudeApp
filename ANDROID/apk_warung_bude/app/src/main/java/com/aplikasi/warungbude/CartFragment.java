@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -86,6 +87,8 @@ public class CartFragment extends Fragment {
     private CartAdapter cartAdapter;
     private ArrayList<String> customer_names;
     private TextView tvTotal;
+    private int total = 0;
+    private Button btnCheckout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,6 +113,19 @@ public class CartFragment extends Fragment {
 
         loadCart(getContext(), token);
 
+        btnCheckout = view.findViewById(R.id.btnCheckout);
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckoutFragment checkoutFragment = new CheckoutFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("total", total);
+                checkoutFragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, checkoutFragment).commit();
+            }
+        });
+
         return view;
     }
 
@@ -118,11 +134,6 @@ public class CartFragment extends Fragment {
         progressDialog.setMessage("Memuat data...🔃");
         progressDialog.setCancelable(false);
         progressDialog.show();
-
-        getActivity().getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        );
 
         StringRequest request = new StringRequest(Request.Method.GET, URL.URLGetCart, new Response.Listener<String>() {
             @Override
@@ -152,15 +163,15 @@ public class CartFragment extends Fragment {
                             int selling_price = obj.getInt("selling_price");
                             int quantity = obj.getInt("quantity");
                             int stock = obj.getInt("stock");
-                            tvTotal.setText(formatRupiah.format(obj.getInt("total")).replace(",00", ""));
+                            total = obj.getInt("total");
 
                             cartList.add(new Cart(cart_id, product_name, pict, category_name, unit_name, user_name, selling_price, quantity, subtotal, stock));
                         }
                         cartAdapter = new CartAdapter(context, cartList, CartFragment.this);
                         listViewCart.setAdapter(cartAdapter);
+                        tvTotal.setText(formatRupiah.format(total).replace(",00", ""));
 
                         if (progressDialog.isShowing()) progressDialog.dismiss();
-                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                         JSONArray customers = jsonObject.getJSONArray("customers");
                         customer_names = new ArrayList<>();
@@ -181,7 +192,6 @@ public class CartFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (progressDialog.isShowing()) progressDialog.dismiss();
-                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                 if (error.networkResponse != null && error.networkResponse.data != null) {
                     try {
