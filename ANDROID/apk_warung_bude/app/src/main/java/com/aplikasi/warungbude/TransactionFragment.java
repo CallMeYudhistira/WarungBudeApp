@@ -91,7 +91,7 @@ public class TransactionFragment extends Fragment {
     private ListView listViewProduct;
     private List<Product> productList;
     private ProductAdapter productAdapter;
-    private ImageView cartLink;
+    public ImageView cartLink;
     private EditText etSearch;
     private ProgressBar progressBar;
 
@@ -99,6 +99,8 @@ public class TransactionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_transaction, container, false);
+        Session session = new Session(getContext());
+        String token = session.getData(session.TOKEN_KEY);
 
         cartLink = view.findViewById(R.id.cartLink);
         cartLink.setOnClickListener(new View.OnClickListener() {
@@ -125,18 +127,18 @@ public class TransactionFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                loadProduct(getContext(), charSequence.toString());
+                loadProduct(getContext(), charSequence.toString(), token);
             }
         });
 
         progressBar = view.findViewById(R.id.progressBar);
 
-        loadProduct(getContext(), "");
+        loadProduct(getContext(), "", token);
 
         return view;
     }
 
-    private void loadProduct(Context context, String product_name){
+    private void loadProduct(Context context, String product_name, String token){
         progressBar.setVisibility(View.VISIBLE);
         listViewProduct.setVisibility(View.GONE);
         StringRequest request = new StringRequest(Request.Method.GET, URL.URLGetProduct + product_name, new Response.Listener<String>() {
@@ -148,6 +150,10 @@ public class TransactionFragment extends Fragment {
                     }
 
                     JSONObject jsonObject = new JSONObject(response);
+                    int cart = jsonObject.getInt("cart");
+                    if(cart > 0){
+                        cartLink.setImageResource(R.drawable.marked_cart);
+                    }
 
                     if(jsonObject.getString("status").equals("success")){
                         JSONArray products = jsonObject.getJSONArray("products");
@@ -166,7 +172,7 @@ public class TransactionFragment extends Fragment {
 
                             productList.add(new Product(product_detail_id, product_name, pict, category_name, unit_name, purchase_price, selling_price, stock));
                         }
-                        productAdapter = new ProductAdapter(context, productList);
+                        productAdapter = new ProductAdapter(context, productList, TransactionFragment.this);
                         listViewProduct.setAdapter(productAdapter);
 
                         progressBar.setVisibility(View.GONE);
@@ -206,7 +212,15 @@ public class TransactionFragment extends Fragment {
                     Alert.Show("Error", "Tidak ada koneksi internet atau server tidak merespon.", getContext(), R.raw.alert);
                 }
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + token);
+                headers.put("Accept", "application/json");
+                return headers;
+            };
+        };
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);

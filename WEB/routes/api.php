@@ -27,7 +27,7 @@ Route::post('/register', [APIAuthController::class, 'register']);
 Route::post('/logout', [APIAuthController::class, 'logout'])->middleware('auth:sanctum');
 
 //Transactions
-Route::get('/products/list', [APITransactionController::class, 'show_products']);
+Route::get('/products/list', [APITransactionController::class, 'show_products'])->middleware('auth:sanctum');
 Route::get('/carts/list', [APITransactionController::class, 'show_carts'])->middleware('auth:sanctum');
 Route::post('/carts/store', [APITransactionController::class, 'cartStore'])->middleware('auth:sanctum');
 Route::post('/carts/plus', [APITransactionController::class, 'cartPlus']);

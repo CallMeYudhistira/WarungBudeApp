@@ -150,6 +150,7 @@ public class CartFragment extends Fragment {
 
                     if(jsonObject.getString("status").equals("success")){
                         JSONArray products = jsonObject.getJSONArray("carts");
+                        total = 0;
                         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
 
                         for (int i = 0; i < products.length(); i++) {

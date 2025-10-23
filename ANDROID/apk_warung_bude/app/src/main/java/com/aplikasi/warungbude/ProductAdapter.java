@@ -37,10 +37,12 @@ import java.util.Map;
 public class ProductAdapter extends BaseAdapter {
     private Context context;
     private List<Product> productList;
+    private TransactionFragment fragment;
 
-    public ProductAdapter(Context context, List<Product> productList) {
+    public ProductAdapter(Context context, List<Product> productList, TransactionFragment fragment) {
         this.context = context;
         this.productList = productList;
+        this.fragment = fragment;
     }
 
     @Override
@@ -92,7 +94,7 @@ public class ProductAdapter extends BaseAdapter {
             public void onClick(View view) {
                 int qty = Integer.parseInt(tvQty.getText().toString());
                 if(qty < product.getStock()){
-                    tvQty.setText("" + (qty + 1));
+                    tvQty.setText(String.valueOf(qty + 1));
                 }
             }
         });
@@ -102,7 +104,7 @@ public class ProductAdapter extends BaseAdapter {
             public void onClick(View view) {
                 int qty = Integer.parseInt(tvQty.getText().toString());
                 if(qty > 1){
-                    tvQty.setText("" + (qty - 1));
+                    tvQty.setText(String.valueOf(qty - 1));
                 }
             }
         });
@@ -111,6 +113,7 @@ public class ProductAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 cartStore(context, token, product_detail_id, tvQty.getText().toString(), purchase_price + "", selling_price + "");
+                tvQty.setText("1");
             }
         });
 
@@ -126,6 +129,7 @@ public class ProductAdapter extends BaseAdapter {
 
                     if(jsonObject.getString("status").equals("success")){
                         Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        fragment.cartLink.setImageResource(R.drawable.marked_cart);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
