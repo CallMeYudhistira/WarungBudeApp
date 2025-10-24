@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -244,9 +245,23 @@ class APITransactionController extends Controller
         return $pdf->stream($transaction->transaction_id . '_' . $transaction->customer_name . '_' . $transaction->date . '_print.pdf');
     }
 
-    public function history()
+    public function history(Request $request)
     {
-        $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
+        $date = $request->keydate;
+
+        if ($date) {
+            try {
+                $date = Carbon::createFromDate(date_create($date));
+            } catch (\Exception $e) {
+                return response()->json(['status' => 'error', 'message' => 'Invalid date format'], 400);
+            }
+        }
+
+        if (!$date) {
+            $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
+        } else {
+            $transactions = Transaction::join('users', 'users.user_id', '=', 'transactions.user_id', 'inner')->join('credits', 'transactions.transaction_id', '=', 'credits.transaction_id', 'left')->join('customers', 'customers.customer_id', '=', 'credits.customer_id', 'left')->whereDate('transactions.date', $date)->orderBy('transactions.created_at', 'desc')->get(['transactions.transaction_id', 'transactions.date', 'transactions.total', 'transactions.pay', 'transactions.change', 'transactions.payment', 'users.name', 'customers.customer_name']);
+        }
 
         return response()->json(['status' => 'success', 'transactions' => $transactions], 200);
     }

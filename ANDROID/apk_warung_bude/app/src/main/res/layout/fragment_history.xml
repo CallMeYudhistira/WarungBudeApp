@@ -60,6 +60,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider">
 
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:drawableRight="@drawable/date"
+            android:hint="Tanggal..."
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:background="@drawable/edittext_background"
+            android:layout_margin="4dp"/>
+
         <ListView
             android:id="@+id/listViewHistory"
             android:layout_width="match_parent"
