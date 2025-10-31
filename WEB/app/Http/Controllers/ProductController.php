@@ -34,6 +34,7 @@ class ProductController extends Controller
                 'categories.category_id',
             )
             ->orderBy(DB::raw('min_stock'), 'ASC')
+            ->orderBy('products.product_id', 'DESC')
             ->simplePaginate(10);
 
         return view('barang.index', compact('products', 'categories'));
@@ -66,6 +67,7 @@ class ProductController extends Controller
                 'categories.category_id',
             )
             ->orderBy(DB::raw('min_stock'), 'ASC')
+            ->orderBy('products.product_id', 'DESC')
             ->simplePaginate(10);
 
         return view('barang.index', compact('products', 'keyword', 'categories'));
@@ -75,7 +77,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'product_name' => 'required',
-            'pict' => 'image|mimes:jpg,png,jpeg',
+            'pict' => 'image|mimes:jpg,png,jpeg,webp|max:2048',
             'category_id' => 'required|numeric',
         ]);
 
@@ -102,7 +104,7 @@ class ProductController extends Controller
         $request->validate([
             'id' => 'required|numeric',
             'product_name' => 'required',
-            'pict' => 'image|mimes:jpg,png,jpeg',
+            'pict' => 'image|mimes:jpg,png,jpeg,webp|max:2048',
             'category_id' => 'required|numeric',
         ]);
 

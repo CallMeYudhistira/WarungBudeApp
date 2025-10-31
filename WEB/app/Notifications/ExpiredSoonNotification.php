@@ -26,7 +26,7 @@ class ExpiredSoonNotification extends Notification
     {
         return [
             'title' => 'Produk Akan Kedaluwarsa',
-            'message' => "Produk \"{$this->product->product_name}\" akan kedaluwarsa pada " . Carbon::parse($this->product->expired_date)->translatedFormat('l, d/F/Y'),
+            'message' => "Produk \"{$this->product->product_name}\" dengan satuan \"{$this->product->unit_name}\" akan kedaluwarsa pada " . Carbon::parse($this->product->expired_date)->translatedFormat('l, d/F/Y'),
         ];
     }
 }

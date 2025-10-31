@@ -46,7 +46,7 @@
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#hapusDetailBarang{{ $product_detail->product_detail_id }}" style="width: 100%; margin-left: 0.5rem;">Hapus</button>
                             </div>
-                            <a href="/barang/refillStock/{{ $product_detail->product_detail_id }}" class="btn btn-secondary w-100">isi Stok</a>
+                            <a href="/barang/refillStock/{{ $product_detail->product_detail_id }}" class="btn btn-secondary w-100">Isi Stok</a>
                         </div>
                     </div>
                 </div>

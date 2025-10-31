@@ -39,13 +39,13 @@
                     <tr>
                         <th scope="row">{{ $i + 1 }}</th>
                         <td scope="row">{{ $refillStock->product_name }}</td>
-                        <td scope="row">{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }}</td>
+                        <td scope="row">{{ 'Rp ' . number_format($refillStock->price, 0, ',', '.') }} / {{ $refillStock->unit_name }}</td>
                         <td scope="row">{{ $refillStock->quantity }}</td>
                         <td scope="row">{{ 'Rp ' . number_format($refillStock->total, 0, ',', '.') }}</td>
                         <td scope="row">{{ \Carbon\Carbon::parse($refillStock->entry_date)->translatedFormat('d/F/Y') }}</td>
                         <td scope="row">{{ $refillStock->expired_date ? \Carbon\Carbon::parse($refillStock->expired_date)->translatedFormat('d/F/Y') : '-' }}</td>
                         <td scope="row">{{ $refillStock->updated_stock }}</td>
-                        <td scope="row">{{ $refillStock->status }}</td>
+                        <td scope="row">{{ $refillStock->status == 'pending' ? 'menunggu' : $refillStock->status }}</td>
                     </tr>
                 @endforeach
                 @else

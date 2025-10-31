@@ -18,10 +18,10 @@ class UpdateExpiredProducts extends Command
     public function handle()
     {
         $today = Carbon::today();
-        $expiredProducts = ProductDetail::join('products', 'products.product_id', '=', 'product_details.product_id')->join('refill_stocks', 'refill_stocks.product_detail_id', '=', 'product_details.product_detail_id')
+        $expiredProducts = ProductDetail::join('products', 'products.product_id', '=', 'product_details.product_id')->join('refill_stocks', 'refill_stocks.product_detail_id', '=', 'product_details.product_detail_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')
             ->whereDate('refill_stocks.expired_date', $today)
             ->where('status', '=', 'baik')
-            ->select('refill_stocks.refill_stock_id', 'products.product_name', 'product_details.stock', 'refill_stocks.expired_date', 'refill_stocks.status')
+            ->select('refill_stocks.refill_stock_id', 'products.product_name', 'product_details.stock', 'refill_stocks.expired_date', 'refill_stocks.status', 'units.unit_name')
             ->get();
 
         if ($expiredProducts->isEmpty()) {

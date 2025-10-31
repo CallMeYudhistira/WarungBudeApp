@@ -15,7 +15,7 @@
         @if (!$products->isEmpty())
             <div class="row row-cols-1 row-cols-md-5 g-5">
                 @foreach ($products as $product)
-                    <form action="transaksi/cart/store" method="post">
+                    <form action="/transaksi/cart/store" method="post">
                         @csrf
                         <div class="col">
                             <div class="card h-100" style="width: 280px;">

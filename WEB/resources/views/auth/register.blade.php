@@ -15,9 +15,9 @@
             <form action="/register" method="post">
                 @csrf
                 <h1 style="margin-bottom: 1rem;">Sign Up!</h1>
-                <span style="margin-bottom: 0.7rem;">Complete the field below.</span>
-                <input type="text" name="name" placeholder="Name" autocomplete="off">
-                <input type="number" name="phone_number" placeholder="Phone Number" autocomplete="off">
+                <span style="margin-bottom: 0.7rem;">Lengkapi semua data di bawah ini.</span>
+                <input type="text" name="name" placeholder="Nama" autocomplete="off">
+                <input type="number" name="phone_number" placeholder="Nomor Telepon" autocomplete="off">
                 <input type="text" name="username" placeholder="Username" autocomplete="off">
                 <input type="password" name="password" placeholder="Password" autocomplete="off">
                 <button type="submit" class="register">Sign Up</button>
@@ -26,9 +26,9 @@
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-right">
-                    <h1>Hello, Friend!</h1>
-                    <p>Register with your personal details to use all of site features</p>
-                    <a href="/login" class="link">Already have an account?</a>
+                    <h1>Halo, Teman!</h1>
+                    <p>Daftar dengan data personal anda untuk mengakses semua fitur.</p>
+                    <a href="/login" class="link">Sudah punya akun?</a>
                 </div>
             </div>
         </div>

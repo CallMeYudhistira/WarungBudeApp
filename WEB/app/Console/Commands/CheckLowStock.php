@@ -15,7 +15,7 @@ class CheckLowStock extends Command
 
     public function handle()
     {
-        $lowStockProducts = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->where('product_details.stock', '<', 10)->get();
+        $lowStockProducts = Product::join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_details.stock', '<', 5)->where('product_details.deleted_at', '=', NULL)->get();
 
         if ($lowStockProducts->isEmpty()) {
             $this->info('Tidak ada produk dengan stok rendah.');

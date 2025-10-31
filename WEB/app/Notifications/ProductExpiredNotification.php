@@ -25,7 +25,7 @@ class ProductExpiredNotification extends Notification
     {
         return [
             'title' => 'Produk Expired',
-            'message' => "Produk {$this->product->product_name} sudah expired pada hari ini. Status diubah ke Pending.",
+            'message' => "Produk \"{$this->product->product_name}\" dengan satuan \"{$this->product->unit_name}\" sudah expired pada hari ini. Status diubah ke Pending.",
         ];
     }
 }

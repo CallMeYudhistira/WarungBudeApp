@@ -25,7 +25,7 @@ class LowStockNotification extends Notification
     {
         return [
             'title' => 'Stok Menipis',
-            'message' => "Stok produk \"{$this->product->product_name}\" tersisa {$this->product->stock}",
+            'message' => "Stok produk \"{$this->product->product_name}\" dengan satuan \"{$this->product->unit_name}\" tersisa {$this->product->stock}",
         ];
     }
 }

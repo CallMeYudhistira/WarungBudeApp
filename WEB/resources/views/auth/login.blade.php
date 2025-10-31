@@ -15,7 +15,7 @@
             <form action="/login" method="post" class="form-login">
                 @csrf
                 <h1 style="margin-bottom: 1rem;">Sign In!</h1>
-                <span style="margin-bottom: 0.7rem;">Use your username and password.</span>
+                <span style="margin-bottom: 0.7rem;">Gunakan username dan password anda.</span>
                 <input type="text" name="username" placeholder="Username" autocomplete="off">
                 <input type="password" name="password" placeholder="Password" autocomplete="off">
                 <button type="submit" class="login">Sign In</button>
@@ -24,9 +24,9 @@
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel" style="left: 25%;">
-                    <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of site features.</p>
-                    <a href="/register" class="link">Create a new account?</a>
+                    <h1>Selamat Datang!</h1>
+                    <p>Masukan data personal anda untuk mengakses semua fitur.</p>
+                    <a href="/register" class="link">Buat akun baru?</a>
                 </div>
             </div>
         </div>
