@@ -76,6 +76,22 @@
         </table>
     </div>
 </div>
+
+<hr class="m-4">
+<div class="d-flex justify-content-sm-between flex-wrap" style="width: 1000px; margin: auto;">
+    <div class="card text-center m-2" style="width: auto; height: auto; padding: 2rem;">
+        <h3>💳 Total Piutang</h3>
+        <div style="font-size: 30px;">{{ 'Rp ' . number_format($totalPiutang, 0, ',', '.') }}</div>
+    </div>
+    <div class="text-center m-2" style="width: auto; height: auto; padding: 2rem;">
+        <h2 style="margin: 2rem auto;">➡️</h2>
+    </div>
+    <div class="card text-center m-2" style="width: auto; height: auto; padding: 2rem;">
+        <h3>🪙 Piutang Lunas</h3>
+        <div style="font-size: 30px;">{{ 'Rp ' . number_format($piutangLunas, 0, ',', '.') }}</div>
+    </div>
+</div>
+
 <hr class="m-4">
 @if ($dataBulan != null)
     <div class="p-4 mt-4 card d-flex" style="margin: auto;">

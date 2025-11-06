@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CreditPayment;
+use App\Models\Customer;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -75,6 +77,12 @@ class HomeController extends Controller
             $dataBulan[] = Carbon::parse('01-' . $i . '-2000')->translatedFormat('F');
         }
 
+        #Data Total Piutang
+        $totalPiutang = Customer::sum('amount_of_debt');
+
+        #Data Piutang Lunas
+        $piutangLunas = CreditPayment::sum('amount_of_paid') - CreditPayment::sum('change');
+
         return view(
             'auth.home',
             compact(
@@ -93,7 +101,9 @@ class HomeController extends Controller
                 'modalBulan',
                 'omsetBulan',
                 'labaBulan',
-                'dataBulan'
+                'dataBulan',
+                'totalPiutang',
+                'piutangLunas'
             )
         );
     }
