@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('credit_details', function (Blueprint $table) {
-            $table->increments('credit_detail_id');
-            $table->integer('credit_id');
+        Schema::create('credit_payments', function (Blueprint $table) {
+            $table->increments('credit_payment_id');
+            $table->integer('customer_id');
+            $table->integer('amount_of_debt');
             $table->integer('amount_of_paid');
             $table->integer('remaining_debt');
             $table->integer('change');
+            $table->integer('user_id');
             $table->date('payment_date');
             $table->timestamps();
         });
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('credit_details');
+        Schema::dropIfExists('credit_payments');
     }
 };

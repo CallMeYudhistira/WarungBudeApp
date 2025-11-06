@@ -104,16 +104,16 @@
                                         <td class="text-center">
                                             <div class="d-flex"
                                                 style="justify-content: space-between; margin-bottom: 0.3rem;">
-                                                <form action="/transaksi/cart/plus/{{ $cart->cart_id }}" method="post">
-                                                    @csrf
-                                                    @method('put')<button type="submit" class="btn btn-success"
-                                                        style="padding: 5px 0.9rem;">+</button>
-                                                </form>
                                                 <form action="/transaksi/cart/minus/{{ $cart->cart_id }}" method="post">
                                                     @csrf
                                                     @method('put')<button type="button" class="btn btn-warning"
                                                         style="padding: 5px 0.9rem;" id="min"
                                                         onclick="minusQuantity({{ $cart->quantity }})">-</button>
+                                                </form>
+                                                <form action="/transaksi/cart/plus/{{ $cart->cart_id }}" method="post">
+                                                    @csrf
+                                                    @method('put')<button type="submit" class="btn btn-success"
+                                                        style="padding: 5px 0.9rem;">+</button>
                                                 </form>
                                             </div>
                                             <form action="/transaksi/cart/delete/{{ $cart->cart_id }}" method="post">@csrf

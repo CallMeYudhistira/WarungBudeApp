@@ -31,7 +31,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="expired_date" class="form-label">Tanggal Kedaluwarsa</label>
-                        <input type="date" class="form-control" name="expired_date" value="{{ date('Y-m-d') }}" autocomplete="off">
+                        <input type="date" class="form-control" name="expired_date" autocomplete="off">
                     </div>
                 </div>
                 <div class="modal-footer">

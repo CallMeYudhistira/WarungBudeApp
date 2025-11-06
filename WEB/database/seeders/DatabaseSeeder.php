@@ -42,9 +42,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('gudang'),
         ]);
 
-        // User::factory(50)->create();
-        // Category::factory(50)->create();
-        // Unit::factory(50)->create();
-        // Product::factory(50)->create();
+        User::factory(50)->create();
+        Category::factory(50)->create();
+        Unit::factory(50)->create();
+        Product::factory(50)->create();
     }
 }

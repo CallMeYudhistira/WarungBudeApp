@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Credit;
 use App\Models\CreditDetail;
+use App\Models\CreditPayment;
 use App\Models\Customer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CreditController extends Controller
@@ -67,18 +69,18 @@ class CreditController extends Controller
             'change' => 'required|numeric',
         ]);
 
-        if($request->amount_of_paid === 0 || !$request->amount_of_paid){
+        if ($request->amount_of_paid === 0 || !$request->amount_of_paid) {
             return redirect()->back()->with('error', 'Pembayaran Tidak Boleh 0 atau Kosong');
         }
 
-        $credit = Credit::where('customer_id', $id)->latest()->first();
-
-        CreditDetail::create([
-            'credit_id' => $credit->credit_id,
+        CreditPayment::create([
+            'customer_id' => $id,
+            'amount_of_debt' => $request->amount_of_debt,
             'amount_of_paid' => intval($request->amount_of_paid),
             'remaining_debt' => $request->remaining_debt,
             'change' => $request->change,
             'payment_date' => now()->format('Y-m-d'),
+            'user_id' => Auth::user()->user_id,
         ]);
 
         Customer::where('customer_id', $id)->update([
@@ -94,8 +96,9 @@ class CreditController extends Controller
         return redirect('/kredit')->with('success', 'Hutang Berhasil Dibayar!');
     }
 
-    public function history(){
-        $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->orderBy('credit_details.created_at', 'desc')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+    public function history()
+    {
+        $customers = Customer::join('credit_payments', 'customers.customer_id', '=', 'credit_payments.customer_id')->join('users', 'users.user_id', '=', 'credit_payments.user_id')->orderBy('credit_payments.created_at', 'desc')->get(['customers.customer_name', 'credit_payments.amount_of_debt', 'credit_payments.amount_of_paid', 'credit_payments.remaining_debt', 'credit_payments.change', 'customers.status', 'credit_payments.payment_date', 'users.name']);
 
         return view('kredit.history', compact('customers'));
     }
@@ -109,7 +112,7 @@ class CreditController extends Controller
             return redirect('/kredit/history');
         }
 
-        $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->whereBetween('credit_details.payment_date', [$first, $second])->orderBy('credit_details.created_at', 'desc')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+        $customers = Customer::join('credit_payments', 'customers.customer_id', '=', 'credit_payments.customer_id')->join('users', 'users.user_id', '=', 'credit_payments.user_id')->whereBetween('credit_payments.payment_date', [$first, $second])->orderBy('credit_payments.created_at', 'desc')->get(['customers.customer_name', 'credit_payments.amount_of_debt', 'credit_payments.amount_of_paid', 'credit_payments.remaining_debt', 'credit_payments.change', 'customers.status', 'credit_payments.payment_date', 'users.name']);
 
         return view('kredit.history', compact('customers', 'first', 'second'));
     }
@@ -121,9 +124,9 @@ class CreditController extends Controller
         $second = $request->second;
 
         if (!$first && !$second) {
-            $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->orderBy('credit_details.created_at', 'desc')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+            $customers = Customer::join('credit_payments', 'customers.customer_id', '=', 'credit_payments.customer_id')->join('users', 'users.user_id', '=', 'credit_payments.user_id')->orderBy('credit_payments.created_at', 'desc')->get(['customers.customer_name', 'credit_payments.amount_of_debt', 'credit_payments.amount_of_paid', 'credit_payments.remaining_debt', 'credit_payments.change', 'customers.status', 'credit_payments.payment_date', 'users.name']);
         } else {
-            $customers = Customer::join('credits', 'customers.customer_id', '=', 'credits.customer_id')->join('credit_details', 'credits.credit_id', '=', 'credit_details.credit_id')->whereBetween('credit_details.payment_date', [$first, $second])->orderBy('credit_details.created_at', 'desc')->get(['customers.customer_name', 'credits.total', 'credit_details.amount_of_paid', 'credit_details.remaining_debt', 'credit_details.change', 'customers.status', 'credit_details.payment_date']);
+            $customers = Customer::join('credit_payments', 'customers.customer_id', '=', 'credit_payments.customer_id')->join('users', 'users.user_id', '=', 'credit_payments.user_id')->whereBetween('credit_payments.payment_date', [$first, $second])->orderBy('credit_payments.created_at', 'desc')->get(['customers.customer_name', 'credit_payments.amount_of_debt', 'credit_payments.amount_of_paid', 'credit_payments.remaining_debt', 'credit_payments.change', 'customers.status', 'credit_payments.payment_date', 'users.name']);
         }
 
         $headers = [
@@ -140,15 +143,17 @@ class CreditController extends Controller
                 <th>Bayar</th>
                 <th>Sisa</th>
                 <th>Kembali</th>
+                <th>Nama Kasir</th>
             </tr>";
             foreach ($customers as $c) {
                 echo "<tr>
                     <td>" . Carbon::parse($c->payment_date)->translatedFormat('l, d/F/Y') . "</td>
                     <td>" . ($c->customer_name ?? '-') . "</td>
-                    <td>{$c->total}</td>
+                    <td>{$c->amount_of_debt}</td>
                     <td>{$c->amount_of_paid}</td>
                     <td>{$c->remaining_debt}</td>
                     <td>{$c->change}</td>
+                    <td>{$c->name}</td>
                 </tr>";
             }
             echo "</table>";

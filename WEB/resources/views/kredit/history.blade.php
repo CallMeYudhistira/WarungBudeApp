@@ -22,13 +22,14 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col" style="width: 5%;">#</th>
+                    <th scope="col" style="width: 3%;">#</th>
                     <th scope="col" style="width: 10%;">Nama</th>
-                    <th scope="col" style="width: 20%;">Total Hutang</th>
-                    <th scope="col" style="width: 18%;">Bayar</th>
+                    <th scope="col" style="width: 15%;">Total Hutang</th>
+                    <th scope="col" style="width: 15%;">Bayar</th>
                     <th scope="col" style="width: 15%;">Sisa</th>
                     <th scope="col" style="width: 15%;">Kembali</th>
                     <th scope="col" style="width: 17%;">Tanggal Bayar</th>
+                    <th scope="col" style="width: 10%;">Nama Kasir</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,11 +38,12 @@
                         <tr>
                             <th scope="row">{{ $i + 1 }}</th>
                             <td>{{ $customer->customer_name }}</td>
-                            <td>{{ $customer->total }}</td>
+                            <td>{{ $customer->amount_of_debt }}</td>
                             <td>{{ $customer->amount_of_paid }}</td>
                             <td>{{ $customer->remaining_debt }}</td>
                             <td>{{ $customer->change }}</td>
                             <td>{{ \Carbon\Carbon::parse($customer->payment_date)->translatedFormat('l, d/F/Y') }}</td>
+                            <td>{{ $customer->name }}</td>
                         </tr>
                     @endforeach
                 @else
