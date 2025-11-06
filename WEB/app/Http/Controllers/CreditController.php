@@ -161,4 +161,64 @@ class CreditController extends Controller
 
         return response()->stream($callback, 200, $headers);
     }
+
+    public function historyTransaksi()
+    {
+        $credits = Credit::join('customers', 'customers.customer_id', '=', 'credits.customer_id')->join('transactions', 'transactions.transaction_id', '=', 'credits.transaction_id')->join('users', 'users.user_id', '=', 'transactions.user_id')->get(['transactions.transaction_id', 'transactions.date', 'credits.total', 'customers.customer_name', 'users.name']);
+
+        return view('kredit.historyTransaksi', compact('credits'));
+    }
+
+    public function filterTransaksi(Request $request)
+    {
+        $first = $request->first;
+        $second = $request->second;
+
+        if (!$first && !$second) {
+            return redirect('/kredit/history/transaksi');
+        }
+
+        $credits = Credit::join('customers', 'customers.customer_id', '=', 'credits.customer_id')->join('transactions', 'transactions.transaction_id', '=', 'credits.transaction_id')->join('users', 'users.user_id', '=', 'transactions.user_id')->whereBetween('transactions.date', [$first, $second])->get(['transactions.transaction_id', 'transactions.date', 'credits.total', 'customers.customer_name', 'users.name']);
+
+        return view('kredit.historyTransaksi', compact('credits', 'first', 'second'));
+    }
+
+    public function exportExcelHistoryTransaksi(Request $request)
+    {
+        $fileName = 'kredit_transaksi_' . date('Y-m-d_H-i-s') . '.xls';
+        $first = $request->first;
+        $second = $request->second;
+
+        if (!$first && !$second) {
+            $credits = Credit::join('customers', 'customers.customer_id', '=', 'credits.customer_id')->join('transactions', 'transactions.transaction_id', '=', 'credits.transaction_id')->join('users', 'users.user_id', '=', 'transactions.user_id')->get(['transactions.transaction_id', 'transactions.date', 'credits.total', 'customers.customer_name', 'users.name']);
+        } else {
+            $credits = Credit::join('customers', 'customers.customer_id', '=', 'credits.customer_id')->join('transactions', 'transactions.transaction_id', '=', 'credits.transaction_id')->join('users', 'users.user_id', '=', 'transactions.user_id')->whereBetween('transactions.date', [$first, $second])->get(['transactions.transaction_id', 'transactions.date', 'credits.total', 'customers.customer_name', 'users.name']);
+        }
+
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => "attachment; filename=\"$fileName\"",
+        ];
+
+        $callback = function () use ($credits) {
+            echo "<table border='1'>";
+            echo "<tr>
+                <th>Tanggal Transaksi</th>
+                <th>Nama Pelanggan</th>
+                <th>Total</th>
+                <th>Nama Kasir</th>
+            </tr>";
+            foreach ($credits as $c) {
+                echo "<tr>
+                    <td>" . Carbon::parse($c->payment_date)->translatedFormat('l, d/F/Y') . "</td>
+                    <td>" . ($c->customer_name ?? '-') . "</td>
+                    <td>{$c->total}</td>
+                    <td>{$c->name}</td>
+                </tr>";
+            }
+            echo "</table>";
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

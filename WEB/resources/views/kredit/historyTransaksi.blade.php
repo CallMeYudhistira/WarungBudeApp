@@ -1,15 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Kredit || Pembayaran || Riwayat')
+@section('title', 'Kredit || Transaksi || Riwayat')
 @section('content')
-    <h1>Riwayat Pembayaran Kredit</h1>
+    <h1>Riwayat Transaksi Kredit</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
         <a href="/kredit" class="btn btn-dark m-2">Kembali</a>
-        <form action="/kredit/history/export" method="get">
+        <form action="/kredit/history/transaksi/export" method="get">
             <input type="hidden" name="first" @isset($first) value="{{ $first }}" @endisset />
             <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset />
             <button class="btn btn-success m-2" type="submit">Cetak</button>
         </form>
-        <form class="d-flex m-2 ms-auto" action="/kredit/history/filter" method="get">
+        <form class="d-flex m-2 ms-auto" action="/kredit/history/transaksi/filter" method="get">
             <input class="form-control me-2" type="date" name="first"
                 @isset($first) value="{{ $first }}" @endisset />
             <label for="second" class="form-label m-2">=></label>
@@ -22,36 +22,34 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col" style="width: 3%;">#</th>
-                    <th scope="col" style="width: 10%;">Nama</th>
-                    <th scope="col" style="width: 15%;">Total Hutang</th>
-                    <th scope="col" style="width: 15%;">Bayar</th>
-                    <th scope="col" style="width: 15%;">Sisa</th>
-                    <th scope="col" style="width: 15%;">Kembali</th>
-                    <th scope="col" style="width: 17%;">Tanggal Bayar</th>
-                    <th scope="col" style="width: 10%;">Nama Kasir</th>
+                    <th scope="col" style="width: 10%;">#</th>
+                    <th scope="col" style="width: 20%;">Tanggal Transaksi</th>
+                    <th scope="col" style="width: 20%;">Nama Pelanggan</th>
+                    <th scope="col" style="width: 20%;">Total</th>
+                    <th scope="col" style="width: 20%;">Nama Kasir</th>
+                    <th scope="col" style="width: 10%;" class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @if (!$customers->isEmpty())
-                    @foreach ($customers as $i => $customer)
+                @if (!$credits->isEmpty())
+                    @foreach ($credits as $i => $credit)
                         <tr>
                             <th scope="row">{{ $i + 1 }}</th>
-                            <td>{{ $customer->customer_name }}</td>
-                            <td>{{ $customer->amount_of_debt }}</td>
-                            <td>{{ $customer->amount_of_paid }}</td>
-                            <td>{{ $customer->remaining_debt }}</td>
-                            <td>{{ $customer->change }}</td>
-                            <td>{{ \Carbon\Carbon::parse($customer->payment_date)->translatedFormat('l, d/F/Y') }}</td>
-                            <td>{{ $customer->name }}</td>
+                            <td>{{ \Carbon\Carbon::parse($credit->payment_date)->translatedFormat('l, d/F/Y') }}</td>
+                            <td>{{ $credit->customer_name }}</td>
+                            <td>{{ $credit->total }}</td>
+                            <td>{{ $credit->name }}</td>
+                            <td class="text-center"><a
+                                    href="/transaksi/detail/{{ $credit->transaction_id }}/print"
+                                    class="btn btn-success">Detail</a></td>
                         </tr>
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="8">
+                        <td colspan="6">
                             <div class="alert alert-primary p-3 text-center" role="alert"
                                 style="width: 500px; margin: auto; margin-top: 2rem; margin-bottom: 2rem;">
-                                ❌ Riwayat pembayaran kredit kosong / tidak ditemukan. ❌
+                                ❌ Riwayat transaksi kredit kosong / tidak ditemukan. ❌
                             </div>
                         </td>
                     </tr>

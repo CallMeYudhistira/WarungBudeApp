@@ -3,7 +3,8 @@
 @section('content')
     <h1>List Kredit</h1>
     <div class="d-flex" style="margin: -0.3rem; margin-top: 1rem; margin-bottom: 1rem;">
-        <a href="/kredit/history" class="btn btn-primary m-2">Riwayat Kredit</a>
+        <a href="/kredit/history/transaksi" class="btn btn-primary m-2">Riwayat Kredit</a>
+        <a href="/kredit/history" class="btn btn-secondary m-2">Riwayat Pembayaran Kredit</a>
         <form class="d-flex m-2 ms-auto" action="/kredit/search" method="get">
             <input class="form-control me-2" type="text" placeholder="Search...🔎" autocomplete="off" name="keyword"
                 @isset($keyword) value="{{ $keyword }}" @endisset />

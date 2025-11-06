@@ -195,7 +195,7 @@ class TransactionController extends Controller
             Credit::create([
                 'transaction_id' => $transaction_id,
                 'customer_id' => $customer->customer_id,
-                'total' => $total_of_debt,
+                'total' => $request->change * -1,
             ]);
         }
 

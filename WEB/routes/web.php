@@ -146,6 +146,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/history', [CreditController::class, 'history']);
             Route::get('/history/filter', [CreditController::class, 'filter']);
             Route::get('/history/export', [CreditController::class, 'exportExcelHistory']);
+
+            Route::get('/history/transaksi', [CreditController::class, 'historyTransaksi']);
+            Route::get('/history/transaksi/filter', [CreditController::class, 'filterTransaksi']);
+            Route::get('/history/transaksi/export', [CreditController::class, 'exportExcelHistoryTransaksi']);
         });
     });
 });

@@ -159,7 +159,13 @@ class RefillStockController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if($request->expired_date <= now()->format('Y-m-d')){
+        $tanggal_kedaluwarsa = $request->expired_date;
+
+        if(!$tanggal_kedaluwarsa || $tanggal_kedaluwarsa == null){
+            $tanggal_kedaluwarsa = null;
+        }
+
+        if($tanggal_kedaluwarsa && $tanggal_kedaluwarsa <= now()->format('Y-m-d')){
             $validator->errors()->add('expired_date', 'Tanggal expired sudah lewat!');
             return redirect()->back()->withErrors($validator)->withInput();
         }
