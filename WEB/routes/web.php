@@ -28,8 +28,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'index']);
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'loginProcess']);
-    Route::get('/register', [AuthController::class, 'register']);
-    Route::post('/register', [AuthController::class, 'registerProcess']);
 });
 
 Route::middleware('auth')->group(function () {

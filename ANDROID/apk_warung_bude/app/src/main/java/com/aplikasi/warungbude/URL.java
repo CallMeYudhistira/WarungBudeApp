@@ -5,7 +5,6 @@ public class URL {
 
     // Authentication
     public static String URLLogin = IP + "api/login";
-    public static String URLRegist = IP + "api/register";
     public static String URLLogout = IP + "api/logout";
 
     // Dashboard

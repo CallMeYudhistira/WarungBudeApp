@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Route;
 
 //Auth
 Route::post('/login', [APIAuthController::class, 'login']);
-Route::post('/register', [APIAuthController::class, 'register']);
 Route::post('/logout', [APIAuthController::class, 'logout'])->middleware('auth:sanctum');
 
 //Transactions

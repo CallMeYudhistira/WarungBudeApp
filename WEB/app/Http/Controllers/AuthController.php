@@ -52,31 +52,6 @@ class AuthController extends Controller
         }
     }
 
-    public function register()
-    {
-        return view('auth.register');
-    }
-
-    public function registerProcess(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'phone_number' => 'required|numeric',
-            'username' => 'required|unique:users',
-            'password' => 'required',
-        ]);
-
-        User::create([
-            'name' => $request->name,
-            'phone_number' => $request->phone_number,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'role' => 'kasir',
-        ]);
-
-        return redirect('/login')->with('success', 'Registrasi Berhasil!\nAnda Bisa Login Sekarang!');
-    }
-
     public function logout(Request $request)
     {
         Auth::logout();

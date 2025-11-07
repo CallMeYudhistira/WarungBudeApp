@@ -26,7 +26,6 @@
                 <div class="toggle-panel" style="left: 25%;">
                     <h1>Selamat Datang!</h1>
                     <p>Masukan data personal anda untuk mengakses semua fitur.</p>
-                    <a href="/register" class="link">Buat akun baru?</a>
                 </div>
             </div>
         </div>

@@ -44,7 +44,6 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
-    TextView tvRegistLink;
     Button btnLogin;
     EditText etUsername, etPassword;
     CheckBox cbPassword;
@@ -54,19 +53,10 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        tvRegistLink = findViewById(R.id.tvRegistLink);
         cbPassword = findViewById(R.id.cbPassword);
         btnLogin = findViewById(R.id.btnLogin);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
-
-        tvRegistLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Register.class));
-                finish();
-            }
-        });
 
         cbPassword.setOnClickListener(new View.OnClickListener() {
             @Override

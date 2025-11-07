@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/nata_bold"
-        android:text="Selamat datang kembali!"
+        android:text="Selamat Datang!"
         android:textColor="@android:color/black"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -33,23 +33,12 @@
         tools:layout_editor_absoluteX="24dp">
 
         <TextView
-            android:id="@+id/tvCreateAcc"
+            android:id="@+id/tvParagraph"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Belum punya akun di Warung Bude? "
+            android:text="Masukan data personal anda untuk\nmengakses semua fitur."
+            android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tvRegistLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/nata_medium"
-            android:contextClickable="true"
-            android:text="@string/registLink"
-            android:textColor="@android:color/black"
             android:textSize="14sp" />
 
     </LinearLayout>

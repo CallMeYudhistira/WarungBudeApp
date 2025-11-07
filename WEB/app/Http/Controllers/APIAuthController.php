@@ -37,29 +37,6 @@ class APIAuthController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Login Berhasil!', 'access_token' => $token, 'user' => $user], 200);
     }
 
-    public function register(Request $request){
-        $validation = Validator::make($request->all(), [
-            'name' => 'required',
-            'phone_number' => 'required|numeric',
-            'username' => 'required|unique:users',
-            'password' => 'required',
-        ]);
-
-        if($validation->fails()){
-            return response()->json(['status' => 'error', 'message' => $validation->errors()->all()], 400);
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'phone_number' => $request->phone_number,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'role' => 'kasir',
-        ]);
-
-        return response()->json(['status' => 'success', 'message' => 'Register Berhasil!', 'user' => $user], 201);
-    }
-
     public function logout(Request $request){
         $request->user()->currentAccessToken()->delete();
 
