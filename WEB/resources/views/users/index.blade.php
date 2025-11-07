@@ -33,6 +33,7 @@
                             <td>{{ $user->phone_number }}</td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->role }}</td>
+                            @if ($user->role != 'admin')
                             <td>
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                     data-bs-target="#editUser{{ $user->user_id }}">Edit</button>
@@ -41,6 +42,9 @@
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#hapusUser{{ $user->user_id }}">Hapus</button>
                             </td>
+                            @else
+                            <td colspan="2" class="text-center"><button type="button" class="btn w-100" style="cursor: alias;">-</button></td>
+                            @endif
                         </tr>
                         @include('users.modal.update')
                         @include('users.modal.delete')

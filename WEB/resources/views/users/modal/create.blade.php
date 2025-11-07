@@ -32,7 +32,6 @@
                         <label for="role" class="form-label">Hak</label>
                         <select class="form-select" name="role">
                             <option selected disabled>Hak...</option>
-                            <option value="admin">Admin</option>
                             <option value="kasir">Kasir</option>
                             <option value="gudang">Gudang</option>
                         </select>

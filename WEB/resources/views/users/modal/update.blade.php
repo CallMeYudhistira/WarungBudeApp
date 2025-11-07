@@ -34,7 +34,6 @@
                         <label for="role" class="form-label">Hak</label>
                         <select class="form-select" name="role">
                             <option disabled>Hak...</option>
-                            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
                             <option value="kasir" {{ $user->role == 'kasir' ? 'selected' : '' }}>Kasir</option>
                             <option value="gudang" {{ $user->role == 'gudang' ? 'selected' : '' }}>Gudang</option>
                         </select>
