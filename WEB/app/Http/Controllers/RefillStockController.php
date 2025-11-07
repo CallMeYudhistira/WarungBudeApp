@@ -150,7 +150,7 @@ class RefillStockController extends Controller
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|numeric',
             'detail_id' => 'required|numeric',
-            'price' => 'required|numeric|min:500',
+            'price' => 'required|numeric|min:1',
             'quantity' => 'required|numeric|min:1',
             'total' => 'required|numeric|min:500',
         ]);
