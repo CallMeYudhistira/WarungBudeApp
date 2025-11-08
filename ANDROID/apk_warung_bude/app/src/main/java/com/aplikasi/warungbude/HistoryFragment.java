@@ -149,7 +149,7 @@ public class HistoryFragment extends Fragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                String selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
                 keyDate = selectedDate;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", new Locale("in", "ID"));
                 tvDate.setText(LocalDate.parse(selectedDate).format(formatter));
