@@ -95,7 +95,7 @@ class RefillStockController extends Controller
             return redirect('/barang/refillStock/history');
         }
 
-        RefillStock::join('product_details', 'product_details.product_detail_id', 'refill_stocks.product_detail_id')->join('products', 'product_details.product_id', 'products.product_id')->join('units', 'units.unit_id', 'product_details.unit_id')->whereBetween('entry_date', [$first, $second])->orderBy('refill_stocks.refill_stock_id', 'desc')->get();
+        $refillStocks = RefillStock::join('product_details', 'product_details.product_detail_id', 'refill_stocks.product_detail_id')->join('products', 'product_details.product_id', 'products.product_id')->join('units', 'units.unit_id', 'product_details.unit_id')->whereBetween('entry_date', [$first, $second])->orderBy('refill_stocks.refill_stock_id', 'desc')->get();
 
         return view('barang.stok.history', compact('refillStocks', 'first', 'second'));
     }

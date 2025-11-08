@@ -9,7 +9,7 @@
             <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset />
             <button class="btn btn-success m-2" type="submit">Cetak</button>
         </form>
-        <form class="d-flex m-1 mt-2 mb-2 ms-auto" action="/barang/refillStock/filter" method="get">
+        <form class="d-flex m-1 mt-2 mb-2 ms-auto" action="/barang/refillStock/history/filter" method="get">
             <input class="form-control me-2" type="date" name="first"
                 @isset($first) value="{{ $first }}" @endisset />
             <label for="second" class="form-label m-2">=></label>
