@@ -21,7 +21,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(5);
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('refill_stocks', 'refill_stocks.product_detail_id', '=', 'product_details.product_detail_id')->where('refill_stocks.status', 'baik')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(5);
         $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get(['carts.*', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'users.name']);
         $customers = Customer::all();
 
@@ -35,7 +35,7 @@ class TransactionController extends Controller
             return redirect('/transaksi');
         }
 
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(5);
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('refill_stocks', 'refill_stocks.product_detail_id', '=', 'product_details.product_detail_id')->where('refill_stocks.status', 'baik')->where('product_name', 'like', '%' . $keyword . '%')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->simplePaginate(5);
         $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', Auth::user()->user_id)->get(['carts.*', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'users.name']);
         $customers = Customer::all();
 
@@ -45,7 +45,7 @@ class TransactionController extends Controller
     public function cartStore(Request $request)
     {
         $product = ProductDetail::find($request->id);
-        $cekCart = Cart::where('product_detail_id', $request->id)->first();
+        $cekCart = Cart::where('product_detail_id', $request->id)->where('user_id', Auth::user()->user_id)->first();
 
         $request->validate([
             'id' => 'required',
@@ -199,7 +199,7 @@ class TransactionController extends Controller
             ]);
         }
 
-        $carts = Cart::all();
+        $carts = Cart::where('user_id', Auth::user()->user_id)->get();
 
         foreach ($carts as $cart) {
             TransactionDetail::create([

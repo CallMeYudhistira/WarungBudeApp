@@ -23,7 +23,7 @@ class APITransactionController extends Controller
     public function show_products(Request $request)
     {
         $user_id = $request->user()->user_id;
-        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->where('products.product_name', 'LIKE', '%' . $request->product_name . '%')->select('product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'product_details.purchase_price', 'product_details.selling_price', 'product_details.stock')->get();
+        $products = Product::join('categories', 'products.category_id', '=', 'categories.category_id')->join('product_details', 'product_details.product_id', '=', 'products.product_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('refill_stocks', 'refill_stocks.product_detail_id', '=', 'product_details.product_detail_id')->where('refill_stocks.status', 'baik')->where('stock', '>', '0')->where('product_details.deleted_at', '=', NULL)->where('products.product_name', 'LIKE', '%' . $request->product_name . '%')->select('refill_stocks.status', 'product_details.product_detail_id', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'product_details.purchase_price', 'product_details.selling_price', 'product_details.stock')->get();
         $cart = Cart::where('user_id', $user_id)->count();
 
         return response()->json(['status' => 'success', 'products' => $products, 'cart' => $cart], 200);
@@ -42,7 +42,7 @@ class APITransactionController extends Controller
     {
         $user_id = $request->user()->user_id;
         $product = ProductDetail::find($request->product_detail_id);
-        $cekCart = Cart::where('product_detail_id', $request->product_detail_id)->first();
+        $cekCart = Cart::where('product_detail_id', $request->product_detail_id)->where('user_id', $user_id)->first();
 
         $validation = Validator::make($request->all(), [
             'product_detail_id' => 'required',
@@ -201,7 +201,7 @@ class APITransactionController extends Controller
             ]);
         }
 
-        $carts = Cart::all();
+        $carts = Cart::where('user_id', $user_id)->get();
 
         foreach ($carts as $cart) {
             TransactionDetail::create([
