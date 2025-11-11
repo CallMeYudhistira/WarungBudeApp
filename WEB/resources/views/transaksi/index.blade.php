@@ -159,17 +159,6 @@
                         <option value="tunai">Tunai</option>
                         <option value="kredit">Kredit</option>
                     </select>
-                    <div style="display: none;" id="hutang">
-                        <label for="customer_name" class="mb-2">Nama Penghutang</label>
-                        <input type="text" name="customer_name" id="customer_name" list="customer_names"
-                            class="form-control mb-3" autocomplete="off">
-
-                        <datalist id="customer_names">
-                            @foreach ($customers as $customer)
-                                <option value="{{ $customer->customer_name }}">
-                            @endforeach
-                        </datalist>
-                    </div>
                     <label for="pay" class="mb-2">Bayar : (Rp.)</label>
                     <input type="number" min="0" name="pay" value="0" class="form-control mb-3"
                         id="pay" oninput="kembalian(this.value)" readonly>
@@ -201,16 +190,21 @@
         function cekBayar() {
             const kembali = document.getElementById('change').value;
             const btnBayar = document.getElementById('btnBayar');
-            if (kembali >= 0 || document.getElementById('payment').value == 'kredit') {
-                btnBayar.form.submit();
-            } else {
+            document.getElementById('totalModal').value = document.getElementById('total').value;
+            document.getElementById('payModal').value = document.getElementById('pay').value;
+            document.getElementById('changeModal').value = document.getElementById('change').value;
+
+            if (document.getElementById('payment').value == 'kredit') {
+                kredit();
+            } else if (document.getElementById('payment').value == 'tunai' && kembali < 0){
                 var myModal = new bootstrap.Modal(document.getElementById('minusTotal'));
                 myModal.show();
 
-                document.getElementById('totalModal').value = document.getElementById('total').value;
-                document.getElementById('payModal').value = document.getElementById('pay').value;
-                document.getElementById('changeModal').value = document.getElementById('change').value;
-                document.getElementById('customer_name_minus').value = "";
+                document.getElementById('customer_name').value = "";
+                document.getElementById('address').value = "";
+                document.getElementById('phone_number').value = "";
+            } else {
+                btnBayar.form.submit();
             }
         }
 
@@ -219,15 +213,22 @@
             const pay = document.getElementById('pay');
             if (e.target.value === 'tunai') {
                 pay.readOnly = false;
-                document.getElementById('hutang').style.display = 'none';
+                kembalian(pay.value);
             } else if (e.target.value === 'kredit') {
                 pay.readOnly = true;
                 pay.value = 0;
                 kembalian(pay.value);
-                document.getElementById('hutang').style.display = 'block';
             }
         });
     </script>
+
+    @include('transaksi.modal.kredit')
+<script>
+    function kredit(){
+        var myModal = new bootstrap.Modal(document.getElementById('bayarKredit'));
+        myModal.show();
+    }
+</script>
 
     @if ($id = Session::get('id'))
         @include('transaksi.modal.print')

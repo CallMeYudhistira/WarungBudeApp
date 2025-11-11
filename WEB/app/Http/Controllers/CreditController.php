@@ -37,6 +37,8 @@ class CreditController extends Controller
         $validator = Validator::make($request->all(), [
             'customer_id' => 'required',
             'customer_name' => 'required',
+            'address' => 'required',
+            'phone_number' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -45,7 +47,7 @@ class CreditController extends Controller
 
         $customer = Customer::where('customer_name', $request->customer_name)->first();
 
-        if ($customer && $request->customer_name == $customer->customer_name) {
+        if ($customer && $request->customer_name == $customer->customer_name && $request->customer_id != $customer->customer_id) {
             $validator->errors()->add('customer_name', 'Nama customer tidak boleh sama!');
 
             return redirect()->back()->withErrors($validator)->withInput();

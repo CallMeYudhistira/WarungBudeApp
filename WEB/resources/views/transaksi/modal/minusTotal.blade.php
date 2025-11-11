@@ -17,11 +17,3 @@
         </div>
     </div>
 </div>
-
-@include('transaksi.modal.kredit')
-<script>
-    function kredit(){
-        var myModal = new bootstrap.Modal(document.getElementById('bayarKredit'));
-        myModal.show();
-    }
-</script>

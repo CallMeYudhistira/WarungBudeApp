@@ -141,16 +141,24 @@ class TransactionController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if ($request->pay < 0 && !$request->customer_name) {
-            $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong');
+        if ($request->payment == 'kredit') {
+            $error = 0;
+            if(!$request->customer_name){
+                $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong!');
+                $error++;
+            }
+            if(!$request->address){
+                $validator->errors()->add('payment', 'Alamat pelanggan tidak boleh kosong!');
+                $error++;
+            }
+            if(!$request->phone_number){
+                $validator->errors()->add('payment', 'Nomor telepon pelanggan tidak boleh kosong!');
+                $error++;
+            }
 
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        if ($request->payment == 'kredit' && !$request->customer_name) {
-            $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong');
-
-            return redirect()->back()->withErrors($validator)->withInput();
+            if($error > 0){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
         }
 
         if ($request->payment !== 'tunai' && $request->payment !== 'kredit') {
@@ -185,6 +193,8 @@ class TransactionController extends Controller
             } else {
                 Customer::create([
                     'customer_name' => $request->customer_name,
+                    'phone_number' => $request->phone_number,
+                    'address' => $request->address,
                     'amount_of_debt' => $total_of_debt,
                     'status' => 'belum lunas',
                 ]);
