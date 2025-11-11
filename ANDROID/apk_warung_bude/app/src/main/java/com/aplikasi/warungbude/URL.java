@@ -1,7 +1,7 @@
 package com.aplikasi.warungbude;
 
 public class URL {
-    public static String IP = "http://192.168.0.112:1234/";
+    public static String IP = "http://10.158.181.197:1234/";
 
     // Authentication
     public static String URLLogin = IP + "api/login";

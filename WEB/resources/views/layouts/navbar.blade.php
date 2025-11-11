@@ -166,8 +166,8 @@
                     </a>
                 </li>
                 <ul class="submenu {{ $isAccountActive ? 'show' : '' }}">
-                    <li class="nav-link {{ request()->is('notifikasi*') ? 'active' : '' }}">
-                        <a href="/notifikasi">
+                    <li class="nav-link">
+                        <a href="javascript:void(0)" id="notifBtn">
                             <i class='bx bx-bell icon'></i>
                             <span class="text nav-text">Notifikasi</span>
                             @if ($unreadCount > 0)
@@ -196,6 +196,23 @@
 
 @include('auth.logout')
 
+<div class="modal fade" id="notifications" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Notifikasi 📢</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="notif-body-placeholder">
+                <div class="text-center p-4 text-muted">Memuat... 🔃</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const logout = document.getElementById('logoutbtn');
     logout.addEventListener("click", function() {
@@ -211,4 +228,32 @@
             submenu.classList.toggle('show');
         });
     });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const notifBtn = document.getElementById('notifBtn');
+    const notifModalEl = document.getElementById('notifications');
+    const notifModal = new bootstrap.Modal(notifModalEl);
+    const notifBody = document.getElementById('notif-body-placeholder');
+
+    notifBtn.addEventListener('click', function () {
+        notifBody.innerHTML = '<div class="text-center p-4 text-muted">Memuat...</div>';
+
+        fetch('/notifikasi', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(response => {
+                if (!response.ok) throw new Error('Gagal memuat data notifikasi');
+                return response.text();
+            })
+            .then(html => {
+                notifBody.innerHTML = html;
+                notifModal.show();
+            })
+            .catch(err => {
+                console.error(err);
+                notifBody.innerHTML = '<p class="text-danger text-center">Gagal memuat notifikasi.</p>';
+                notifModal.show();
+            });
+    });
+});
 </script>

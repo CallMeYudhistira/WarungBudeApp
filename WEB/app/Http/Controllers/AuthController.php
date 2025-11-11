@@ -29,7 +29,7 @@ class AuthController extends Controller
     public function notifications()
     {
         $notifications = auth()->user()->notifications;
-        return view('auth.notifikasi', compact('notifications'));
+        return view('auth.notif-list', compact('notifications'));
     }
 
     public function loginProcess(Request $request)
