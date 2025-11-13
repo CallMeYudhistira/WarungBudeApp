@@ -16,8 +16,8 @@
         .hero {
             background: linear-gradient(to right, #5c6bc0, #512da8);
             color: #fff;
-            padding: 280px 0;
-            text-align: center;
+            padding: 0 15px;
+            min-height: 100vh;
         }
 
         .hero h1 {
@@ -59,42 +59,114 @@
     </style>
 </head>
 
-<body>
-
-    <!-- Hero Section -->
-    <section class="hero">
+<body class="bg-light">
+    <section id="home" class="hero d-flex align-items-center text-center">
         <div class="container">
-            <h1>Kelola Warung Lebih Mudah</h1>
-            <p>Catat transaksi, kelola stok, dan pantau laporan keuangan hanya dengan sekali klik.</p>
-            <a href="/login" class="btn btn-light btn-lg mt-3">Mulai Sekarang</a>
+            <h1 class="display-5 fw-bold">Kelola Warung Lebih Mudah</h1>
+            <p class="lead mt-3 mb-4">Catat transaksi, kelola stok, dan pantau laporan keuangan hanya dengan sekali klik.</p>
+            <a href="/login" class="btn btn-light btn-lg px-4 me-2">Mulai Sekarang</a>
         </div>
     </section>
 
-    <!-- Fitur Section -->
-    <section class="features text-center">
+    <section class="features text-center bg-light">
         <div class="container">
-            <h2 class="mb-5">Fitur-Fitur Aplikasi</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="feature-icon">💰</div>
-                    <h4>Transaksi Cepat</h4>
+            <h2 class="mt-5">Fitur-Fitur Aplikasi</h2>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7 mb-4 mb-md-0">
+                    <img src="{{ asset('images/fitur/kelola.png') }}"
+                        class="img-fluid rounded">
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-icon">📦</div>
-                    <h4>Manajemen Stok</h4>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-icon">📊</div>
-                    <h4>Laporan Otomatis</h4>
+                <div class="col-md-3 mx-5">
+                    <h2 class="fw-bold mb-3">Pengelolaan Data</h2>
+                    <p class="text-muted mb-4">Aplikasi ini dirancang untuk mempermudah pengguna dalam melakukan transaksi secara akurat, cepat, dan aman.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Preview Dashboard -->
-    <section class="preview">
-        <div class="container text-center">
-            <img src="{{ asset('images/dashboard.png') }}" alt="Preview Dashboard" class="img-fluid">
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3 mx-5">
+                    <h2 class="fw-bold mb-3">Manajemen Barang</h2>
+                    <p class="text-muted mb-4">Aplikasi ini dirancang untuk mempermudah pengguna dalam melakukan transaksi secara akurat, cepat, dan aman.
+                    </p>
+                </div>
+                <div class="col-md-7 mb-4 mb-md-0">
+                    <img src="{{ asset('images/fitur/barang.png') }}"
+                        class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7 mb-4 mb-md-0">
+                    <img src="{{ asset('images/fitur/transaksi.png') }}"
+                        class="img-fluid rounded">
+                </div>
+                <div class="col-md-3 mx-5">
+                    <h2 class="fw-bold mb-3">Transaksi Cepat</h2>
+                    <p class="text-muted mb-4">Aplikasi ini dirancang untuk mempermudah pengguna dalam melakukan transaksi secara akurat, cepat, dan aman.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3 mx-5">
+                    <h2 class="fw-bold mb-3">Manajemen Catatan Kredit</h2>
+                    <p class="text-muted mb-4">Aplikasi ini dirancang untuk mempermudah pengguna dalam melakukan transaksi secara akurat, cepat, dan aman.
+                    </p>
+                </div>
+                <div class="col-md-7 mb-4 mb-md-0">
+                    <img src="{{ asset('images/fitur/kredit.png') }}"
+                        class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7 mb-4 mb-md-0">
+                    <img src="{{ asset('images/fitur/laporan.png') }}"
+                        class="img-fluid rounded">
+                </div>
+                <div class="col-md-3 mx-5">
+                    <h2 class="fw-bold mb-3">Laporan Akurat</h2>
+                    <p class="text-muted mb-4">Aplikasi ini dirancang untuk mempermudah pengguna dalam melakukan transaksi secara akurat, cepat, dan aman.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light mb-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3 mx-5">
+                    <h2 class="fw-bold mb-3">Notifikasi</h2>
+                    <p class="text-muted mb-4">Aplikasi ini dirancang untuk mempermudah pengguna dalam melakukan transaksi secara akurat, cepat, dan aman.
+                    </p>
+                </div>
+                <div class="col-md-7 mb-4 mb-md-0">
+                    <img src="{{ asset('images/fitur/notif.png') }}"
+                        class="img-fluid rounded">
+                </div>
+            </div>
         </div>
     </section>
 
