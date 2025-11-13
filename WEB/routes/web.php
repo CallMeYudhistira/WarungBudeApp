@@ -31,7 +31,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', HomeController::class);
+    Route::get('/home', [HomeController::class, 'index']);
+    Route::get('/beranda/admin', [HomeController::class, 'admin'])->middleware('role:admin');
+    Route::get('/beranda/kasir', [HomeController::class, 'kasir'])->middleware('role:kasir');
+    Route::get('/beranda/gudang', [HomeController::class, 'gudang'])->middleware('role:gudang');
+
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile/{id}', [AuthController::class, 'profile']);
     Route::get('/notifikasi', [AuthController::class, 'notifications']);

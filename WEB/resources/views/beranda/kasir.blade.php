@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Beranda')
+@section('title', 'Beranda || Kasir')
 @section('content')
 @section('script')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/5.3.5/apexcharts.min.css"
@@ -74,21 +74,6 @@
                 <td style="text-align: end;">{{ 'Rp ' . number_format($labaBulanIniKredit, 0, ',', '.') }}</td>
             </tr>
         </table>
-    </div>
-</div>
-
-<hr class="m-4">
-<div class="d-flex justify-content-sm-between flex-wrap" style="width: 1000px; margin: auto;">
-    <div class="card text-center m-2" style="width: auto; height: auto; padding: 2rem;">
-        <h3>💳 Sisa Piutang</h3>
-        <div style="font-size: 30px;">{{ 'Rp ' . number_format($totalPiutang, 0, ',', '.') }}</div>
-    </div>
-    <div class="text-center m-2" style="width: auto; height: auto; padding: 2rem;">
-        <h2 style="margin: 2rem auto;">➡️</h2>
-    </div>
-    <div class="card text-center m-2" style="width: auto; height: auto; padding: 2rem;">
-        <h3>🪙 Piutang Dibayar</h3>
-        <div style="font-size: 30px;">{{ 'Rp ' . number_format($piutangLunas, 0, ',', '.') }}</div>
     </div>
 </div>
 

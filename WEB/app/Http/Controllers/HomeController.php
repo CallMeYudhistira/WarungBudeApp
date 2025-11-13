@@ -4,58 +4,61 @@ namespace App\Http\Controllers;
 
 use App\Models\CreditPayment;
 use App\Models\Customer;
+use App\Models\RefillStock;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    public function __invoke()
+    public function index()
     {
+        if (Auth::user()->role == 'admin') {
+            return redirect('/beranda/admin');
+        } else if (Auth::user()->role == 'gudang') {
+            return redirect('/beranda/gudang');
+        } else if (Auth::user()->role == 'kasir') {
+            return redirect('/beranda/kasir');
+        }
+    }
+
+    public function gudang()
+    {
+        $stok = count(DB::select("SELECT * FROM CekStok"));
+        $expired = count(DB::select("SELECT * FROM CekExpired WHERE expired_date <= '" . now()->format('Y-m-d') . "'"));
+        $barang_masuk = RefillStock::whereMonth('entry_date', now()->format('m'))->count();
+        $products = collect(DB::select("SELECT * FROM CekStok"));
+        return view('beranda.gudang', compact('stok', 'expired', 'barang_masuk', 'products'));
+    }
+
+    public function admin()
+    {
+        $stok = count(DB::select("SELECT * FROM CekStok"));
+        $expired = count(DB::select("SELECT * FROM CekExpired WHERE expired_date <= '" . now()->format('Y-m-d') . "'"));
+        $barang_masuk = RefillStock::whereMonth('entry_date', now()->format('m'))->count();
+        $products = collect(DB::select("SELECT * FROM CekStok"));
+
         #Omset Hari Ini
-        $omsetHariIni = Transaction::where('date', now()->format('Y-m-d'))->sum('total');
-        $omsetHariIniTunai = Transaction::where('date', now()->format('Y-m-d'))->where('payment', 'tunai')->sum('total') + Transaction::where('date', now()->format('Y-m-d'))->where('payment', 'kredit')->sum('pay');
-        $omsetHariIniKredit = Transaction::where('date', now()->format('Y-m-d'))->where('payment', 'kredit')->sum('change') * -1;
+        $omsetHariIni = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('Omset');
+        $omsetHariIniTunai = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('OmsetTunai');
+        $omsetHariIniKredit = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('OmsetKredit');
 
         #Laba Hari Ini
-        $todays = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->where('transactions.date', '=', now()->format('Y-m-d'))->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
-        $labaHariIni = 0;
-        foreach ($todays as $today) {
-            $labaHariIni += ($today->selling_price - $today->purchase_price) * $today->quantity;
-        }
-        $todays = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->where('transactions.date', '=', now()->format('Y-m-d'))->where('transactions.payment', 'tunai')->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
-        $labaHariIniTunai = 0;
-        foreach ($todays as $today) {
-            $labaHariIniTunai += ($today->selling_price - $today->purchase_price) * $today->quantity;
-        }
-        $todays = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->where('transactions.date', '=', now()->format('Y-m-d'))->where('transactions.payment', 'kredit')->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
-        $labaHariIniKredit = 0;
-        foreach ($todays as $today) {
-            $labaHariIniKredit += ($today->selling_price - $today->purchase_price) * $today->quantity;
-        }
+        $labaHariIni = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('Laba');
+        $labaHariIniTunai = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('LabaTunai');
+        $labaHariIniKredit = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('LabaKredit');
 
         #Omset Bulan Ini
-        $omsetBulanIni = Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->sum('total');
-        $omsetBulanIniTunai = Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('payment', 'tunai')->sum('total') + Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('payment', 'kredit')->sum('pay');
-        $omsetBulanIniKredit = Transaction::whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('payment', 'kredit')->sum('change') * -1;
+        $omsetBulanIni = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('Omset');
+        $omsetBulanIniTunai = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('OmsetTunai');
+        $omsetBulanIniKredit = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('OmsetKredit');
 
         #Laba Bulan Ini
-        $months = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
-        $labaBulanIni = 0;
-        foreach ($months as $month) {
-            $labaBulanIni += ($month->selling_price - $month->purchase_price) * $month->quantity;
-        }
-        $months = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('transactions.payment', 'tunai')->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
-        $labaBulanIniTunai = 0;
-        foreach ($months as $month) {
-            $labaBulanIniTunai += ($month->selling_price - $month->purchase_price) * $month->quantity;
-        }
-        $months = Transaction::join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.transaction_id')->whereYear('date', '=', now()->format('Y'))->whereMonth('date', '=', now()->format('m'))->where('transactions.payment', 'kredit')->get(['transactions.total', 'transaction_details.selling_price', 'transaction_details.purchase_price', 'transaction_details.quantity']);
-        $labaBulanIniKredit = 0;
-        foreach ($months as $month) {
-            $labaBulanIniKredit += ($month->selling_price - $month->purchase_price) * $month->quantity;
-        }
+        $labaBulanIni = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('Laba');
+        $labaBulanIniTunai = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('LabaTunai');
+        $labaBulanIniKredit = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('LabaKredit');
 
         #Data Omset (Chart) Per Bulan
         $bulan = date('m');
@@ -77,14 +80,8 @@ class HomeController extends Controller
             $dataBulan[] = Carbon::parse('01-' . $i . '-2000')->translatedFormat('F');
         }
 
-        #Data Total Piutang
-        $totalPiutang = Customer::sum('amount_of_debt');
-
-        #Data Piutang Lunas
-        $piutangLunas = CreditPayment::sum('amount_of_paid') - CreditPayment::sum('change');
-
         return view(
-            'auth.home',
+            'beranda.admin',
             compact(
                 'omsetHariIni',
                 'omsetHariIniTunai',
@@ -102,8 +99,75 @@ class HomeController extends Controller
                 'omsetBulan',
                 'labaBulan',
                 'dataBulan',
-                'totalPiutang',
-                'piutangLunas'
+                'stok',
+                'expired',
+                'barang_masuk',
+                'products'
+            )
+        );
+    }
+
+    public function kasir()
+    {
+        #Omset Hari Ini
+        $omsetHariIni = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('Omset');
+        $omsetHariIniTunai = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('OmsetTunai');
+        $omsetHariIniKredit = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('OmsetKredit');
+
+        #Laba Hari Ini
+        $labaHariIni = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('Laba');
+        $labaHariIniTunai = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('LabaTunai');
+        $labaHariIniKredit = collect(DB::select("SELECT * FROM RekapHari WHERE date = '" . now()->format('Y-m-d') . "'"))->sum('LabaKredit');
+
+        #Omset Bulan Ini
+        $omsetBulanIni = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('Omset');
+        $omsetBulanIniTunai = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('OmsetTunai');
+        $omsetBulanIniKredit = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('OmsetKredit');
+
+        #Laba Bulan Ini
+        $labaBulanIni = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('Laba');
+        $labaBulanIniTunai = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('LabaTunai');
+        $labaBulanIniKredit = collect(DB::select("SELECT * FROM RekapBulan WHERE Bulan = '" . now()->format('m') . "'"))->sum('LabaKredit');
+
+        #Data Omset (Chart) Per Bulan
+        $bulan = date('m');
+        $tahun = date('Y');
+        $modalBulan = [];
+        $omsetBulan = [];
+        $labaBulan = [];
+        $dataBulan = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $record = DB::table('RekapBulan')
+                ->select('Modal', 'Omset', 'Laba')
+                ->where('Bulan', $i)
+                ->orderByDesc('Bulan')
+                ->first();
+
+            $modalBulan[] = $record ? $record->Modal : 0;
+            $omsetBulan[] = $record ? $record->Omset : 0;
+            $labaBulan[] = $record ? $record->Laba : 0;
+            $dataBulan[] = Carbon::parse('01-' . $i . '-2000')->translatedFormat('F');
+        }
+
+        return view(
+            'beranda.kasir',
+            compact(
+                'omsetHariIni',
+                'omsetHariIniTunai',
+                'omsetHariIniKredit',
+                'labaHariIni',
+                'labaHariIniTunai',
+                'labaHariIniKredit',
+                'omsetBulanIni',
+                'omsetBulanIniTunai',
+                'omsetBulanIniKredit',
+                'labaBulanIni',
+                'labaBulanIniTunai',
+                'labaBulanIniKredit',
+                'modalBulan',
+                'omsetBulan',
+                'labaBulan',
+                'dataBulan',
             )
         );
     }
