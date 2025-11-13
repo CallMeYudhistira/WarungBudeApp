@@ -33,7 +33,7 @@ class APITransactionController extends Controller
     {
         $user_id = $request->user()->user_id;
         $carts = Cart::join('product_details', 'product_details.product_detail_id', '=', 'carts.product_detail_id')->join('products', 'product_details.product_id', '=', 'products.product_id')->join('categories', 'products.category_id', '=', 'categories.category_id')->join('units', 'units.unit_id', '=', 'product_details.unit_id')->join('users', 'users.user_id', '=', 'carts.user_id')->where('carts.user_id', $user_id)->select('carts.*', 'products.product_name', 'products.pict', 'categories.category_name', 'units.unit_name', 'users.name', 'product_details.stock', DB::raw('(SELECT SUM(subtotal) FROM carts WHERE user_id = ' . $user_id . ') AS total'))->get();
-        $customers = Customer::get(['customer_id', 'customer_name']);
+        $customers = Customer::get(['customer_id', 'customer_name', 'phone_number', 'address']);
 
         return response()->json(['status' => 'success', 'carts' => $carts, 'customers' => $customers], 200);
     }
@@ -155,6 +155,26 @@ class APITransactionController extends Controller
             return response()->json(['status' => 'error', 'message' => $validator->errors()->all()], 400);
         }
 
+        if ($request->payment == 'kredit') {
+            $error = 0;
+            if (!$request->customer_name) {
+                $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong!');
+                $error++;
+            }
+            if (!$request->address) {
+                $validator->errors()->add('payment', 'Alamat pelanggan tidak boleh kosong!');
+                $error++;
+            }
+            if (!$request->phone_number) {
+                $validator->errors()->add('payment', 'Nomor telepon pelanggan tidak boleh kosong!');
+                $error++;
+            }
+
+            if ($error > 0) {
+                return response()->json(['status' => 'error', 'message' => $validator->errors()->all()], 400);
+            }
+        }
+
         if ($request->payment !== 'tunai' && $request->payment !== 'kredit') {
             $validator->errors()->add('payment', 'Metode pembayaran tidak valid!');
 
@@ -187,6 +207,8 @@ class APITransactionController extends Controller
             } else {
                 Customer::create([
                     'customer_name' => $request->customer_name,
+                    'phone_number' => $request->phone_number,
+                    'address' => $request->address,
                     'amount_of_debt' => $total_of_debt,
                     'status' => 'belum lunas',
                 ]);
@@ -197,7 +219,7 @@ class APITransactionController extends Controller
             Credit::create([
                 'transaction_id' => $transaction_id,
                 'customer_id' => $customer->customer_id,
-                'total' => $total_of_debt,
+                'total' => $request->change * -1,
             ]);
         }
 

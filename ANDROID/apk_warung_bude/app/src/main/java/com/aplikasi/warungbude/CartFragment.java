@@ -85,7 +85,7 @@ public class CartFragment extends Fragment {
     private ListView listViewCart;
     private List<Cart> cartList;
     private CartAdapter cartAdapter;
-    private ArrayList<String> customer_names;
+    private ArrayList<String> customer_names, phone_numbers, address_list;
     private TextView tvTotal;
     private int total = 0;
     private Button btnCheckout;
@@ -121,6 +121,8 @@ public class CartFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("total", total);
                 bundle.putStringArrayList("customer_names", customer_names);
+                bundle.putStringArrayList("phone_numbers", phone_numbers);
+                bundle.putStringArrayList("address_list", address_list);
                 checkoutFragment.setArguments(bundle);
 
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, checkoutFragment).commit();
@@ -177,12 +179,18 @@ public class CartFragment extends Fragment {
 
                         JSONArray customers = jsonObject.getJSONArray("customers");
                         customer_names = new ArrayList<>();
+                        phone_numbers = new ArrayList<>();
+                        address_list = new ArrayList<>();
 
                         for (int i = 0; i < customers.length(); i++) {
                             JSONObject obj = customers.getJSONObject(i);
                             String customer_name = obj.getString("customer_name");
+                            String phone_number = obj.getString("phone_number");
+                            String address = obj.getString("address");
 
                             customer_names.add(customer_name);
+                            phone_numbers.add(phone_number);
+                            address_list.add(address);
                         }
                     }
                 } catch (JSONException e) {

@@ -96,10 +96,10 @@ public class CheckoutFragment extends Fragment {
     private Spinner dropdown_payment;
     private String payment = "Pilih";
     private EditText etPay;
-    private AutoCompleteTextView etCustomer;
+    private AutoCompleteTextView etCustomer, etPhoneNumber, etAddress;
     private LinearLayout customerPanel;
     private Button btnCheckout;
-    private ArrayList<String> customer_names;
+    private ArrayList<String> customer_names, phone_numbers, address_list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,20 +121,58 @@ public class CheckoutFragment extends Fragment {
         tvChange = view.findViewById(R.id.tvChange);
         tvTotal = view.findViewById(R.id.tvTotal);
         etCustomer = view.findViewById(R.id.etCustomer);
+        etPhoneNumber = view.findViewById(R.id.etPhoneNumber);
+        etAddress = view.findViewById(R.id.etAddress);
         if (getArguments() != null) {
             total = getArguments().getInt("total");
             tvTotal.setText(String.valueOf(total));
             tvChange.setText(String.valueOf(total * -1));
 
             customer_names = getArguments().getStringArrayList("customer_names");
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<>(
                     getContext(),
                     android.R.layout.simple_dropdown_item_1line,
                     customer_names
             );
 
-            etCustomer.setAdapter(adapter);
+            phone_numbers = getArguments().getStringArrayList("phone_numbers");
+            ArrayAdapter<String> adapter2 = new ArrayAdapter<>(
+                    getContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    phone_numbers
+            );
+
+            address_list = getArguments().getStringArrayList("address_list");
+            ArrayAdapter<String> adapter3 = new ArrayAdapter<>(
+                    getContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    address_list
+            );
+
+            etCustomer.setAdapter(adapter1);
+            etPhoneNumber.setAdapter(adapter2);
+            etAddress.setAdapter(adapter3);
         }
+
+        etCustomer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int index = customer_names.indexOf(s.toString());
+                if (index != -1) {
+                    etPhoneNumber.setText(phone_numbers.get(index));
+                    etAddress.setText(address_list.get(index));
+                } else {
+                    etPhoneNumber.setText("");
+                    etAddress.setText("");
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
 
         etPay = view.findViewById(R.id.etPay);
         customerPanel = view.findViewById(R.id.customerPanel);
@@ -208,13 +246,53 @@ public class CheckoutFragment extends Fragment {
                     TextView judul = dialogView.findViewById(R.id.title);
                     TextView pesan = dialogView.findViewById(R.id.message);
                     AutoCompleteTextView etCustomer = dialogView.findViewById(R.id.etCustomer);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    AutoCompleteTextView etPhoneNumber = dialogView.findViewById(R.id.etPhoneNumber);
+                    AutoCompleteTextView etAddress = dialogView.findViewById(R.id.etAddress);
+
+                    customer_names = getArguments().getStringArrayList("customer_names");
+                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(
                             getContext(),
                             android.R.layout.simple_dropdown_item_1line,
                             customer_names
                     );
 
-                    etCustomer.setAdapter(adapter);
+                    phone_numbers = getArguments().getStringArrayList("phone_numbers");
+                    ArrayAdapter<String> adapter2 = new ArrayAdapter<>(
+                            getContext(),
+                            android.R.layout.simple_dropdown_item_1line,
+                            phone_numbers
+                    );
+
+                    address_list = getArguments().getStringArrayList("address_list");
+                    ArrayAdapter<String> adapter3 = new ArrayAdapter<>(
+                            getContext(),
+                            android.R.layout.simple_dropdown_item_1line,
+                            address_list
+                    );
+
+                    etCustomer.setAdapter(adapter1);
+                    etPhoneNumber.setAdapter(adapter2);
+                    etAddress.setAdapter(adapter3);
+
+                    etCustomer.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            int index = customer_names.indexOf(s.toString());
+                            if (index != -1) {
+                                etPhoneNumber.setText(phone_numbers.get(index));
+                                etAddress.setText(address_list.get(index));
+                            } else {
+                                etPhoneNumber.setText("");
+                                etAddress.setText("");
+                            }
+                        }
+
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void afterTextChanged(Editable s) {}
+                    });
+
 
                     judul.setText("Uang Kurang!");
                     pesan.setText("Masukan nama pelanggan jika sisa total akan dimasukan kedalam pembayaran kredit!");
@@ -225,7 +303,7 @@ public class CheckoutFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             payment = "kredit";
-                            transactionStore(getContext(), token, total, pay, change, payment, etCustomer.getText().toString());
+                            transactionStore(getContext(), token, total, pay, change, payment, etCustomer.getText().toString(), etPhoneNumber.getText().toString(), etAddress.getText().toString());
                         }
                     });
                     builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
@@ -239,9 +317,9 @@ public class CheckoutFragment extends Fragment {
                     dialog.show();
                 } else {
                     if (payment.equals("kredit")) {
-                        transactionStore(getContext(), token, total, pay, change, payment, etCustomer.getText().toString());
+                        transactionStore(getContext(), token, total, pay, change, payment, etCustomer.getText().toString(), etPhoneNumber.getText().toString(), etAddress.getText().toString());
                     } else {
-                        transactionStore(getContext(), token, total, pay, change, payment, "");
+                        transactionStore(getContext(), token, total, pay, change, payment, "", "", "");
                     }
                 }
             }
@@ -250,7 +328,7 @@ public class CheckoutFragment extends Fragment {
         return view;
     }
 
-    private void transactionStore(Context context, String token, int total, int pay, int change, String payment, String customer_name){
+    private void transactionStore(Context context, String token, int total, int pay, int change, String payment, String customer_name, String phone_number, String address){
         StringRequest request = new StringRequest(Request.Method.POST, URL.URLTransactionStore, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -312,6 +390,8 @@ public class CheckoutFragment extends Fragment {
                 params.put("change", String.valueOf(change));
                 params.put("payment", payment);
                 params.put("customer_name", customer_name);
+                params.put("phone_number", phone_number);
+                params.put("address", address);
                 return params;
             }
         };

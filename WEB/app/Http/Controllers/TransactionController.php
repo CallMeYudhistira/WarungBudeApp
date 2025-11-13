@@ -143,20 +143,20 @@ class TransactionController extends Controller
 
         if ($request->payment == 'kredit') {
             $error = 0;
-            if(!$request->customer_name){
+            if (!$request->customer_name) {
                 $validator->errors()->add('payment', 'Nama pelanggan tidak boleh kosong!');
                 $error++;
             }
-            if(!$request->address){
+            if (!$request->address) {
                 $validator->errors()->add('payment', 'Alamat pelanggan tidak boleh kosong!');
                 $error++;
             }
-            if(!$request->phone_number){
+            if (!$request->phone_number) {
                 $validator->errors()->add('payment', 'Nomor telepon pelanggan tidak boleh kosong!');
                 $error++;
             }
 
-            if($error > 0){
+            if ($error > 0) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
         }
@@ -317,13 +317,15 @@ class TransactionController extends Controller
         return $pdf->stream($transaction->transaction_id . '_' . $transaction->customer_name . '_' . $transaction->date . '_print.pdf');
     }
 
-    public function income(){
+    public function income()
+    {
         $transactions = DB::select("SELECT * FROM RekapHari ORDER BY date DESC");
 
         return view('transaksi.income', compact('transactions'));
     }
 
-    public function incomeFilter(Request $request){
+    public function incomeFilter(Request $request)
+    {
         $first = $request->first;
         $second = $request->second;
 
